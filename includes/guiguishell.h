@@ -2,43 +2,15 @@
 
 # include "nikishell.h"
 
-typedef struct s_doublequote
-{
-	int		id_dq;
-	int		nb_elem;
-	int		is_env;
-	int		is_arg;
-	char	*dq_elem;
-}	t_dq;
-
-typedef struct s_subtoken
-{
-	int		id_subtoken;
-	int		father_token;
-	int		is_redirection_input;
-	int		is_redirection_output;
-	int		is_here_doc;
-	int		is_append_output;
-	int		is_pipe;
-	int		is_word;
-	int		is_wrong;
-	char	*sub_elem;
-	t_dq	*dq;
-}	t_subtoken;
-
 typedef struct s_token
 {
 	int			is_redirection_input;
 	int			is_redirection_output;
 	int			is_here_doc;
 	int			is_append_output;
-	int			is_pipe;
 	int			is_word;
 	int			is_wrong;
-	int			nb_subtoken;
 	char		*elem;
-	t_subtoken	*subtoken;
-	t_dq		*dq;
 }	t_token;
 
 typedef struct s_split

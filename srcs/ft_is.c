@@ -6,7 +6,7 @@
 /*   By: gfritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 11:54:14 by gfritsch          #+#    #+#             */
-/*   Updated: 2022/04/16 02:22:07 by gfritsch         ###   ########.fr       */
+/*   Updated: 2022/04/18 01:43:03 by gfritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	is_meta_char(t_token *token, int i)
 		return (token[i].is_redirection_input = 1);
 	else if (token[i].elem[0] == '>' && token[i].elem[1] == 0)
 		return (token[i].is_redirection_output = 1);
-	else if (token[i].elem[0] == '|' && token[i].elem[1] == 0)
-		return (token[i].is_pipe = 1);
+//	else if (token[i].elem[0] == '|' && token[i].elem[1] == 0)
+//		return (token[i].is_pipe = 1);
 	else if (token[i].elem[0] == '<' && token[i].elem[1] == '<'
 		&& token[i].elem[2] == 0)
 		return (token[i].is_here_doc = 1);

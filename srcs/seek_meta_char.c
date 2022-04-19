@@ -6,7 +6,7 @@
 /*   By: gfritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 12:41:39 by gfritsch          #+#    #+#             */
-/*   Updated: 2022/04/16 03:36:45 by gfritsch         ###   ########.fr       */
+/*   Updated: 2022/04/18 03:33:48 by gfritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,30 @@ int	which_meta_char(t_token *token, int i, int i_str)
 
 int	seek_and_count_meta_char(t_token *token, int i)
 {
-	int	i_str;
-	int	meta_char_count;
-	int	double_arrow;
+	int		i_str;
+	int		meta_char_count;
+	int		ret;
+	char	quote;
 
 	i_str = 0;
 	meta_char_count = 0;
-	double_arrow = 0;
+	ret = 0;
+	quote = 0;
 	while (token[i].elem[i_str])
 	{
-		if (which_meta_char(token, i, i_str) == 4
-			|| which_meta_char(token, i, i_str) == 5)
-		{
+		if (quote == 0 && (token[i].elem[i_str] == '\'' || token[i].elem[i_str] == '\"'))
+			quote = token[i].elem[i_str];
+		else if (quote != 0 && quote == token[i].elem[i_str])
+			quote = 0;
+		if (quote == 0)
+			ret = which_meta_char(token, i, i_str);
+		if (ret != 0)
 			meta_char_count++;
-			double_arrow = 1;
-		}
-		else if (double_arrow == 0
-			&& which_meta_char(token, i, i_str) != 0)
-			meta_char_count++;
+		if (ret == 4 || ret == 5)
+			i_str++;
 		i_str++;
 	}
-	printf("seek_and_count_meta_char(): %d metachar found\n", meta_char_count);
+	//printf("seek_and_count_meta_char(): %d metachar found\n", meta_char_count);
 	return (meta_char_count);
 }
 

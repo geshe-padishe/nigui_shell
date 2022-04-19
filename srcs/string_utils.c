@@ -6,33 +6,34 @@
 /*   By: gfritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 18:57:44 by gfritsch          #+#    #+#             */
-/*   Updated: 2022/04/16 16:22:07 by ngenadie         ###   ########.fr       */
+/*   Updated: 2022/04/19 16:02:40 by gfritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	count_quotes(char *str, t_split *split)
+void	count_double_quotes(char *str, t_split *split)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (i > 0)
-		{
-			if (str[i] == '\'' && str[i - 1] != '\\')
-				split->single_quote++;
-			else if (str[i] == '\"' && str[i - 1] != '\\')
-				split->double_quote++;
-		}
-		else
-		{
-			if (str[i] == '\'')
-				split->single_quote++;
-			else if (str[i] == '\"')
-				split->double_quote++;
-		}
+		if (str[i] == '\"')
+			split->double_quote++;
+		i++;
+	}
+}
+
+void	count_simple_quotes(char *str, t_split *split)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			split->single_quote++;
 		i++;
 	}
 }

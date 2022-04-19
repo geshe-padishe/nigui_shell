@@ -10,6 +10,7 @@ typedef struct s_token
 	int			is_append_output;
 	int			is_word;
 	int			is_wrong;
+	int			nb_word;
 	char		*elem;
 }	t_token;
 
@@ -26,9 +27,10 @@ typedef struct s_split
 
 typedef struct s_indexer
 {
-	int	*begin_word;
-	int	*end_word;
-	int	nb_word;
+	int		*begin_word;
+	int		*end_word;
+	int		nb_word;
+	char	quote;
 }	t_index;
 
 /*
@@ -41,7 +43,8 @@ t_token	*ft_token(t_split *split);
  *	string_utils.c
  */
 
-void	count_quotes(char *str, t_split *split);
+void	count_double_quotes(char *str, t_split *split);
+void	count_simple_quotes(char *str, t_split *split);
 int		ft_strlen(char *str);
 char	*ft_strdup(char *str);
 int		skip_space(char *str);
@@ -51,13 +54,14 @@ int		skip_space(char *str);
  */
 
 void	to_quote_or_not_to_quote(char *str, int i, t_split *split);
+void	index_to_quote_or_not_to_quote(char *str, int i, t_index *index);
 int		is_quoted_good(char *str);
 
 /*
  *	parser.c
  */
 
-void	parse(char *line_buffer);
+int	parse(char *line_buffer);
 
 /*
  *	redo_split.c
@@ -96,40 +100,15 @@ int		seek_meta_char(t_token *token, int i);
 int		seek_and_count_meta_char(t_token *token, int i);
 
 /*
- *	sub_indexer.c
+ *	decompose_indexer.c
  */
 
-t_index	*subindexing(t_token *token, int i_tok);
+t_index *decompose_indexer(t_token *token, int target);
 
 /*
- *	sub_token.c
+ *	decompose_token.c
  */
 
-int		subtokenize(t_token *token, int i_tok);
-
-/*
- *	ft_sub_is.c
- */
-
-void	which_sub_is(t_token *token, int i_tok, int i_subtok);
-
-/*
- *	isolate_env_indexer.c
- */
-
-int		is_space_or_null_or_dquote(char c);
-t_index	*env_indexing(t_token *token, int i_tok);
-
-/*
- *	isolate_env.c
- */
-
-int		double_quoted_arg_has_env(char *str);
-
-/*
- *	doublequote_token.c
- */
-
-int		double_quote_tokenize(t_token *token, int i_tok);
+t_token	*decompose_token(t_token *old_token, int target);
 
 #endif

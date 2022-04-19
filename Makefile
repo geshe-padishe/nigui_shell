@@ -7,7 +7,7 @@ CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 SRC	=	ft_exec.c dynarray2.c dynarray.c ft_str.c ft_mems.c ft_env.c \
 		ft_print.c ft_builtins.c ft_sig.c ft_is.c ft_quote.c \
 		indexer.c parser.c string_utils.c ft_token.c \
-		redo_split.c seek_meta_char.c \
+		redo_split.c seek_meta_char.c decompose_indexer.c decompose_token.c\
 		unload.c
 
 SRC_D = srcs

@@ -19,13 +19,17 @@ t_token	*ft_token(t_split *split)
 
 	token = (t_token *)malloc(sizeof(t_token) * split->nb_split);
 	if (token == NULL)
+	{
+		perror("ft_token(): Error allocating token");
 		return (NULL);
+	}
 	ft_memset((void *)token, 0, sizeof(t_token) * split->nb_split);
 	i = 0;
 	while (i < split->nb_split)
 	{
 		token[i].elem = split->split[i];
+		token[i].nb_word = split->nb_split;
 		i++;
-	}
+	}	
 	return (token);
 }

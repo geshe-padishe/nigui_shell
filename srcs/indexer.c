@@ -88,7 +88,12 @@ int	index_spe_char(char *str, int i)
 		return (0);
 }
 
-
+int	char_is_quote(char c)
+{
+	if (c == '\'' || c == '\"')
+		return (1);
+	return (0);
+}
 
 void	indexing_loop_instruction(char *str, t_split *split, t_index *index,
 		int i)
@@ -106,7 +111,9 @@ void	indexing_loop_instruction(char *str, t_split *split, t_index *index,
 			ret = index_spe_char(str, i); 
 		if (str[i] != 32 && index->begin_word[j] == -1)
 			index->begin_word[j] = i;
-		if ((str[i] == 32 || str[i] == '\'' || str[i] == '\"' || ret != 0) && index->begin_word[j] != -1 && split->quote == 0)
+		if ((str[i] == 32
+			|| (char_is_quote(str[i]) == 1 && char_is_quote(str[i + 1]) == 0)
+			|| ret != 0) && index->begin_word[j] != -1 && split->quote == 0)
 		{
 			if (ret == 4 || ret == 5)
 				i++;

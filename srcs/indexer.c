@@ -6,7 +6,7 @@
 /*   By: gfritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 15:15:11 by gfritsch          #+#    #+#             */
-/*   Updated: 2022/04/08 17:49:35 by gfritsch         ###   ########.fr       */
+/*   Updated: 2022/04/20 21:45:45 by gfritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,14 @@ t_index	*init_indexer(char *str)
 		return (NULL);
 	tab_init(index->begin_word, ft_strlen(str) + 1);
 	tab_init(index->end_word, ft_strlen(str) + 1);
-	index->quote = 0;
 	return (index);
 }
 
-int	index_spe_char(char *str, int i)
+int	is_char_metachar(char *str, int i)
 {
 	if (str[i] == '<' && str[i + 1] != '<')
 		return (1);
-	else if (str[i] ==  '>' && str[i + 1] != '>')
+	else if (str[i] == '>' && str[i + 1] != '>')
 		return (2);
 	else if (str[i] == '|')
 		return (3);
@@ -88,45 +87,30 @@ int	index_spe_char(char *str, int i)
 		return (0);
 }
 
-int	char_is_quote(char c)
-{
-	if (c == '\'' || c == '\"')
-		return (1);
-	return (0);
-}
-
 void	indexing_loop_instruction(char *str, t_split *split, t_index *index,
 		int i)
 {
 	int	j;
-	int ret;
+	int	ret;
 
 	j = 0;
 	ret = 0;
 	while (str[i] != 0)
 	{
-
 		to_quote_or_not_to_quote(str, i, split);
-		if (split->quote == 0)
-			ret = index_spe_char(str, i); 
+		ret = is_char_metachar(str, i);
 		if (str[i] != 32 && index->begin_word[j] == -1)
 			index->begin_word[j] = i;
-		if ((str[i] == 32
-			|| (char_is_quote(str[i]) == 1 && char_is_quote(str[i + 1]) == 0)
-			|| ret != 0) && index->begin_word[j] != -1 && split->quote == 0)
+		if ((str[i + 1] == 32 || is_char_metachar(str, i + 1) != ret)&& index->begin_word[j] != -1 && split->quote == 0)
 		{
 			if (ret == 4 || ret == 5)
 				i++;
-			if (i > 0 && str[i] == 32)
-				index->end_word[j] = i - 1;
-			else
-				index->end_word[j] = i;
-
+			index->end_word[j] = i;
 			j++;
 		}
 		i++;
 	}
-	if (index->end_word[j] == -1 && index->begin_word[j] != -1)
+	if (index->end_word[j] == -1)
 		index->end_word[j] = i - 1;
 	index->nb_word = j + 1;
 }

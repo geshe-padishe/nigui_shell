@@ -12,9 +12,8 @@ int	main(int ac, char **av, char **envp)
 	if (init_dyn_env(envp, &darr))
 		return (-1);
 	g_vrac.darr = &darr;
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, sigd_handler);
-	printf("start darr.list = %p\n", darr.list);
+	signal(SIGINT, sigd_handler1);
+	signal(SIGQUIT, sigd_handler2);
 	if (!ft_readline(&darr))
 		return (ft_free_all(&darr), printf("RETURN MAIN\n"), 0);
 }

@@ -2,7 +2,7 @@ CC = gcc
 
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address -static-libasan
 
 SRC_N	= dynarray.c ft_env.c ft_fd.c ft_pipes.c ft_sig.c \
 			dynarray2.c ft_builtins.c ft_exec.c ft_mems.c ft_print.c \
@@ -22,14 +22,8 @@ INC_H	= $(addprefix ${INC_D}/, ${INC})
 
 all: $(NAME)
 
-$(NAME): ${INC_H} #${SRC_C}
-	${CC} ${CFLAGS} ${SRC} -I${INC_D} -o ${NAME} -lreadline
-
-niki: ${INC_H} #${SRC_C}
+$(NAME): ${INC_H} ${SRC}
 	${CC} ${CFLAGS} niki_main.c ${SRC} -I${INC_D} -o ${NAME} -lreadline
-
-adrien: ${INC_H} #${SRC_C}
-	${CC} ${CFLAGS} ad_main.c ${SRC} -I${INC_D} -o ${NAME} -lreadline
 
 clean:
 	rm -f $(OBJS)

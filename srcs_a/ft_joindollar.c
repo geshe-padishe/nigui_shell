@@ -6,11 +6,57 @@
 /*   By: admaupie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 18:21:18 by admaupie          #+#    #+#             */
-/*   Updated: 2022/08/02 17:40:24 by ngenadie         ###   ########.fr       */
+/*   Updated: 2022/10/28 21:53:58 by admaupie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+int	ft_joindollar(t_lst *ptr, int i, t_dynarray *darr)
+{
+	char	*tmp;
+	char	*to_free;
+	char	*envval;
+	char	*dollar;
+	char	*new;
+	int		j;
+	int		ret;
+
+	j = 1;
+	tmp = ptr->str;
+	to_free = ft_strndup(tmp, i);
+	if (!to_free)
+		return (-42);
+	while (tmp[i + j] && tmp[i + j] != '\t' && tmp[i + j] != 39
+		&& tmp[i + j] != ' ' && tmp[i + j] != 34 && tmp[i + j] != '$')
+		j++;
+	dollar = ft_strndup(tmp + i + 1, j - 1);
+	if (!dollar)
+		return (-42);
+	envval = ft_getenvval(dollar, darr, 0, 0);
+	if (!envval)
+		envval = "";
+	ret = ft_strlen(envval);
+	new = ft_strjoin(to_free, envval);
+	if (!new)
+		return (-42);
+	free(to_free);
+	to_free = new;
+	envval = ft_strndup(tmp + i + j, ft_strlen(tmp + i + j));
+	if (!envval)
+		return (-42);
+	new = ft_strjoin(new, envval);
+	if (!new)
+		return (-42);
+	free(to_free);
+	free(dollar);
+	free(envval);
+	ptr->str = new;
+	free(tmp);
+	return (ret - 1);
+}
+
 
 int	ft_strjoindollar(t_lst *l, char *var, int k, int dollar)
 {
@@ -20,9 +66,10 @@ int	ft_strjoindollar(t_lst *l, char *var, int k, int dollar)
 
 	i = ft_strlen(var);
 	tmp = l->str;
+	printf("strjoining $ :\n* tmp/l->str = %s\n* var = %s\n* i=%d\n* dollar=%d\n**************\n", tmp, var, i, dollar);
 	new = malloc(sizeof(char) * (ft_strlen(tmp) + i + 1 - dollar));
 	if (!new)
-		exit(-1);
+		return(-1);
 	i = -1;
 	while (++i >= 0 && tmp[i] && i < k)
 		new[i] = tmp[i];
@@ -31,7 +78,7 @@ int	ft_strjoindollar(t_lst *l, char *var, int k, int dollar)
 		new[i] = var[i - k];
 	i--;
 	k--;
-	while (++i && ++k && tmp[k + dollar])
+	while (++i && ++k && tmp[k + dollar] != '\0')
 		new[i] = tmp[k + dollar];
 	new[i] = '\0';
 	free(tmp);
@@ -50,12 +97,12 @@ int	ft_replacedollar(t_lst *l, int k, int c, t_dynarray *darr)
 	var = NULL;
 	dollar = 0;
 	k++;
-	while (l->str[k + dollar] && l->str[k + dollar] != '\t' 
-			&& l->str[k + dollar]!= SIMPLE_QUOTE && l->str[k + dollar] != ' ' 
-			&& l->str[k + dollar] != 34)
+	while (l->str[k + dollar] && l->str[k + dollar] != '\t'
+		&& l->str[k + dollar] != 39 && l->str[k + dollar] != ' '
+		&& l->str[k + dollar] != 34)
 		dollar++;
 	if (dollar && dollar++)
-		var = ft_getenvval(l->str + k, darr->list, darr->nb_cells, 0);
+		var = ft_getenvval(l->str + k, darr, 0, 0);
 	else if (l->str[k] == 34 || l->str[k] == SIMPLE_QUOTE)
 	{
 		var = "$";

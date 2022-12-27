@@ -1,8 +1,13 @@
 #include "minishell.h"
 
-void	sigd_handler(int i)
+void	sigd_handler1(int i)
 {
 	(void)i;
-	ft_free_all(g_vrac.darr);
-	free_pipe_array(g_vrac.pipefd, g_vrac.nb_pipes);
+	write(1, "\nshell ", 7);
+}
+
+void	sigd_handler2(int i)
+{
+	(void)i;
+	write(1, "\b\b  \b\b", 6);
 }

@@ -1,0 +1,10 @@
+total 1620
+-rwx------ 1 ngenadie 2020_paris      69 Dec 20 01:02 123
+drwxr-xr-x 2 ngenadie 2020_paris    4096 Oct 29 17:50 includes
+-rwxr-xr-x 1 ngenadie 2020_paris     137 Oct 28 23:44 liberror
+-rwxr-xr-x 1 ngenadie 2020_paris     732 Oct 28 23:44 Makefile
+-rwxr-xr-x 1 ngenadie 2020_paris 1622976 Dec 11 18:05 minishell
+-rw-r--r-- 1 ngenadie 2020_paris     463 Dec  2 15:21 niki_main.c
+drwxr-xr-x 2 ngenadie 2020_paris    4096 Dec 19 20:27 srcs
+drwxr-xr-x 2 ngenadie 2020_paris    4096 Oct 28 23:44 srcs_a
+-rwx------ 1 ngenadie 2020_paris     598 Dec 10 21:00 txt

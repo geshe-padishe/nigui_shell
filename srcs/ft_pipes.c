@@ -23,7 +23,7 @@ int	ft_pipes_left(t_lst *lst)
 	return (pipes);
 }
 
-char	*ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
+int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 {
 	int		**pipefd;
 	int		i;
@@ -32,12 +32,11 @@ char	*ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 	int		fd_in;
 	t_lst	*start_lst;
 
-	//ft_print_list(lst);
 	pipes_left = nb_pipes;
 	pipefd = create_pipe_arr(nb_pipes);
 	i = 0;
 	if (!pipefd)
-		return (printf("FD_ERR\n"), NULL);
+		return (printf("FD_ERR\n"), 0);
 	start_lst = lst;
 	while (lst && lst->str)
 	{
@@ -46,21 +45,21 @@ char	*ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 		if (list[i] == 0)
 		{
 			ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in);
-			ft_handle_redirections(start_lst);
-			lst = start_lst;
 			ft_close_pipes(pipefd, nb_pipes);
-			ft_handle_exec(lst, darr);
+			if (ft_handle_redirections(start_lst) == -1)
+				return (0);
+			ft_handle_exec(start_lst, darr);
 		}
 		i++;
 		pipes_left--;
 		lst = ft_next_pipe(start_lst);
-		if (lst)
+		if (lst && printf("lst str=%s\n", lst->str))
 			start_lst = lst->next;
 	}
 	ft_close_pipes(pipefd, nb_pipes);
 	free_pipe_array(pipefd, nb_pipes);
 	ft_wait_procs(i, list);
-	return (NULL);
+	return (1);
 }
 
 int	ft_wait_procs(int ac, pid_t *list)
@@ -98,4 +97,23 @@ int	ft_wait_procs(int ac, pid_t *list)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_builtins(t_lst *lst, t_dynarray *darr)
+{
+	int i;
+
+	i = 0;
+	while (lst && lst->token != 0)
+		lst = lst->next;
+	if (nk_strcmp(lst->str, "cd"))
+		ft_cd(lst->str, ft_getenvval("HOME", darr, 1, 0));
+	else if (nk_strcmp(lst->str, "export"))
+		ft_export(darr, ft_splitargs(lst));
+	else if (nk_strcmp(lst->str, "unset"))
+		ft_unset(darr, ft_splitargs(lst));
+	else if (nk_strcmp(lst->str, "echo"))
+		ft_echo(ft_splitargs(lst))
+	else if	(nk_strcmp(lst->str, "pwd"))
+		ft_pwd(ft_splitargs(lst));
 }

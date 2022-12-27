@@ -12,12 +12,6 @@ char	*ft_check_bin_path(char *bin, char *paths)
 	if (bin_path == NULL)
 		return ((char *)3);
 	init_path = bin_path;
-	if (paths[0] != '/')
-	{
-		bin_path[0] = '~';
-		bin_path[1] = '/';
-		bin_path += 2;
-	}
 	ft_strncpy(paths, bin_path, ft_len_bef_col(paths) + 1);
 	bin_path[ft_len_bef_col(paths) + 1] = '/';
 	ft_strcpy(bin, bin_path + 2 + ft_len_bef_col(paths));
@@ -43,30 +37,31 @@ int	ft_len_bef_col(char *paths)
 char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 {
 	char	*bin_path;
-	int		i;
 
-	i = 0;
-	if (!paths) //DANGEROUS??
-		if (access(bin, F_OK & X_OK) == 0)
-			execve(bin, argv, envp);
-	while (*paths)
-	{
-		bin_path = ft_check_bin_path(bin, paths);
-		if (bin_path == (char *)3)
-			return (NULL);
-		if (access(bin_path, F_OK & X_OK) == 0)
+	dprintf(2, "bin = %s\n", bin);
+	if (access(bin, F_OK & X_OK) == 0)
+		if (execve(bin, argv, envp))
+			return (perror("Execve Failed\n"), NULL); //FREE
+	if (bin && bin[0] != '.')
+		while (*paths)
 		{
-			dprintf(2, "BEFORE EXEC:\n      bin_path = %s, argv[0] = %s, argv[1] = %s, envp[0] = %s\n",
-					bin_path, argv[0], argv[1], envp[0]);
-			execve(bin_path, argv, envp);
+			bin_path = ft_check_bin_path(bin, paths);
+			dprintf(2, "bin_path = %s\n", bin_path);
+			if (bin_path == (char *)3)
+				return (NULL);
+			if (access(bin_path, F_OK & X_OK) == 0)
+			{
+				dprintf(2, "BEFORE EXEC:\n      bin_path = %s, argv[0] = %s, argv[1] = %s, envp[0] = %s\n",
+						bin_path, argv[0], argv[1], envp[0]);
+				if (execve(bin_path, argv, envp))
+					return (dprintf(2, "Execve Failed\n"), NULL); //FREE ALL
+			}
+			else
+				free(bin_path);
+			paths += ft_len_bef_col(paths) + 1;
+			if (*paths)
+				paths += 1;
 		}
-		else
-			free(bin_path);
-		paths += ft_len_bef_col(paths) + 1;
-		if (*paths)
-			paths += 1;
-		i++;
-	}
 	return (NULL);
 }
 
@@ -82,8 +77,8 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
 		{
 			dprintf(2, "PRINT BEFORE EXEC: ");
 			if (ft_find_bin(args[0], ft_getenvval("PATH", darr,
-				darr->nb_cells, 1), args, darr->list) == NULL) //A FINIR APRES
-				return (dprintf(2, "BAD EXEC BAD\n"), -1);
+				0, 1), args, darr->list) == NULL) //A FINIR APRES
+				return (perror("BAD EXEC\n"), -1);
 		}
 		lst = lst->next;
 	}

@@ -15,13 +15,13 @@ extern t_safe	g_vrac;
 char	*ft_get_dir(char *path);
 char	*ft_make_prompt(char *dir);
 int		init_dyn_env(char **envp, t_dynarray *darr);
-void	ft_dyn_env(t_dynarray *darr);
+int		ft_dyn_env(t_dynarray *darr, char **str);
 int		ft_getenv_index(char **envp, uint64_t len, char *str, bool un_exp);
-int		ft_export(t_dynarray *darr, char **str);
+int		ft_export(t_dynarray *darr, char **str, int nb_pipes);
 int		ft_envcmp(char *str, char *str2);
-int		ft_unset(t_dynarray *darr, char **str);
+int		ft_unset(t_dynarray *darr, char **str, int nb_pipes);
 bool	ft_has_eq(char *str);
-int		ft_cd(char **str, char *home);
+int		ft_cd(char **str, char *home, int nb_pipes);
 int		ft_readline(t_dynarray *darr);
 char	*ft_check_bin_path(char *bin, char *paths);
 char	*ft_getenvval(char *str, t_dynarray *darr, bool val_or_all, bool un_or_exp);
@@ -48,5 +48,9 @@ void	ft_print_list(t_lst *token);
 int		ft_handle_redirections(t_lst *lst);
 int		ft_handle_exec(t_lst *lst, t_dynarray *darr);
 int		ft_open_dup(t_lst *lst, int token, bool apnd_or_not);
+int		ft_pwd(char **args);
+int		ft_echo(char **args);
+int		ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes);
+int		ft_builtins_exec(t_lst *lst, t_dynarray *darr);
 
 #endif

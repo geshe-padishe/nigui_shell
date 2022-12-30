@@ -12,16 +12,19 @@ void	ft_env(char **envp)
 	}
 }
 
-void	ft_dyn_env(t_dynarray *darr)
+int	ft_dyn_env(t_dynarray *darr, char **str)
 {
 	uint64_t	i;
 
+	if (*str)
+		return (perror("env: Too many args"), 1);
 	i = 0;
 	while (i < darr->nb_cells)
 	{
 		printf("list[%lu] = %s\n", i, ((char**)darr->list)[i]);
 		i++;
 	}
+	return (0);
 }
 
 void	ft_print_pipes(int **pipefd, int nb_pipes)

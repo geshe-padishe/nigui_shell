@@ -10,3 +10,29 @@ drwxr-xr-x 2 ngenadie 2020_paris    4096 Dec 22 10:42 includes
 drwxr-xr-x 2 ngenadie 2020_paris    4096 Dec 23 16:11 srcs
 drwxr-xr-x 2 ngenadie 2020_paris    4096 Oct 28 23:44 srcs_a
 -rwx------ 1 ngenadie 2020_paris       0 Dec 23 16:01 txt
+123
+ad_main.c
+a.out
+cat
+includes
+liberror
+main.c
+Makefile
+minishell
+niki_main.c
+srcs
+srcs_a
+txt
+123
+ad_main.c
+a.out
+cat
+includes
+liberror
+main.c
+Makefile
+minishell
+niki_main.c
+srcs
+srcs_a
+txt

@@ -41,12 +41,11 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 	dprintf(2, "bin = %s\n", bin);
 	if (access(bin, F_OK & X_OK) == 0)
 		if (execve(bin, argv, envp))
-			return (perror("Execve Failed\n"), NULL); //FREE
+			return (perror("Execve Failed"), NULL); //FREE
 	if (bin && bin[0] != '.')
 		while (*paths)
 		{
 			bin_path = ft_check_bin_path(bin, paths);
-			dprintf(2, "bin_path = %s\n", bin_path);
 			if (bin_path == (char *)3)
 				return (NULL);
 			if (access(bin_path, F_OK & X_OK) == 0)
@@ -54,7 +53,7 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 				dprintf(2, "BEFORE EXEC:\n      bin_path = %s, argv[0] = %s, argv[1] = %s, envp[0] = %s\n",
 						bin_path, argv[0], argv[1], envp[0]);
 				if (execve(bin_path, argv, envp))
-					return (dprintf(2, "Execve Failed\n"), NULL); //FREE ALL
+					return (perror("Execve Failed"), NULL); //FREE ALL
 			}
 			else
 				free(bin_path);
@@ -69,18 +68,34 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
 {
 	char	**args;
 
-	dprintf(2, "BEFORE SPLITARGS\nlst->str = %s\n", lst->str);
 	args = ft_splitargs(lst);
 	while (lst && lst->token != 1)
 	{
 		if (lst->token == 0 && lst->str != NULL)
 		{
-			dprintf(2, "PRINT BEFORE EXEC: ");
+			if (ft_builtins_exec(lst, darr))
+				return (free(args), 0);
 			if (ft_find_bin(args[0], ft_getenvval("PATH", darr,
 				0, 1), args, darr->list) == NULL) //A FINIR APRES
-				return (perror("BAD EXEC\n"), -1);
+				return (-1);
 		}
 		lst = lst->next;
 	}
+	return (0);
+}
+
+int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
+{
+	char **args;
+
+	args = ft_splitargs(lst);
+	if (!args)
+		perror("malloc: error\n");
+	else if (!nk_strcmp(lst->str, "echo"))
+		return (ft_echo(args + 1), 1);
+	else if	(!nk_strcmp(lst->str, "pwd"))
+		return (ft_pwd(args + 1), 1);
+	else if	(!nk_strcmp(lst->str, "env"))
+		return (ft_dyn_env(darr, args + 1), 1);
 	return (0);
 }

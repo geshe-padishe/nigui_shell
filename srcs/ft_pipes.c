@@ -34,23 +34,26 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 
 	pipes_left = nb_pipes;
 	pipefd = create_pipe_arr(nb_pipes);
-	i = 0;
 	if (!pipefd)
-		return (printf("FD_ERR\n"), 0);
+		return (perror("malloc fail"), 0);
+	i = 0;
 	start_lst = lst;
 	while (lst && lst->str)
 	{
 		lst = start_lst;
-		list[i] = fork();
-		if (list[i] == 0)
+		if (ft_builtins(lst, darr, nb_pipes))
 		{
-			ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in);
-			ft_close_pipes(pipefd, nb_pipes);
-			if (ft_handle_redirections(start_lst) == -1)
-				return (0);
-			ft_handle_exec(start_lst, darr);
+			list[i] = fork();
+			if (list[i] == 0)
+			{
+				ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in);
+				ft_close_pipes(pipefd, nb_pipes);
+				if (ft_handle_redirections(start_lst) == -1)
+					return (0);
+				ft_handle_exec(start_lst, darr);
+			}
+			i++;
 		}
-		i++;
 		pipes_left--;
 		lst = ft_next_pipe(start_lst);
 		if (lst && printf("lst str=%s\n", lst->str))
@@ -79,41 +82,32 @@ int	ft_wait_procs(int ac, pid_t *list)
 			exit(EXIT_FAILURE);
 		}
 		if (WIFEXITED(status))
-		{
 			printf("terminé, code=%d\n", WEXITSTATUS(status));
-		}
 		else if (WIFSIGNALED(status))
-		{
 			printf("tué par le signal %d\n", WTERMSIG(status));
-		}
 		else if (WIFSTOPPED(status))
-		{
 			printf("arrêté par le signal %d\n", WSTOPSIG(status));
-		}
 		else if (WIFCONTINUED(status))
-		{
 			printf("relancé\n");
-		}
 		i++;
 	}
 	return (0);
 }
 
-int	ft_builtins(t_lst *lst, t_dynarray *darr)
+int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
 {
-	int i;
+	char **args;
 
-	i = 0;
+	args = ft_splitargs(lst);
+	if (!lst)
+		return (0);
 	while (lst && lst->token != 0)
 		lst = lst->next;
-	if (nk_strcmp(lst->str, "cd"))
-		ft_cd(lst->str, ft_getenvval("HOME", darr, 1, 0));
-	else if (nk_strcmp(lst->str, "export"))
-		ft_export(darr, ft_splitargs(lst));
-	else if (nk_strcmp(lst->str, "unset"))
-		ft_unset(darr, ft_splitargs(lst));
-	else if (nk_strcmp(lst->str, "echo"))
-		ft_echo(ft_splitargs(lst))
-	else if	(nk_strcmp(lst->str, "pwd"))
-		ft_pwd(ft_splitargs(lst));
+	if (!nk_strcmp(lst->str, "cd"))
+		return (ft_cd(args, ft_getenvval("HOME", darr, 1, 0), nb_pipes), 0);
+	else if (!nk_strcmp(lst->str, "export"))
+		return (ft_export(darr, args, nb_pipes), 0);
+	else if (!nk_strcmp(lst->str, "unset"))
+		return (ft_unset(darr, args, nb_pipes), 0);
+	return (1);
 }

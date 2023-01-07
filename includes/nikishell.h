@@ -52,5 +52,11 @@ int		ft_pwd(char **args);
 int		ft_echo(char **args);
 int		ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes);
 int		ft_builtins_exec(t_lst *lst, t_dynarray *darr);
+void	ft_print_args(char **args);
+void	ft_env(t_dynarray *darr);
+int		ft_is_number(char *str);
+int		ft_exit(char **args, int nb_pipes);
+int		ft_atoi_sign(char **nstr);
+int		ft_ps_atoi(char *nstr);
 
 #endif

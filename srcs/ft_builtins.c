@@ -43,7 +43,7 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 	char	**envp;
 	char	*envpi;
 
-	if (nb_pipes >= 0)
+	if (nb_pipes > 0)
 		return (0);
 	while (str)
 	{
@@ -61,7 +61,7 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 			envp[index] = envpi;
 		}
 		else if (index == -1)
-			if (push_dynarray(darr, &envpi, 1, 0))
+			if (push_dynarray(darr, &envpi, 1, 1))
 				return (perror("push_dynarray: cannot push element\n"), 1);
 		str++;
 	}
@@ -91,15 +91,14 @@ int ft_echo(char **args)
 	flag = 0;
 	if (args && args[0])
 	{
-		if (ft_strcmp(args[0], "-n"))
-		{
+		if (!ft_strcmp(args[0], "-n"))
 				flag = 1;
-				i++;
-		}
 		while (args[i])
 		{
-				printf("%s", args[i]);
-				i++;
+			printf("%s", args[i]);
+			if (args[i + 1])
+				printf(" ");
+			i++;
 		}
 	}
 	if (!flag)

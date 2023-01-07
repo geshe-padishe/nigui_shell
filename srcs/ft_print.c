@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-void	ft_env(char **envp)
+void	ft_env(t_dynarray *darr)
 {
-	int	i;
+	uint64_t	i;
 
 	i = 0;
-	while (envp[i])
+	while (i < darr->nb_cells)
 	{
-		printf("env[%d] = %s\n", i, envp[i]);
+		printf("list[%lu] = %s\n", i, ((char**)darr->list)[i]);
 		i++;
 	}
 }
@@ -62,4 +62,14 @@ void	ft_print_list(t_lst *token)
 	}
 	if (token == NULL)
 		dprintf(2, "PRINTING TOKEN:\n NULL\n");
+}
+
+void	ft_print_args(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+		dprintf(2, "args[%d] = %s\n", i, args[i]);
+	dprintf(2, "args[%d] = %s\n", i, args[i]);
 }

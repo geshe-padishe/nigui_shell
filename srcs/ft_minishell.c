@@ -6,26 +6,22 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
 
 	if (pipes_left != nb_pipes)
 	{
-		dprintf(2, "DUP 2 TOKEN = 1IN\n");
 		*fd_in = dup2(pipefd[nb_pipes - pipes_left - 1][0], STDIN_FILENO);
+		dprintf(2, "FD_IN ===========  %d\n", *fd_in);
 		if (*fd_in == -1)
-			return (dprintf(2, "FD_ERR\n"), ft_close_pipes(pipefd, nb_pipes),
+			return (perror("dup2"), ft_close_pipes(pipefd, nb_pipes),
 				free_pipe_array(pipefd, nb_pipes), -1);
-		else
-			close(pipefd[nb_pipes - pipes_left - 1][0]);
 	}
 /*separation*/
 	if (pipes_left != 0)
 	{
-		dprintf(2, "DUP 2 TOKEN = 1OUT\n");
 		fd_out = dup2(pipefd[nb_pipes - pipes_left][1], STDOUT_FILENO);
+		dprintf(2, "FD_OUT ===========  %d\n", fd_out);
 		if (fd_out == -1)
-			return (dprintf(2, "FD_ERR\n"), ft_close_pipes(pipefd, nb_pipes),
-				close(*fd_in), free_pipe_array(pipefd, nb_pipes), -1);
-		else
-			close(pipefd[nb_pipes - pipes_left][1]);
+			return (perror("dup2"), ft_close_pipes(pipefd, nb_pipes),
+				free_pipe_array(pipefd, nb_pipes), -1);
 	}
-	return (fd_out);
+	return (ft_close_pipes(pipefd, nb_pipes), 0);
 }
 //	lst->str = "ls -la fsdljgod"
 //	lst->token = 0 string
@@ -35,5 +31,4 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
 //				= 4 >>
 //				= 5 <<
 //	argv = splitargs(lst->str)
-
 

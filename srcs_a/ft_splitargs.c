@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_splitargs.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngenadie <ngenadie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/22 17:34:36 by admaupie          #+#    #+#             */
-/*   Updated: 2022/10/26 18:28:38 by admaupie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,26 +74,57 @@ char	*spe_get_word(char *str, int n)
 	return (new);
 }
 
-char	**ft_splitargs(t_lst *lst)
-{
-	char	**new;
-	int		i;
-	int		j;
+//char	**ft_splitargs(t_lst *lst)
+//{
+//	char	**new;
+//	int		i;
+//	int		j;
+//
+//	i = spe_count_words(lst->str);
+//	new = malloc(sizeof(char *) * (i + 1));
+//	if (!new)
+//		return (NULL);
+//	j = 0;
+//	while (j < i)
+//	{
+//		new[j] = spe_get_word(lst->str, j);
+//		if (!new[j])
+//			return (NULL);
+//		j++;
+//	}
+//	new[j] = NULL;
+//	if (remove_quotes(new) != -1)
+//		return (new);
+//	return (NULL);
+//}
 
-	i = spe_count_words(lst->str);
-	new = malloc(sizeof(char *) * (i + 1));
-	if (!new)
-		return (NULL);
-	j = 0;
-	while (j < i)
+char **ft_splitargs(t_lst *lst)
+{
+	t_lst	*start_lst;
+	char	**argv;
+	size_t	args;
+	size_t	i;
+
+	start_lst = lst;
+	args = 0;
+	i = 0;
+	while (lst && lst->token != 1)
 	{
-		new[j] = spe_get_word(lst->str, j);
-		if (!new[j])
-			return (NULL);
-		j++;
+		if (lst->token == 0)
+			args++;
+		if (lst->token >= 2 && lst->token <= 5)
+			lst = lst->next;
+		lst = lst->next;
 	}
-	new[j] = NULL;
-	if (remove_quotes(new) != -1)
-		return (new);
-	return (NULL);
+	argv = malloc(sizeof(char**) * (args + 1));
+	while (start_lst && start_lst->token != 1)
+	{
+		if (start_lst->token == 0)
+			argv[i++] = start_lst->str;
+		if (start_lst->token >= 2 && start_lst->token <= 5)
+			start_lst = start_lst->next;
+		start_lst = start_lst->next;
+	}
+	argv[i] = NULL;
+	return (argv);
 }

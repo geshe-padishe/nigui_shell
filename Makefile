@@ -2,10 +2,10 @@ CC = gcc
 
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address -static-libasan
+CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address #-static-libasan
 
-SRC_N	= dynarray.c ft_env.c ft_fd.c ft_pipes.c ft_sig.c \
-			dynarray2.c ft_builtins.c ft_exec.c ft_mems.c ft_print.c \
+SRC_N	= dynarray.c ft_env.c ft_fd.c ft_pipes.c ft_sig.c dynarray2.c \
+			ft_builtins.c ft_builtins2.c ft_exec.c ft_mems.c ft_print.c \
 			ft_str.c ft_redirections.c ft_prompt.c ft_files.c ft_minishell.c
 SRC_A	= *
 

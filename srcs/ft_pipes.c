@@ -30,41 +30,42 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 	pid_t	list[nb_pipes + 1];
 	int		pipes_left;
 	int		fd_in;
+	int		ret;
 	t_lst	*start_lst;
 
 	pipes_left = nb_pipes;
 	pipefd = create_pipe_arr(nb_pipes);
 	if (!pipefd)
-		return (perror("malloc fail"), 0);
+		return (perror("malloc"), 0);
 	i = 0;
 	start_lst = lst;
 	while (lst && lst->str)
 	{
 		lst = start_lst;
-		if (ft_builtins(lst, darr, nb_pipes))
+		ret = ft_builtins(lst, darr, nb_pipes);
+		if (ret == 1)
 		{
 			list[i] = fork();
+			dprintf(2, "FORKING pid = %d\n", list[i]);
 			if (list[i] == 0)
 			{
-				ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in);
-				ft_close_pipes(pipefd, nb_pipes);
-				if (ft_handle_redirections(start_lst) == -1)
-					return (0);
-				ft_handle_exec(start_lst, darr);
+				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in) ||
+					ft_handle_redirections(start_lst) ||
+					ft_handle_exec(start_lst, darr) || true)
+					return (ft_close_pipes(pipefd, nb_pipes),
+							free_pipe_array(pipefd, nb_pipes), 1);
 			}
 			i++;
 		}
 		pipes_left--;
 		lst = ft_next_pipe(start_lst);
-		if (lst && printf("lst str=%s\n", lst->str))
+		if (lst)
 			start_lst = lst->next;
 	}
 	ft_close_pipes(pipefd, nb_pipes);
-	free_pipe_array(pipefd, nb_pipes);
 	ft_wait_procs(i, list);
-	return (1);
+	return (free_pipe_array(pipefd, nb_pipes), ret);
 }
-
 int	ft_wait_procs(int ac, pid_t *list)
 {
 	int i;
@@ -104,10 +105,12 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
 	while (lst && lst->token != 0)
 		lst = lst->next;
 	if (!nk_strcmp(lst->str, "cd"))
-		return (ft_cd(args, ft_getenvval("HOME", darr, 1, 0), nb_pipes), 0);
+		return (ft_cd(args, ft_getenvval("HOME", darr, 1, 0), nb_pipes), -1);
 	else if (!nk_strcmp(lst->str, "export"))
-		return (ft_export(darr, args, nb_pipes), 0);
+		return (ft_export(darr, args, nb_pipes), -1);
 	else if (!nk_strcmp(lst->str, "unset"))
-		return (ft_unset(darr, args, nb_pipes), 0);
+		return (ft_unset(darr, args, nb_pipes), -1);
+	else if (!nk_strcmp(lst->str, "exit"))
+		return (ft_exit(args, nb_pipes));
 	return (1);
 }

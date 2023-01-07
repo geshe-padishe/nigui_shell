@@ -4,8 +4,10 @@ int	init_dyn_env(char **envp, t_dynarray *darr)
 {
 	int		i;
 	char	*str;
+	char	*nul;
 
 	i = 0;
+	nul = NULL;
 	while (envp[i])
 		i++;
 	init_dynarray(darr, i, sizeof(char*)); // A SECURE
@@ -14,9 +16,10 @@ int	init_dyn_env(char **envp, t_dynarray *darr)
 	{
 		str = malloc(ft_strlen(envp[i]) + 1);
 		ft_strcpy(envp[i], str);
-		push_dynarray(darr, &str, 1, 0);
+		push_dynarray(darr, &str, 1, 1);
 		i++;
 	}
+	push_dynarray(darr, &nul, 1, 0);
 	return (0);
 }
 

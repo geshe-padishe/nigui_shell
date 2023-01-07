@@ -43,26 +43,23 @@ char	*ft_get_dir(char *path)
 int	ft_readline(t_dynarray *darr)
 {
 	char		*line;
-	char		*prompt;
-	char		pwd[1000];
+	int			ret;
 
+	ret = 0;
 	while (1)
 	{
-		prompt = ft_make_prompt(ft_get_dir(getcwd(pwd, 1000)));
-		if (!prompt)
-			return (printf("getcwd fail\n"), -1);
-		line = readline(prompt);
-		free(prompt);
+		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, "exit") == 0)
-			return (printf("exit\n"), 0);
+			return (printf("line = %s\n", line), 0);
 		if (*line)
 		{
 			add_history(line);
-			parse(line, darr);
+			ret = parse(line, darr);
+			if (ret)
+				return (free(line), ret);
 		}
 		free(line);
 	}
 	rl_clear_history();
-	//CLEAR HISTORY A METTRE POUR PAS LEAK
 	return (0);
 }

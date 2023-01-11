@@ -29,14 +29,14 @@ int	ft_getenv_index(char **envp, uint64_t len, char *str, bool un_exp)
 	int			cmp;
 
 	i = 0;
-	while (i < len)
+	while (i < len && envp[i])
 	{
 		cmp = ft_envcmp(envp[i], str);
 		if (cmp == -1)
 			i++;
 		else if (cmp == -2)
 		{
-			if (un_exp == 0)
+			if (un_exp == 1)
 				return (i);
 			else
 				return (-1);

@@ -33,6 +33,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 	int		ret;
 	t_lst	*start_lst;
 
+	ft_print_list(lst);
 	pipes_left = nb_pipes;
 	pipefd = create_pipe_arr(nb_pipes);
 	if (!pipefd)
@@ -43,7 +44,8 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 	{
 		lst = start_lst;
 		ret = ft_builtins(lst, darr, nb_pipes);
-		if (ret == 1)
+		dprintf(2, "RET = %d\n", ret);
+		if (ret == -1)
 		{
 			list[i] = fork();
 			dprintf(2, "FORKING pid = %d\n", list[i]);
@@ -100,17 +102,18 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
 	char **args;
 
 	args = ft_splitargs(lst);
+	ft_print_args(args);
 	if (!lst)
 		return (0);
 	while (lst && lst->token != 0)
 		lst = lst->next;
 	if (!nk_strcmp(lst->str, "cd"))
-		return (ft_cd(args, ft_getenvval("HOME", darr, 1, 0), nb_pipes), -1);
+		return (ft_cd(args + 1, ft_getenvval("HOME", darr, 1, 0), nb_pipes), 0);
 	else if (!nk_strcmp(lst->str, "export"))
-		return (ft_export(darr, args, nb_pipes), -1);
+		return (ft_export(darr, args + 1, nb_pipes), 0);
 	else if (!nk_strcmp(lst->str, "unset"))
-		return (ft_unset(darr, args, nb_pipes), -1);
+		return (ft_unset(darr, args + 1, nb_pipes), 0);
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (ft_exit(args, nb_pipes));
-	return (1);
+		return (dprintf(2, "builtins return exit\n"), ft_exit(args, nb_pipes));
+	return (-1);
 }

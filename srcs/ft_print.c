@@ -57,7 +57,8 @@ void	ft_print_list(t_lst *token)
 {
 	while (token != NULL)
 	{
-		ft_print_token(*token);
+		dprintf(2, "token = %s\n", token->str);
+		//ft_print_token(*token);
 		token = token->next;
 	}
 	if (token == NULL)

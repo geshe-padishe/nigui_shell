@@ -41,7 +41,6 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 	if (access(bin, F_OK & X_OK) == 0)
 		if (execve(bin, argv, envp))
 			return (perror("Execve"), NULL); //FREE
-	dprintf(2, "HANDLE_EXECVE: bin = %s, paths = %s\n", bin, paths);
 	if (bin && bin[0] != '.')
 		while (*paths)
 		{
@@ -90,7 +89,7 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
 
 	args = ft_splitargs(lst);
 	if (!args)
-		perror("malloc: error\n");
+		perror("malloc");
 	else if (!nk_strcmp(lst->str, "echo"))
 		return (ft_echo(args + 1), dprintf(2, "Launching ECHO\n"), 1);
 	else if	(!nk_strcmp(lst->str, "pwd"))

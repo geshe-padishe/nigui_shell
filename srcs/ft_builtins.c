@@ -2,6 +2,7 @@
 
 int	ft_cd(char **str, char *home, int nb_pipes)
 {
+	dprintf(2, "CD\n");
 	if (!*str)
 	{
 		if (home && !nb_pipes)
@@ -20,7 +21,7 @@ int	ft_unset(t_dynarray *darr, char **str, int nb_pipes)
 	int		index;
 	char	**envp;
 
-	if (nb_pipes >= 0)
+	if (nb_pipes > 0)
 		return (0);
 	while (str)
 	{
@@ -45,7 +46,7 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 
 	if (nb_pipes > 0)
 		return (0);
-	while (str)
+	while (str && *str)
 	{
 		envp = darr->list;
 		if (!ft_has_eq(*str))
@@ -75,8 +76,10 @@ int	ft_pwd(char **args)
 	if (*args)
 		return (perror("pwd: too many arguments\n"), 1);
 	pwd = NULL;
+	getcwd(pwd, 1000);
+	printf("PWD = %s\n", pwd);
 	if (!getcwd(pwd, 1000))
-		return (perror("getcwd: Unable to retrieve path\n"), 1);
+		return (perror("getcwd"), 1);
 	else
 		printf("%s\n", pwd);
 	return (0);

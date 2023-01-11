@@ -2,19 +2,20 @@
 
 int	ft_exit(char **args, int nb_pipes)
 {
-	if (args && args[0] && args[1])
+	dprintf(2, "Launching EXIT\n");
+	if (args && args[0] && args[1] && args[2])
 		return (perror("exit: too many args"), 0);
 	if (args && args[0])
 	{
-		if (ft_is_number(args[0]))
+		if (ft_is_number(args[1]))
 		{
 			if (!nb_pipes)
-				return (ft_ps_atoi(args[0]));
+				return (dprintf(2, "EXIT return %d\n", ft_ps_atoi(args[1])), ft_ps_atoi(args[1]));
 		}
 		else
-			return (perror("exit: numeric argument required"), 0);
+			return (perror("exit: numeric argument required"), 2);
 	}
-	return (0);
+	return (dprintf(2, "EXIT return 0\n"), 0);
 }
 
 int	ft_atoi_sign(char **nstr)

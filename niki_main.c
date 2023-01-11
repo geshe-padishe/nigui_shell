@@ -14,7 +14,7 @@ int	main(int ac, char **av, char **envp)
 		return (-1);
 	g_vrac.darr = &darr;
 	signal(SIGINT, sigd_handler1);
-	signal(SIGQUIT, sigd_handler2);
+	signal(SIGQUIT, SIG_IGN);
 	ret = ft_readline(&darr);
-	return (ft_readline(&darr), ft_free_all(&darr), dprintf(2, "MAIN ret = %d\n", ret), ret);
+	return (ft_free_all(&darr), dprintf(2, "MAIN ret = %d\n", ret), ret);
 }

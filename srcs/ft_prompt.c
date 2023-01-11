@@ -55,7 +55,7 @@ int	ft_readline(t_dynarray *darr)
 		{
 			add_history(line);
 			ret = parse(line, darr);
-			if (ret)
+			if (ret > 0)
 				return (free(line), ret);
 		}
 		free(line);

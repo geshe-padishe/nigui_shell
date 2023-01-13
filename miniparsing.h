@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/13 06:54:44 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:39:43 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 # define MINIPARSING_H
 
 # include "dynarray.h"
-
-typedef struct s_lst
-{
-	char			*str;
-	int				token;
-	struct s_lst	*next;
-	struct s_lst	*prev;
-}					t_lst;
 
 // Parsing.c
 t_lst	*parse(char *line, t_dynarray *darr);
@@ -54,7 +46,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_itoa(int n);
 size_t	unquote_len(const char *str);
-
 char	*ft_free(char *str1, char *str2, char *str3, char *str4);
 
 // is_token.c
@@ -68,10 +59,10 @@ t_lst	*tokenize(char *line);
 
 // Lst.c
 void	free_lst(t_lst *src);
-void	push_lst(t_lst *new, t_lst *lst);
+void	push_lst(t_lst *neww, t_lst *lst);
 int		lst_len(t_lst *lst);
 t_lst	*new_lst(void);
 void	ft_printlst(t_lst *a);
-void	push_first_lst(t_lst *new, t_lst *lst);
+void	push_first_lst(t_lst *neww, t_lst *lst);
 
 #endif

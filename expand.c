@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/13 07:02:40 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:36:48 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ char	*trio_split(char *str, int i_len[2], char *exit, t_dynarray *darr)
 	char	*value;
 	char	*new;
 
-	if (i_len[0] == 1)
+	if (i_len[1] == 1)
 	{
-		str[i_len[1]] *= -1;
+		str[i_len[0]] *= -1;
 		return (str);
 	}
-	before = ft_substr(str, 0, i_len[1]);
-	name = ft_substr(str, i_len[1], i_len[0]);
-	after = ft_substr(str, i_len[1] + i_len[0], ft_strlen(str) - (i_len[0] + i_len[0]));
-	value = ft_getenvval(name, darr, 1, 0);
-	printf("EXPANDING VALUE\n");
+	before = ft_substr(str, 0, i_len[0]);
+	name = ft_substr(str, i_len[0], i_len[1]);
+	after = ft_substr(str, i_len[0] + i_len[1], ft_strlen(str) - (i_len[0] + i_len[1]));
+	printf("NAME = %s\n", name);
+	value = ft_getenvval(name + 1, darr, 0, 0);
 	printf("VALUE = %s\n", value);
 	if (!value)
 		value = "";
@@ -88,6 +88,7 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 		if (str[i_len[0]] == '$')
 		{
 			i_len[1] = var_name_len(&str[i_len[0]]);
+			i_len[1]++;
 			expanded = trio_split(str, i_len, exit, darr);
 			while (find_dollar(expanded))
 				expanded = my_expand(expanded, ext, darr);

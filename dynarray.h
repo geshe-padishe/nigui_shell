@@ -6,36 +6,14 @@
 /*   By: nikotikcho <marvin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/01 12:19:38 by nikotikch         #+#    #+#             */
-/*   Updated: 2023/01/13 06:13:12 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:43:30 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DYNARRAY_H
 # define DYNARRAY_H
 
-# include <unistd.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <sys/types.h>
-# include <stdlib.h>
-# include <string.h>
-# include <stdint.h>
-# include <fcntl.h>
-# include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
-
-typedef struct s_dynarray
-{
-	void		*list;
-	void		*tmp;
-	size_t		cell_size;
-	uint64_t	nb_cells;
-	uint64_t	byte_size;
-}				t_dynarray;
+# include "common.h"
 
 int		init_dynarray(t_dynarray *dynarray,
 			uint64_t nb_cells, size_t cell_size);

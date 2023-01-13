@@ -1,16 +1,6 @@
 #ifndef NIKISHELL_H
 
-//# include "parse.h"
 # include "dynarray.h"
-
-typedef struct s_safe
-{
-	t_dynarray	*darr;
-	int			**pipefd;
-	int			nb_pipes;
-}	t_safe;
-
-extern t_safe	g_vrac;
 
 char	*ft_get_dir(char *path);
 char	*ft_make_prompt(char *dir);

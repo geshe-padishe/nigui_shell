@@ -8,6 +8,8 @@ int	main(int ac, char **av, char **envp)
 	int			ret;
 
 	(void)av;
+	printf("envp = %p\n", envp);
+	printf("*envp = %s\n", *envp);
 	if (ac != 1)
 		return (-1);
 	if (init_dyn_env(envp, &darr))

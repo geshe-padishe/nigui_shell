@@ -6,7 +6,7 @@
 /*   By: nikotikcho <marvin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 18:11:57 by nikotikch         #+#    #+#             */
-/*   Updated: 2022/04/03 16:34:01 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 01:58:30 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ int	init_dynarray(t_dynarray *dynarray, uint64_t nb_cells, size_t cell_size)
 	dynarray->byte_size = cell_size * nb_cells;
 	dynarray->list = malloc(dynarray->byte_size);
 	if (!(dynarray->list))
-		return (-1);
+		return (perror("malloc"), -1);
 	dynarray->tmp = malloc(dynarray->byte_size);
 	if (!(dynarray->tmp))
 	{
 		free(dynarray->list);
-		return (-1);
+		return (perror("malloc"), -1);
 	}
 	if (nb_cells == 0)
 		dynarray->byte_size = 1;

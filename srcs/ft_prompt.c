@@ -50,7 +50,7 @@ int	ft_readline(t_dynarray *darr)
 	{
 		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, "exit") == 0)
-			return (printf("line = %s\n", line), 0);
+			return (perror("readline"), 1);
 		if (*line)
 		{
 			add_history(line);

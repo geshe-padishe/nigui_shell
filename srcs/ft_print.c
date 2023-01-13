@@ -19,7 +19,7 @@ int	ft_dyn_env(t_dynarray *darr, char **str)
 	if (*str)
 		return (perror("env: Too many args"), 1);
 	i = 0;
-	while (i < darr->nb_cells)
+	while (i < darr->nb_cells && ((char**)darr->list)[i])
 	{
 		printf("list[%lu] = %s\n", i, ((char**)darr->list)[i]);
 		i++;

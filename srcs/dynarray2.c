@@ -6,7 +6,7 @@
 /*   By: nikotikcho <marvin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 13:28:59 by nikotikch         #+#    #+#             */
-/*   Updated: 2022/04/03 16:32:48 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 01:55:17 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	dynarray_realloc(t_dynarray *dynarray, size_t new_byte_size)
 
 	ptr = malloc(new_byte_size);
 	if (!(ptr))
-		return (-1);
+		return (perror("malloc"), -1);
 	free(dynarray->tmp);
 	dynarray->tmp = malloc(new_byte_size);
 	if (!(dynarray->tmp))
 	{
 		free(ptr);
-		return (-1);
+		return (perror("malloc"), -1);
 	}
 	ft_memcpy(ptr, dynarray->list, dynarray->cell_size * dynarray->nb_cells);
 	free(dynarray->list);

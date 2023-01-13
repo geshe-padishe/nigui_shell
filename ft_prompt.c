@@ -44,6 +44,7 @@ int	ft_readline(t_dynarray *darr)
 {
 	char		*line;
 	int			ret;
+	t_lst		*lst;
 
 	ret = 0;
 	while (1)
@@ -54,7 +55,8 @@ int	ft_readline(t_dynarray *darr)
 		if (*line)
 		{
 			add_history(line);
-			ret = parse(line, darr);
+			lst = parse(line, darr);
+			ret = ft_pipes(lst, ft_pipes_left(lst), darr);
 			if (ret >= 0)
 				return (free(line), ret);
 		}

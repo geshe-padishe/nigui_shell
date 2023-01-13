@@ -1,7 +1,22 @@
-#include <stdio.h>
+#include "minishell.h"
 
-int main()
+t_safe	g_vrac;
+
+int	main(int ac, char **av, char **envp)
 {
-	dprintf(1, "I RETURN 120\n");
-	return (120);
+	t_dynarray	darr;
+	int			ret;
+
+	(void)av;
+	printf("envp = %p\n", envp);
+	printf("*envp = %s\n", *envp);
+	if (ac != 1)
+		return (-1);
+	if (init_dyn_env(envp, &darr))
+		return (-1);
+	g_vrac.darr = &darr;
+	signal(SIGINT, sigd_handler1);
+	signal(SIGQUIT, SIG_IGN);
+	ret = ft_readline(&darr);
+	return (ft_free_all(&darr), dprintf(2, "MAIN ret = %d\n", ret), (unsigned char)ret);
 }

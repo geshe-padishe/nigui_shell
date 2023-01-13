@@ -6,11 +6,11 @@
 /*   By: nikotikcho <marvin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 13:28:59 by nikotikch         #+#    #+#             */
-/*   Updated: 2023/01/13 01:55:17 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 05:58:31 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/dynarray.h"
+#include "dynarray.h"
 
 int	dynarray_realloc(t_dynarray *dynarray, size_t new_byte_size)
 {

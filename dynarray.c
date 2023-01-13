@@ -6,11 +6,11 @@
 /*   By: nikotikcho <marvin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 18:11:57 by nikotikch         #+#    #+#             */
-/*   Updated: 2023/01/13 01:58:30 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 05:58:43 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/dynarray.h"
+#include "dynarray.h"
 
 int	init_dynarray(t_dynarray *dynarray, uint64_t nb_cells, size_t cell_size)
 {	

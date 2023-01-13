@@ -1,34 +1,75 @@
-CC = gcc
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
+#    Updated: 2023/01/13 06:22:59 by ngenadie         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-NAME = minishell
+CC 		=	cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address #-static-libasan
+CFLAGS	=	-Wall -Wextra -Werror #-g3 -fsanitize=address -static-libasan
 
-SRC_N	= dynarray.c ft_env.c ft_fd.c ft_pipes.c ft_sig.c dynarray2.c \
-			ft_builtins.c ft_builtins2.c ft_exec.c ft_mems.c ft_print.c \
-			ft_str.c ft_redirections.c ft_prompt.c ft_files.c ft_minishell.c
-SRC_A	= *
+RM 		=	rm -rf
 
-SRC_NN	= $(addprefix ${SRC_D}/, ${SRC_N})
-SRC_AA	= $(addprefix ${SRC_AD}/, ${SRC_A})
-SRC		= ${SRC_NN} ${SRC_AA}
-SRC_D	= srcs
-SRC_AD	= srcs_a
-SRC_C	= $(addprefix ${SRC_D}/, ${SRC})
+NAME	=	minitest
 
-INC		= minishell.h
-INC_D	= includes
-INC_H	= $(addprefix ${INC_D}/, ${INC})
+INC		=	./miniparsing.h\
 
-all: $(NAME)
+SRCS	=	adv_dquote.c \
+			dynarray2.c \
+			dynarray.c \
+			expand.c \
+			ft_builtins2.c \
+			ft_builtins.c \
+			ft_env.c \
+			ft_exec.c \
+			ft_fd.c \
+			ft_files.c \
+			ft_mems.c \
+			ft_minishell.c \
+			ft_pipelines.c \
+			ft_pipes.c \
+			ft_print.c \
+			ft_prompt.c \
+			ft_redirections.c \
+			ft_sig.c \
+			ft_str.c \
+			is.c \
+			is_token.c \
+			libft.c \
+			libft_utils.c \
+			lst.c \
+			main.c \
+			parsing.c \
+			quotes.c \
+			syntax.c \
+			tokenization.c \
+			ft_splitargs.c
 
-$(NAME): ${INC_H} ${SRC}
-	${CC} ${CFLAGS} niki_main.c ${SRC} -I${INC_D} -o ${NAME} -lreadline
+OBJS 	=	${SRCS:.c=.o}
 
-clean:
-	rm -f $(OBJS)
+.c.o:
+		${CC} ${CFLAGS} -c $< -o $(<:.c=.o)
 
-fclean: clean
-	rm -f $(NAME)
+${NAME}:	$(OBJS)
+		$(CC) $(FLAGS) $(OBJS) -lreadline -o $(NAME)
 
-re: fclean all
+all:		${NAME}
+
+clean:		
+				${RM} $(OBJS)
+
+fclean:		clean
+				${RM} ${NAME}
+
+re:			fclean all
+
+val:		re
+		valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore ./${NAME}
+
+.PHONY:		all clean fclean c.o re

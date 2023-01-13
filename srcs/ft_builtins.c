@@ -1,17 +1,19 @@
 #include "minishell.h"
 
-int	ft_cd(char **str, char *home, int nb_pipes)
+int	ft_cd(char **str, int nb_pipes)
 {
-	dprintf(2, "CD\n");
+	struct stat stats;
+
 	if (!*str)
-	{
-		if (home && !nb_pipes)
-			chdir(home);
-		else
-			return (perror("cd: HOME not set\n"), -1);
-	}
-	else if (!nb_pipes && chdir(*str) == -1)
-		return (perror("cd: No such file or directory\n"), -1);
+		return (0);
+	if (stat(*str, &stats))
+		return (perror("cd"), -1);
+	if (!S_ISDIR(stats.st_mode))
+		return (perror("cd"), -1);
+	if (nb_pipes)
+		return (0);
+	else if (chdir(*str) == -1)
+		return (perror("cd"), -1);
 	return (0);
 
 }
@@ -49,12 +51,12 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 	while (str && *str)
 	{
 		envp = darr->list;
-		if (!ft_has_eq(*str))
+		if (!ft_can_exp(*str))
 			return (0);
 		index = ft_getenv_index(envp, darr->nb_cells, *str, 1);
 		envpi = malloc(ft_strlen(*str) + 1);
 		if (!envpi)
-			return (perror("malloc fail\n"), 1);
+			return (perror("malloc\n"), 1);
 		ft_strcpy(*str, envpi);
 		if (index >= 0)
 		{
@@ -63,7 +65,7 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 		}
 		else if (index == -1)
 			if (push_dynarray(darr, &envpi, 1, 1))
-				return (perror("push_dynarray: cannot push element\n"), 1);
+				return (perror("push_dynarray"), 1);
 		str++;
 	}
 	return (0);
@@ -71,17 +73,11 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 
 int	ft_pwd(char **args)
 {
-	char	*pwd;
+	char	pwd[1064];
 
-	if (*args)
-		return (perror("pwd: too many arguments\n"), 1);
-	pwd = NULL;
-	getcwd(pwd, 1000);
-	printf("PWD = %s\n", pwd);
-	if (!getcwd(pwd, 1000))
-		return (perror("getcwd"), 1);
-	else
-		printf("%s\n", pwd);
+	(void)args;
+	if (getcwd(pwd, 1064) == NULL)
+		return (perror("pwd"), 1);
 	return (0);
 }
 
@@ -95,7 +91,10 @@ int ft_echo(char **args)
 	if (args && args[0])
 	{
 		if (!ft_strcmp(args[0], "-n"))
-				flag = 1;
+		{
+			i++;
+			flag = 1;
+		}
 		while (args[i])
 		{
 			printf("%s", args[i]);

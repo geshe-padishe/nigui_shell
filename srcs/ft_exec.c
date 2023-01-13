@@ -40,7 +40,7 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 
 	if (access(bin, F_OK & X_OK) == 0)
 		if (execve(bin, argv, envp))
-			return (perror("Execve"), NULL); //FREE
+			return (perror("execve"), NULL); //FREE
 	if (bin && bin[0] != '.')
 		while (*paths)
 		{
@@ -52,7 +52,7 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 				dprintf(2, "BEFORE EXEC:\n bin_path = %s, argv[0] = %s, argv[1] = %s, envp[0] = %s\n",
 						bin_path, argv[0], argv[1], envp[0]);
 				if (execve(bin_path, argv, envp))
-					return (perror("Execve"), free(bin_path), NULL); //FREE ALL
+					return (perror("execve"), free(bin_path), NULL); //FREE ALL
 			}
 			else
 				free(bin_path);
@@ -60,7 +60,7 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 			if (*paths)
 				paths += 1;
 		}
-	return (perror("Access"), NULL);
+	return (perror("access"), NULL);
 }
 
 int	ft_handle_exec(t_lst *lst, t_dynarray *darr)

@@ -30,11 +30,14 @@ int	nk_strcmp(char const *str, char const *str2)
 	return (0);
 }
 
-bool	ft_has_eq(char *str)
+bool	ft_can_exp(char *str)
 {
 	int	i;
 
 	i = 0;
+	if (!(str[0] >= 'A' && str[0] <= 'Z') &&
+		!(str[0] >= 'a' && str[0] <= 'z') && !(str[0] == '_'))
+		return (0);
 	while (str[i])
 	{
 		if (i != 0 && str[i] == '=')

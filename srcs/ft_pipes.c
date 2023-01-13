@@ -108,12 +108,12 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
 	while (lst && lst->token != 0)
 		lst = lst->next;
 	if (!nk_strcmp(lst->str, "cd"))
-		return (ft_cd(args + 1, ft_getenvval("HOME", darr, 1, 0), nb_pipes), 0);
+		return (ft_cd(args + 1, nb_pipes), -2);
 	else if (!nk_strcmp(lst->str, "export"))
-		return (ft_export(darr, args + 1, nb_pipes), 0);
+		return (ft_export(darr, args + 1, nb_pipes), -2);
 	else if (!nk_strcmp(lst->str, "unset"))
-		return (ft_unset(darr, args + 1, nb_pipes), 0);
+		return (ft_unset(darr, args + 1, nb_pipes), -2);
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (dprintf(2, "builtins return exit\n"), ft_exit(args, nb_pipes));
+		return (ft_exit(args + 1, nb_pipes));
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/13 21:36:48 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/13 22:15:46 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*trio_split(char *str, int i_len[2], char *exit, t_dynarray *darr)
 		new = trio_merge(before, exit, after);
 	else
 		new = trio_merge(before, value, after);
-	ft_free(before, name, after, str);
+	ft_free(before, name, after, NULL);
 	if (!new)
 		return (NULL);
 	return (new);

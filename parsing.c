@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/13 06:31:46 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/14 04:10:24 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	rm_quote(t_lst *lst)
 	}
 }
 
-t_lst	*parse(char *line, t_dynarray *darr)
+t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*expanded;
 	t_lst	*lst;
@@ -76,7 +76,7 @@ t_lst	*parse(char *line, t_dynarray *darr)
 	interpret(line, 0);
 	if (!syntax_check(line))
 		return (0);
-	expanded = my_expand(line, 42, darr);
+	expanded = my_expand(line, ext, darr);
 	if (!expanded)
 		return (0);
 	interpret(expanded, 1);

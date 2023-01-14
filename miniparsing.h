@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/13 20:39:43 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/14 04:09:58 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "dynarray.h"
 
 // Parsing.c
-t_lst	*parse(char *line, t_dynarray *darr);
+t_lst	*parse(char *line, int ext, t_dynarray *darr);
 //void	close_quote(int quote);
 
 // Quotes.c

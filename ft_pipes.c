@@ -36,7 +36,6 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 
 	if (!lst)
 		return (0);
-	ft_print_list(lst);
 	pipes_left = nb_pipes;
 	pipefd = create_pipe_arr(nb_pipes);
 	if (!pipefd)
@@ -83,7 +82,6 @@ int	ft_wait_procs(int ac, pid_t *list)
 	while (i < ac)
 	{
 		w = waitpid(list[i], &status, 0);
-		printf("status = %d\n", status);
 		if (w == -1)
 		{
 			perror("waitpid");
@@ -99,7 +97,6 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
 	char **args;
 
 	args = ft_splitargs(lst);
-	ft_print_args(args);
 	if (!lst)
 		return (0);
 	while (lst && lst->token != 0)

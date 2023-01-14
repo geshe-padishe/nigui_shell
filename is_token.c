@@ -30,10 +30,7 @@ int	has_quote(char *str)
 	while (str && str[i])
 	{
 		if (str[i] < 0)
-		{
-			printf("%s has quotes\n", str);
 			return (1);
-		}
 		i++;
 	}
 	return (0);

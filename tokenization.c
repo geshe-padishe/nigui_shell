@@ -16,7 +16,6 @@ static void	push_token(char *str, t_lst *lst, int op)
 {
 	t_lst	*new;
 
-	printf("push token\n");
 	new = new_lst();
 	if (!new)
 		return ;
@@ -37,10 +36,8 @@ static char	*find_str(char *line, t_lst *lst)
 	char	c;
 
 	i = 0;
-	printf("find_str\n");
 	while (line[i] && !is_space(line[i]) && !is_operator(line[i]))
 	{
-		printf("char is: %c\n", line[i]);
 		if (is_quote(line[i]))
 		{
 			c = line[i++];
@@ -78,7 +75,6 @@ t_lst	*tokenize(char *line)
 {
 	t_lst	*lst;
 
-	printf("tokenize\n");
 	lst = new_lst();
 	while (line && *line)
 	{

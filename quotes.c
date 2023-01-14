@@ -104,7 +104,6 @@ char	*dup_quote(char *s)
 
 	i = 0;
 	j = 0;
-	printf("dup_quote\n");
 	size = unquote_len(s);
 	dup = malloc(sizeof(char) * (size + 1));
 	if (!dup)

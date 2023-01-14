@@ -49,8 +49,6 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 				return (NULL);
 			if (access(bin_path, F_OK & X_OK) == 0)
 			{
-				dprintf(2, "BEFORE EXEC:\n bin_path = %s, argv[0] = %s, argv[1] = %s, envp[0] = %s\n",
-						bin_path, argv[0], argv[1], envp[0]);
 				if (execve(bin_path, argv, envp))
 					return (perror("execve"), free(bin_path), NULL); //FREE ALL
 			}
@@ -91,10 +89,10 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
 	if (!args)
 		perror("malloc");
 	else if (!nk_strcmp(lst->str, "echo"))
-		return (ft_echo(args + 1), dprintf(2, "Launching ECHO\n"), 1);
+		return (ft_echo(args + 1), 1);
 	else if	(!nk_strcmp(lst->str, "pwd"))
-		return (ft_pwd(args + 1), dprintf(2, "Launching PWD\n"), 1);
+		return (ft_pwd(args + 1), 1);
 	else if	(!nk_strcmp(lst->str, "env"))
-		return (ft_dyn_env(darr, args + 1), dprintf(2, "Launching ENV\n"), 1);
+		return (ft_dyn_env(darr, args + 1), 1);
 	return (0);
 }

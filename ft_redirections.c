@@ -24,7 +24,6 @@ int	ft_open_dup(t_lst *lst, int token, bool apnd_or_not)
 	{
 		if (token == 4)
 			apnd_or_not = 1;
-		//dprintf(2, "DUP2 token %d\n", token);
 		fd = ft_open_create(lst->next->str, apnd_or_not, token);
 		if (fd != -1 && dup2(fd, STDOUT_FILENO) == -1)
 			return (close(fd), perror("dup"), -1);
@@ -32,7 +31,6 @@ int	ft_open_dup(t_lst *lst, int token, bool apnd_or_not)
 	}
 	else
 	{
-		//dprintf(2, "DUP2 token 3\n");
 		fd = ft_open_create(lst->next->str, 0, token);
 		if (fd != -1 && dup2(fd, STDIN_FILENO) == -1)
 			return (close(fd), perror("dup"), -1);

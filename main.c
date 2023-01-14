@@ -8,8 +8,6 @@ int	main(int ac, char **av, char **envp)
 	int			ret;
 
 	(void)av;
-	printf("envp = %p\n", envp);
-	printf("*envp = %s\n", *envp);
 	if (ac != 1)
 		return (-1);
 	if (init_dyn_env(envp, &darr))
@@ -18,5 +16,5 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, sigd_handler1);
 	signal(SIGQUIT, SIG_IGN);
 	ret = ft_readline(&darr);
-	return (ft_free_all(&darr), dprintf(2, "MAIN ret = %d\n", ret), (unsigned char)ret);
+	return (ft_free_all(&darr), (unsigned char)ret);
 }

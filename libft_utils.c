@@ -93,6 +93,5 @@ size_t	unquote_len(const char *str)
 			len++;
 		i++;
 	}
-	printf("unquote len is %ld\n", len);
 	return (len);
 }

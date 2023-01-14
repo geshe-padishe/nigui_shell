@@ -41,7 +41,7 @@ char	*trio_merge(char *before, char *value, char *after)
 	return (expanded);
 }
 
-char	*trio_split(char *str, int i_len[2], char *exit, t_dynarray *darr)
+char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 {
 	char	*before;
 	char	*name;
@@ -49,14 +49,14 @@ char	*trio_split(char *str, int i_len[2], char *exit, t_dynarray *darr)
 	char	*value;
 	char	*new;
 
-	if (i_len[1] == 1 && !is_quote(str[i_len[0] + 1]))
+	if (len[1] == 1 && !is_quote(str[len[0] + 1]))
 	{
-		str[i_len[0]] *= -1;
+		str[len[0]] *= -1;
 		return (str);
 	}
-	before = ft_substr(str, 0, i_len[0]);
-	name = ft_substr(str, i_len[0], i_len[1]);
-	after = ft_substr(str, i_len[0] + i_len[1], ft_strlen(str) - (i_len[0] + i_len[1]));
+	before = ft_substr(str, 0, len[0]);
+	name = ft_substr(str, len[0], len[1]);
+	after = ft_substr(str, len[0] + len[1], ft_strlen(str) - (len[0] + len[1]));
 	value = ft_getenvval(name + 1, darr, 0, 0);
 	if (!value)
 		value = "";

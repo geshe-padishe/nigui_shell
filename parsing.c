@@ -61,7 +61,7 @@ static void	rm_quote(t_lst *lst)
 				lst->str = dup_quote(old);
 		}
 		lst = lst->next;
-	};
+	}
 }
 
 t_lst	*parse(char *line, t_dynarray *darr)
@@ -80,8 +80,11 @@ t_lst	*parse(char *line, t_dynarray *darr)
 	if (!expanded)
 		return (0);
 	interpret(expanded, 1);
+	printf("expanded and interpreted\n");
 	lst = tokenize(expanded);
+	printf("tokenized\n");
 	rm_quote(lst);
+	printf("removed quotes\n");
 	ft_printlst(lst);
 	return (lst);
 }

@@ -29,31 +29,31 @@ static void	push_token(char *str, t_lst *lst, int op)
 	push_lst(new, lst);
 }
 
-static char	*find_str(char *line, t_lst *lst)
+static char	*find_str(char *s, t_lst *lst)
 {
 	char	*str;
 	int		i;
 	char	c;
 
 	i = 0;
-	while (line[i] && !is_space(line[i]) && !is_operator(line[i]))
+	while (s[i] && !is_space(s[i]) && !is_operator(s[i]))
 	{
-		if (is_quote(line[i]))
+		if (is_quote(s[i]))
 		{
-			c = line[i++];
-			line[i - 1] *= -1;
-			while (line[i] && line[i] != c)
+			c = s[i++];
+			s[i - 1] *= -1;
+			while (s[i] && s[i] != c)
 				i++;
-			line[i] *= -1;
-			if (line[i + 1])
+			s[i] *= -1;
+			if (s[i + 1])
 				i++;
 		}
-		if (line[i] && !is_space(line[i]) && !is_operator(line[i]) && !is_quote(line[i]))
+		if (s[i] && !is_space(s[i]) && !is_operator(s[i]) && !is_quote(s[i]))
 			i++;
 	}
-	str = ft_substr(line, 0, i);
+	str = ft_substr(s, 0, i);
 	push_token(str, lst, 0);
-	return (line + i - 1);
+	return (s + i - 1);
 }
 
 static char	*find_operator(char *line, t_lst *lst)
@@ -64,7 +64,7 @@ static char	*find_operator(char *line, t_lst *lst)
 
 	i = 0;
 	c = *line;
-	while (line[i] && line[i]==c)
+	while (line[i] && line[i] == c)
 		i++;
 	op = ft_substr(line, 0, i);
 	push_token(op, lst, 1);

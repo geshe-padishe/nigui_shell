@@ -49,10 +49,10 @@ size_t	unquote_len(const char *str);
 char	*ft_free(char *str1, char *str2, char *str3, char *str4);
 
 // is_token.c
-int	is_space(char c);
-int	is_quote(char c);
-int	has_quote(char *str);
-int	recognize_op(char *str);
+int		is_space(char c);
+int		is_quote(char c);
+int		has_quote(char *str);
+int		recognize_op(char *str);
 
 // Tokenization
 t_lst	*tokenize(char *line);

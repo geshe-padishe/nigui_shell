@@ -19,7 +19,7 @@ int		ft_len_bef_col(char *paths);
 void	ft_free_all(t_dynarray *darr);
 void	sigd_handler1(int i);
 void	sigd_handler2(int i);
-int		ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr);
+int		ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status);
 int		ft_wait_procs(int ac, pid_t *list);
 int		ft_close_pipes(int **pipefd, int nb_pipes);
 int		**create_pipe_arr(int nb_pipes);

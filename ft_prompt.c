@@ -45,6 +45,7 @@ int	ft_readline(t_dynarray *darr)
 	char		*line;
 	int			ret;
 	t_lst		*lst;
+	int			status;
 
 	ret = 0;
 	while (1)
@@ -56,7 +57,8 @@ int	ft_readline(t_dynarray *darr)
 		{
 			add_history(line);
 			lst = parse(line, darr);
-			ret = ft_pipes(lst, ft_pipes_left(lst), darr);
+			ret = ft_pipes(lst, ft_pipes_left(lst), darr, &status);
+			printf("STATUS = %d\n", status);
 			if (ret >= 0)
 				return (free(line), ret);
 		}

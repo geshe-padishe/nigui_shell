@@ -76,7 +76,6 @@ int	ft_pwd(char **args)
 	char	pwd[1064];
 
 	(void)args;
-	printf("INSIDE PWD\n");
 	if (getcwd(pwd, 1064) == NULL)
 		return (perror("pwd"), 1);
 	else

@@ -23,7 +23,7 @@ int	ft_pipes_left(t_lst *lst)
 	return (pipes);
 }
 
-int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
+int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 {
 	int		**pipefd;
 	int		i;
@@ -31,6 +31,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 	int		pipes_left;
 	int		fd_in;
 	int		ret;
+	int		b_or_f;
 	t_lst	*start_lst;
 
 	ft_print_list(lst);
@@ -44,11 +45,12 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 	{
 		lst = start_lst;
 		ret = ft_builtins(lst, darr, nb_pipes);
-		dprintf(2, "RET = %d\n", ret);
+		//dprintf(2, "RET = %d\n", ret);
+		b_or_f = 0;
 		if (ret == -1)
 		{
 			list[i] = fork();
-			dprintf(2, "FORKING pid = %d\n", list[i]);
+			//dprintf(2, "FORKING pid = %d\n", list[i]);
 			if (list[i] == 0)
 			{
 				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in) ||
@@ -58,6 +60,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 							free_pipe_array(pipefd, nb_pipes), 1);
 			}
 			i++;
+			b_or_f = 1;
 		}
 		pipes_left--;
 		lst = ft_next_pipe(start_lst);
@@ -65,7 +68,9 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 			start_lst = lst->next;
 	}
 	ft_close_pipes(pipefd, nb_pipes);
-	ft_wait_procs(i, list);
+	*status = ft_wait_procs(i, list);
+	if (!b_or_f)
+		*status = ret;
 	return (free_pipe_array(pipefd, nb_pipes), ret);
 }
 int	ft_wait_procs(int ac, pid_t *list)
@@ -84,17 +89,9 @@ int	ft_wait_procs(int ac, pid_t *list)
 			perror("waitpid");
 			exit(EXIT_FAILURE);
 		}
-		if (WIFEXITED(status))
-			printf("terminé, code=%d\n", WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-			printf("tué par le signal %d\n", WTERMSIG(status));
-		else if (WIFSTOPPED(status))
-			printf("arrêté par le signal %d\n", WSTOPSIG(status));
-		else if (WIFCONTINUED(status))
-			printf("relancé\n");
 		i++;
 	}
-	return (0);
+	return (status);
 }
 
 int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)

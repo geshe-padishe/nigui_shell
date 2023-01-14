@@ -49,7 +49,7 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 				return (NULL);
 			if (access(bin_path, F_OK & X_OK) == 0)
 			{
-				zdprintf(2, "BEFORE EXEC:\n bin_path = %s, argv[0] = %s, argv[1] = %s, envp[0] = %s\n",
+				dprintf(2, "BEFORE EXEC:\n bin_path = %s, argv[0] = %s, argv[1] = %s, envp[0] = %s\n",
 						bin_path, argv[0], argv[1], envp[0]);
 				if (execve(bin_path, argv, envp))
 					return (perror("execve"), free(bin_path), NULL); //FREE ALL

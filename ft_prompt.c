@@ -59,11 +59,13 @@ int	ft_readline(t_dynarray *darr)
 			add_history(line);
 			lst = parse(line, status, darr);
 			ret = ft_pipes(lst, ft_pipes_left(lst), darr, &status);
-			printf("STATUS = %d\n", status);
+			if (lst)
+				free_lst(lst);
+			zzprintf("STATUS = %d\n", status);
 			if (ret >= 0)
-				return (free(line), ret);
+				return (/*free(line),*/ ret);
 		}
-		free(line);
+		//free(line);
 	}
 	rl_clear_history();
 	return (0);

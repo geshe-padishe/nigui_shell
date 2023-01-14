@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/13 22:15:46 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:25:35 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*trio_merge(char *before, char *value, char *after)
 	len = ft_strlen(before) + ft_strlen(value) + ft_strlen(after);
 	expanded = malloc(sizeof(char) * (len + 1));
 	if (!expanded)
-		return (free(expanded), NULL);
+		return (NULL);
 	expanded[0] = '\0';
 	ft_strlcat(expanded, before, ft_strlen(before) +1);
 	ft_strlcat(expanded, value, ft_strlen(before) + ft_strlen(value) + 1);
@@ -57,9 +57,7 @@ char	*trio_split(char *str, int i_len[2], char *exit, t_dynarray *darr)
 	before = ft_substr(str, 0, i_len[0]);
 	name = ft_substr(str, i_len[0], i_len[1]);
 	after = ft_substr(str, i_len[0] + i_len[1], ft_strlen(str) - (i_len[0] + i_len[1]));
-	printf("NAME = %s\n", name);
 	value = ft_getenvval(name + 1, darr, 0, 0);
-	printf("VALUE = %s\n", value);
 	if (!value)
 		value = "";
 	if (!ft_strcmp(name, "$?"))

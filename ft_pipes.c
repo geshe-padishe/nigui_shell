@@ -34,6 +34,8 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	int		b_or_f;
 	t_lst	*start_lst;
 
+	if (!lst)
+		return (0);
 	ft_print_list(lst);
 	pipes_left = nb_pipes;
 	pipefd = create_pipe_arr(nb_pipes);
@@ -45,12 +47,10 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	{
 		lst = start_lst;
 		ret = ft_builtins(lst, darr, nb_pipes);
-		//dprintf(2, "RET = %d\n", ret);
 		b_or_f = 0;
 		if (ret == -1)
 		{
 			list[i] = fork();
-			//dprintf(2, "FORKING pid = %d\n", list[i]);
 			if (list[i] == 0)
 			{
 				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in) ||
@@ -112,5 +112,5 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
 		return (ft_unset(darr, args + 1, nb_pipes), -2);
 	else if (!nk_strcmp(lst->str, "exit"))
 		return (ft_exit(args + 1, nb_pipes));
-	return (-1);
+	return (free(args), -1);
 }

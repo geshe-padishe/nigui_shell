@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:32:02 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/13 06:12:14 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/14 04:29:03 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		size = len;
 	p = malloc(sizeof(char) * (size + 1));
 	if (!p)
-		return (0);
+		return (NULL);
 	ft_memcpy(p, s + start, size);
 	p[len] = '\0';
 	return (p);

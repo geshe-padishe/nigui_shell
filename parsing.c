@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/14 04:10:24 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/14 04:35:21 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	printf("expanded and interpreted\n");
 	lst = tokenize(expanded);
 	printf("tokenized\n");
+	if (expanded)
+		free(expanded);
 	rm_quote(lst);
 	printf("removed quotes\n");
 	ft_printlst(lst);

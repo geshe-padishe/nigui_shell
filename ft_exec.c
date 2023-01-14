@@ -60,7 +60,7 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 			if (*paths)
 				paths += 1;
 		}
-	return (perror("access"), NULL);
+	return (write(2, "bash: ", 6), write(2, bin, ft_strlen(bin)), write(2, ": command not found\n", 20), NULL);
 }
 
 int	ft_handle_exec(t_lst *lst, t_dynarray *darr)

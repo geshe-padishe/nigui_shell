@@ -12,37 +12,6 @@
 
 #include "miniparsing.h"
 
-char	*find_var_name(char *str)
-{
-	int		i;
-	int		len;
-	char	*name;
-
-	i = 0;
-	len = var_name_len(str);
-	name = malloc(sizeof(char) * (len + 1));
-	if (!name)
-		return (NULL);
-	while (len--)
-	{
-		name[i] = str[i + 1];
-		i++;
-	}
-	name[i] = '\0';
-	return (name);
-}
-
-char	*find_var_value(char *str)
-{
-	char	*name;
-	char	*value;
-
-	name = find_var_name(str);
-	value = getenv(name);
-	free(name);
-	return (value);
-}
-
 int	var_name_len(char *str)
 {
 	int		i;

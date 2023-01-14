@@ -21,7 +21,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr);
 
 // Quotes.c
 int		var_name_len(char *str);
-char	*find_var_value(char *str);
 char	*protect_content(char *str, int rev);
 char	*dup_quote(char *s);
 
@@ -37,7 +36,6 @@ int		is_operator(char c);
 int		is_sep(char c);
 
 // Expand.c
-char	*find_var_name(char *str);
 char	*my_expand(char *str, int ext, t_dynarray *darr);
 
 // Libft.c + Libft_utils.c

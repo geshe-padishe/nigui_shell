@@ -51,7 +51,7 @@ static char	*find_str(char *line, t_lst *lst)
 			if (line[i + 1])
 				i++;
 		}
-		if (line[i] && !is_space(line[i]) && !is_operator(line[i]))
+		if (line[i] && !is_space(line[i]) && !is_operator(line[i]) && !is_quote(line[i]))
 			i++;
 	}
 	str = ft_substr(line, 0, i);

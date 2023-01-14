@@ -49,7 +49,7 @@ char	*trio_split(char *str, int i_len[2], char *exit, t_dynarray *darr)
 	char	*value;
 	char	*new;
 
-	if (i_len[1] == 1)
+	if (i_len[1] == 1 && !is_quote(str[i_len[0] + 1]))
 	{
 		str[i_len[0]] *= -1;
 		return (str);

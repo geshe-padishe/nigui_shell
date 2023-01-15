@@ -48,5 +48,6 @@ int		ft_exit(char **args, int nb_pipes);
 int		ft_atoi_sign(char **nstr);
 int		ft_ps_atoi(char *nstr);
 char	**ft_splitargs(t_lst *lst);
+int		ft_is_flag(char *str);
 
 #endif

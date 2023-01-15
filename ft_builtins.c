@@ -87,22 +87,30 @@ int ft_echo(char **args)
 {
 	int	i;
 	bool	flag;
+	bool	flags_ended;
+	int		is_flag;
 
 	i = 0;
 	flag = 0;
 	if (args && args[0])
 	{
-		if (!ft_strcmp(args[i], "-n"))
-		{
-			i++;
-			flag = 1;
-		}
 		while (args[i])
 		{
-			printf("%s", args[i]);
-			if (args[i + 1])
-				printf(" ");
-			i++;
+			is_flag = ft_is_flag(args[i]);
+			if (is_flag == 0)
+				flags_ended = 1;
+			else
+			{
+				flag = 1;
+				args[i] += is_flag;
+			}
+			if (flags_ended)
+			{
+				//printf("args[i] = %s", args[i]);
+				if (args[i + 1])
+					printf(" ");
+				i++;
+			}
 		}
 	}
 	if (!flag)

@@ -15,6 +15,8 @@
 
 # include "dynarray.h"
 
+# define SYNTAX_ERR     "bash: syntax error near unexpected token `"
+
 // Parsing.c
 t_lst	*parse(char *line, int ext, t_dynarray *darr);
 //void	close_quote(int quote);
@@ -25,7 +27,6 @@ char	*protect_content(char *str, int rev);
 char	*dup_quote(char *s);
 
 // Syntax.c
-int		print_err(int err);
 int		syntax_check(char *line);
 
 // is.c

@@ -72,3 +72,25 @@ int	ft_is_number(char *str)
 		return (1);
 	return (0);
 }
+
+int	ft_is_flag(char *str)
+{
+	char *begin;
+
+	begin = str;
+	if (str)
+	{
+		if (str[0] && str[0] == '-')
+		{
+			str++;
+			if (*str == 'n')
+				while (*str == 'n')
+					str++;
+			else
+				return (0);
+		}
+	}
+	if (*str != 0 && *str != ' ')
+		return (0);
+	return (str - begin);
+}

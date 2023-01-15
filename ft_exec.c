@@ -74,11 +74,11 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
 				return (free(args), -2);
 			if (ft_find_bin(args[0], ft_getenvval("PATH", darr,
 				0, 1), args, darr->list) == NULL) //A FINIR APRES
-				return (-1);
+				return (free(args), -1);
 		}
 		lst = lst->next;
 	}
-	return (0);
+	return (free(args), 0);
 }
 
 int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
@@ -94,5 +94,5 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
 		return (ft_pwd(args + 1), free(args), 1);
 	else if	(!nk_strcmp(lst->str, "env"))
 		return (ft_dyn_env(darr, args + 1), free(args), 1);
-	return (0);
+	return (free(args), 0);
 }

@@ -25,7 +25,7 @@ int	ft_unset(t_dynarray *darr, char **str, int nb_pipes)
 
 	if (nb_pipes > 0)
 		return (0);
-	while (str)
+	while (str && *str)
 	{
 		envp = darr->list;
 		index = ft_getenv_index(envp, darr->nb_cells, *str, 0);

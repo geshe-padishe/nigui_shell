@@ -59,6 +59,7 @@ int	ft_readline(t_dynarray *darr)
 			add_history(line);
 			lst = parse(line, status, darr);
 			ret = ft_pipes(lst, ft_pipes_left(lst), darr, &status);
+			printf("ret = %d\n", ret);
 			if (lst)
 				free_lst(lst);
 			if (ret >= 0)

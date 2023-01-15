@@ -52,18 +52,24 @@ int	ft_readline(t_dynarray *darr)
 	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL || ft_strcmp(line, "exit") == 0)
-			return (perror("readline"), 1);
+		if (line == NULL)
+			return (0);
 		if (*line)
 		{
 			add_history(line);
 			lst = parse(line, status, darr);
-			ret = ft_pipes(lst, ft_pipes_left(lst), darr, &status);
-			printf("ret = %d\n", ret);
 			if (lst)
+			{
+				ret = ft_pipes(lst, ft_pipes_left(lst), darr, &status);
+				printf("status = %d\n", status);
+				printf("ret = %d\n", ret);
+				if (status == -2)
+					status = 1;
 				free_lst(lst);
+				lst = NULL;
 			if (ret >= 0)
 				return (/*free(line),*/ ret);
+			}
 		}
 		//free(line);
 	}

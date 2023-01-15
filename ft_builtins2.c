@@ -1,17 +1,18 @@
 #include "minishell.h"
 
-int	ft_exit(char **args, int nb_pipes)
+int	ft_exit(char **args, t_dynarray *darr, int nb_pipes, int status)
 {
 	int i;
 
+	(void)darr;
 	if (nb_pipes)
-		return (free(args - 1), -2);
-	if (!args || !args[0])
 		return (free(args - 1), 0);
+	if (!args || !args[0])
+		return (free(args - 1), status);
 	if (args[0] && args[1] && args[2])
-		return (write(2, "exit: too many arguments\n", 25), free(args - 1), -2);
+		return (write(2, "exit: too many arguments\n", 25), free(args - 1), 2);
 	if (!ft_is_number(args[0]))
-		return (write(2, "exit: numeric argument required\n", 32), free(args - 1), -2);
+		return (write(2, "exit: numeric argument required\n", 32), free(args - 1), 2);
 	else
 	{
 		i = ft_ps_atoi(args[0]);
@@ -90,7 +91,7 @@ int	ft_is_flag(char *str)
 				return (0);
 		}
 	}
-	if (*str != 0 && *str != ' ')
+	if (*str != 0)
 		return (0);
-	return (str - begin);
+	return (1);
 }

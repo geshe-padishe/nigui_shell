@@ -39,15 +39,16 @@ int		ft_handle_exec(t_lst *lst, t_dynarray *darr);
 int		ft_open_dup(t_lst *lst, int token, bool apnd_or_not);
 int		ft_pwd(char **args);
 int		ft_echo(char **args);
-int		ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes);
+int		ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes, int status);
 int		ft_builtins_exec(t_lst *lst, t_dynarray *darr);
 void	ft_print_args(char **args);
 void	ft_env(t_dynarray *darr);
 int		ft_is_number(char *str);
-int		ft_exit(char **args, int nb_pipes);
 int		ft_atoi_sign(char **nstr);
 int		ft_ps_atoi(char *nstr);
 char	**ft_splitargs(t_lst *lst);
 int		ft_is_flag(char *str);
+int		ft_exit(char **args, t_dynarray *darr, int nb_pipes, int status);
+int		ft_close_free(int **pipefd, int nb_pipes, t_lst *lst, t_dynarray *darr);
 
 #endif

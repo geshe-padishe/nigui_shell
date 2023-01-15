@@ -34,6 +34,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	int		b_or_f;
 	t_lst	*start_lst;
 
+	ft_print_list(lst);
 	if (!lst)
 		return (0);
 	pipes_left = nb_pipes;
@@ -45,18 +46,23 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	while (lst && lst->str)
 	{
 		lst = start_lst;
-		ret = ft_builtins(lst, darr, nb_pipes);
+		ret = ft_builtins(lst, darr, nb_pipes, *status);
 		b_or_f = 0;
 		if (ret == -1)
 		{
 			list[i] = fork();
+			printf("FORKING\n");
+			if (lst)
+				printf("lst->str = %s\n", lst->str);
 			if (list[i] == 0)
 			{
 				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in) ||
-					ft_handle_redirections(start_lst) ||
-					ft_handle_exec(start_lst, darr) || true)
-					return (ft_close_pipes(pipefd, nb_pipes),
-							free_pipe_array(pipefd, nb_pipes), 1);
+					ft_handle_redirections(start_lst))
+					return (ft_close_free(pipefd, nb_pipes,
+							lst, darr), exit(1), 1);
+				if (ft_handle_exec(start_lst, darr))
+					return (ft_close_free(pipefd, nb_pipes,
+							lst, darr), exit(127), 1);
 			}
 			i++;
 			b_or_f = 1;
@@ -83,16 +89,14 @@ int	ft_wait_procs(int ac, pid_t *list)
 	{
 		w = waitpid(list[i], &status, 0);
 		if (w == -1)
-		{
 			perror("waitpid");
-			exit(EXIT_FAILURE);
-		}
+		printf("status = %d\n", WEXITSTATUS(status));
 		i++;
 	}
-	return (status);
+	return (WEXITSTATUS(status));
 }
 
-int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
+int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes, int status)
 {
 	char **args;
 
@@ -102,12 +106,12 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes)
 	while (lst && lst->token != 0)
 		lst = lst->next;
 	if (!nk_strcmp(lst->str, "cd"))
-		return (ft_cd(args + 1, nb_pipes), free(args), -2);
+		return (ft_cd(args + 1, nb_pipes));
 	else if (!nk_strcmp(lst->str, "export"))
-		return (ft_export(darr, args + 1, nb_pipes), free(args), -2);
+		return (ft_export(darr, args + 1, nb_pipes));
 	else if (!nk_strcmp(lst->str, "unset"))
-		return (ft_unset(darr, args + 1, nb_pipes), free(args), -2);
+		return (ft_unset(darr, args + 1, nb_pipes));
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (ft_exit(args + 1, nb_pipes));
+		return ((unsigned char)ft_exit(args + 1, darr, nb_pipes, status));
 	return (free(args), -1);
 }

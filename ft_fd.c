@@ -49,8 +49,8 @@ int	ft_close_pipes(int **pipefd, int nb_pipes)
 	i = 0;
 	while (i < nb_pipes)
 	{
-		close(pipefd[i][0]);
-		close(pipefd[i][1]);
+		if (close(pipefd[i][0]) || close(pipefd[i][1]))
+			return (perror("close"), 1);
 		i++;
 	}
 	return (0);

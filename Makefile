@@ -6,7 +6,7 @@
 #    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/14 04:33:00 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/15 21:19:13 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS	=	adv_dquote.c \
 			quotes.c \
 			syntax.c \
 			tokenization.c \
+			niki_utils.c \
 			ft_splitargs.c
 
 OBJS 	=	${SRCS:.c=.o}
@@ -70,6 +71,6 @@ fclean:		clean
 re:			fclean all
 
 val:		re
-		valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore ./${NAME}
+		valgrind --leak-check=full --show-leak-kinds=all  ./${NAME} #--suppressions=rl_ignore
 
 .PHONY:		all clean fclean c.o re

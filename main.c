@@ -16,5 +16,5 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, sigd_handler1);
 	signal(SIGQUIT, SIG_IGN);
 	ret = ft_readline(&darr);
-	return (ft_free_all(&darr), (unsigned char)ret);
+	return (ft_free_all(&darr), ret);
 }

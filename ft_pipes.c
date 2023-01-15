@@ -51,9 +51,6 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 		if (ret == -1)
 		{
 			list[i] = fork();
-			printf("FORKING\n");
-			if (lst)
-				printf("lst->str = %s\n", lst->str);
 			if (list[i] == 0)
 			{
 				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in) ||
@@ -78,6 +75,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 		*status = ret;
 	return (free_pipe_array(pipefd, nb_pipes), ret);
 }
+
 int	ft_wait_procs(int ac, pid_t *list)
 {
 	int i;
@@ -90,7 +88,6 @@ int	ft_wait_procs(int ac, pid_t *list)
 		w = waitpid(list[i], &status, 0);
 		if (w == -1)
 			perror("waitpid");
-		printf("status = %d\n", WEXITSTATUS(status));
 		i++;
 	}
 	return (WEXITSTATUS(status));

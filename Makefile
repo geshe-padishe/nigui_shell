@@ -6,7 +6,7 @@
 #    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/15 21:19:13 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/15 21:31:11 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,6 +71,5 @@ fclean:		clean
 re:			fclean all
 
 val:		re
-		valgrind --leak-check=full --show-leak-kinds=all  ./${NAME} #--suppressions=rl_ignore
-
+		valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore ./${NAME}
 .PHONY:		all clean fclean c.o re

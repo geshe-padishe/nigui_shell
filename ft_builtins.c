@@ -77,8 +77,7 @@ int	ft_pwd(char **args)
 
 	if (getcwd(pwd, 1064) == NULL)
 		return (free(args - 1), perror("pwd"), 1);
-	printf("%s\n", pwd);
-	return (free(args - 1), 0);
+	return (printf("%s\n", pwd), free(args - 1), 0);
 }
 
 int ft_echo(char **args)
@@ -100,8 +99,6 @@ int ft_echo(char **args)
 				flags_ended = 1;
 			else
 				flag = 1;
-			printf("is_flag = %d\n", is_flag);
-			printf("args[%d] = %s\n", i, args[i]);
 			if (flags_ended)
 			{
 				printf("%s", args[i]);

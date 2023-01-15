@@ -60,6 +60,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 				if (ft_handle_exec(start_lst, darr))
 					return (ft_close_free(pipefd, nb_pipes,
 							lst, darr), exit(127), 1);
+				exit(1);
 			}
 			i++;
 			b_or_f = 1;

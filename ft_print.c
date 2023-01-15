@@ -17,7 +17,7 @@ int	ft_dyn_env(t_dynarray *darr, char **str)
 	uint64_t	i;
 
 	if (*str)
-		return (perror("env: Too many args"), 1);
+		return (write(2, "env: Too many arguments\n", 24), 1);
 	i = 0;
 	while (i < darr->nb_cells && ((char**)darr->list)[i])
 	{

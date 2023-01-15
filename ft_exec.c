@@ -83,16 +83,24 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
 
 int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
 {
-	char **args;
+	char	**args;
 
 	args = ft_splitargs(lst);
 	if (!args)
 		perror("malloc");
 	else if (!nk_strcmp(lst->str, "echo"))
-		return (ft_echo(args + 1));
-	else if	(!nk_strcmp(lst->str, "pwd"))
-		return (ft_pwd(args + 1));
-	else if	(!nk_strcmp(lst->str, "env"))
-		return (ft_dyn_env(darr, args + 1));
+		return (ft_echo(args + 1), 1);
+	else if (!nk_strcmp(lst->str, "pwd"))
+	{
+		if (ft_pwd(args + 1))
+			return (-1);
+		return (1);
+	}
+	else if (!nk_strcmp(lst->str, "env"))
+	{
+		if (ft_dyn_env(darr, args + 1))
+			return (-1);
+		return (1);
+	}
 	return (free(args), 0);
 }

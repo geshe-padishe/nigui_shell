@@ -76,9 +76,6 @@ int	ft_is_number(char *str)
 
 int	ft_is_flag(char *str)
 {
-	char *begin;
-
-	begin = str;
 	if (str)
 	{
 		if (str[0] && str[0] == '-')

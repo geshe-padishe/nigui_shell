@@ -63,6 +63,8 @@ int	ft_readline(t_dynarray *darr)
 				ret = ft_pipes(lst, ft_pipes_left(lst), darr, &status);
 				if (status == -2)
 					status = 1;
+				if (status == -3)
+					status = 0;
 				free_lst(lst);
 				lst = NULL;
 			if (ret >= 0)

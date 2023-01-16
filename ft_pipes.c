@@ -47,6 +47,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	{
 		lst = start_lst;
 		ret = ft_builtins(lst, darr, nb_pipes, *status);
+		printf("RET builtins = %d\n", ret);
 		b_or_f = 0;
 		if (ret == -1)
 		{
@@ -62,7 +63,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 							lst, darr), exit(127), 1);
 				exit(1);
 			}
-			i++;
+			i++; //PEUTETRE MONTER CA DANS LE if list[i] = 0
 			b_or_f = 1;
 		}
 		pipes_left--;
@@ -99,7 +100,7 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int nb_pipes, int status)
 	char **args;
 
 	args = ft_splitargs(lst);
-	if (!lst)
+	if (!args)
 		return (0);
 	while (lst && lst->token != 0)
 		lst = lst->next;

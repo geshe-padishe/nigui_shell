@@ -5,16 +5,16 @@ int	ft_cd(char **str, int nb_pipes)
 	struct stat stats;
 
 	if (!*str)
-		return (free(str - 1), 0);
+		return (free(str - 1), -3);
 	if (stat(*str, &stats))
-		return (free(str - 1), perror("cd"), -1);
+		return (free(str - 1), perror("cd"), -2);
 	if (!S_ISDIR(stats.st_mode))
-		return (free(str - 1), perror("cd"), -1);
+		return (free(str - 1), perror("cd"), -2);
 	if (nb_pipes)
-		return (free(str - 1), 0);
+		return (free(str - 1), -3);
 	else if (chdir(*str) == -1)
-		return (free(str - 1), perror("cd"), -1);
-	return (free(str - 1), 0);
+		return (free(str - 1), perror("cd"), -2);
+	return (free(str - 1), -3);
 
 }
 
@@ -47,16 +47,16 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 	char	*envpi;
 
 	if (nb_pipes > 0)
-		return (free(str - 1), 0);
+		return (free(str - 1), -3);
 	while (str && *str)
 	{
 		envp = darr->list;
 		if (!ft_can_exp(*str))
-			return (free(str - 1), 0);
+			return (free(str - 1), -3);
 		index = ft_getenv_index(envp, darr->nb_cells, *str, 1);
 		envpi = malloc(ft_strlen(*str) + 1);
 		if (!envpi)
-			return (free(str - 1), perror("malloc\n"), 1);
+			return (free(str - 1), perror("malloc\n"), -2);
 		ft_strcpy(*str, envpi);
 		if (index >= 0)
 		{
@@ -65,10 +65,10 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 		}
 		else if (index == -1)
 			if (push_dynarray(darr, &envpi, 1, 1))
-				return (free(str - 1), perror("push_dynarray"), 1);
+				return (free(str - 1), perror("push_dynarray"), -2);
 		str++;
 	}
-	return (free(str - 1), 0);
+	return (free(str - 1), -3);
 }
 
 int	ft_pwd(char **args)

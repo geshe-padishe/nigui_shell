@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_cd(char **str, int nb_pipes)
+int	ft_cd(char **str)
 {
 	struct stat stats;
 
@@ -18,7 +18,7 @@ int	ft_cd(char **str, int nb_pipes)
 
 }
 
-int	ft_unset(t_dynarray *darr, char **str, int nb_pipes)
+int	ft_unset(t_dynarray *darr, char **str)
 {
 	int		index;
 	char	**envp;
@@ -40,7 +40,7 @@ int	ft_unset(t_dynarray *darr, char **str, int nb_pipes)
 	return (free(str - 1), 0);
 }
 
-int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
+int	ft_export(t_dynarray *darr, char **str)
 {
 	int	index;
 	char	**envp;
@@ -68,7 +68,7 @@ int	ft_export(t_dynarray *darr, char **str, int nb_pipes)
 				return (free(str - 1), perror("push_dynarray"), -2);
 		str++;
 	}
-	return (free(str - 1), -3);
+	return (printf("export end\n"), free(str - 1), -3);
 }
 
 int	ft_pwd(char **args)

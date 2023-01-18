@@ -81,7 +81,7 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
 	return (free(args), 0);
 }
 
-int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
+int	ft_builtins_exec(t_lst *lst, t_dynarray *darr, int status)
 {
 	char	**args;
 
@@ -102,5 +102,13 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
 			return (-1);
 		return (1);
 	}
+	else if (!nk_strcmp(lst->str, "cd"))
+		return (ft_cd(args + 1));
+	else if (!nk_strcmp(lst->str, "export"))
+		return (ft_export(darr, args + 1));
+	else if (!nk_strcmp(lst->str, "unset"))
+		return (ft_unset(darr, args + 1));
+	else if (!nk_strcmp(lst->str, "exit"))
+		return ((unsigned char)ft_exit(args + 1, darr, status));
 	return (free(args), 0);
 }

@@ -43,11 +43,9 @@ char	*ft_get_dir(char *path)
 int	ft_readline(t_dynarray *darr)
 {
 	char		*line;
-	int			ret;
 	t_lst		*lst;
 	int			status;
 
-	ret = 0;
 	status = 0;
 	while (1)
 	{
@@ -60,15 +58,13 @@ int	ft_readline(t_dynarray *darr)
 			lst = parse(line, status, darr);
 			if (lst)
 			{
-				ret = ft_pipes(lst, ft_pipes_left(lst), darr, &status);
+				ft_pipes(lst, ft_pipes_left(lst), darr, &status);
 				if (status == -2)
 					status = 1;
 				if (status == -3)
 					status = 0;
 				free_lst(lst);
 				lst = NULL;
-			if (ret >= 0)
-				return (/*free(line),*/ ret);
 			}
 		}
 		//free(line);

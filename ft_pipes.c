@@ -31,6 +31,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	int		pipes_left;
 	int		fd_in;
 	int		ret;
+	int		b_or_w;
 	t_lst	*start_lst;
 
 	ft_print_list(lst);
@@ -44,10 +45,12 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	start_lst = lst;
 	while (lst && lst->str)
 	{
+		ret = 0;
 		lst = start_lst;
+		b_or_w = 0;
 		if (!nb_pipes)
 			ret = ft_builtins(lst, darr, status);
-		else if (!ret)
+		if (!ret)
 		{
 			list[i] = fork();
 			if (list[i] == 0)
@@ -56,11 +59,12 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 					ft_handle_redirections(start_lst))
 					return (ft_close_free(pipefd, nb_pipes,
 							lst, darr), exit(1), 1);
-				if (ft_handle_exec(start_lst, darr, *status))
+				if (ft_handle_exec(start_lst, darr, status))
 					return (ft_close_free(pipefd, nb_pipes,
 							lst, darr), exit(127), 1);
 				exit(1);
 			}
+			b_or_w = 1;
 			i++; //PEUTETRE MONTER CA DANS LE if list[i] = 0
 		}
 		pipes_left--;
@@ -69,9 +73,11 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 			start_lst = lst->next;
 	}
 	ft_close_pipes(pipefd, nb_pipes);
-	if (i)
+	if (b_or_w)
 		*status = ft_wait_procs(i, list);
-	return (free_pipe_array(pipefd, nb_pipes), ret);
+	else
+		*status = ret;
+	return (free_pipe_array(pipefd, nb_pipes), 1);
 }
 
 int	ft_wait_procs(int ac, pid_t *list)
@@ -107,6 +113,6 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 	else if (!nk_strcmp(lst->str, "unset"))
 		return (ft_unset(darr, args + 1));
 	else if (!nk_strcmp(lst->str, "exit"))
-		return ((unsigned char)ft_exit(args + 1, darr, status));
+		return ((unsigned char)ft_exit(args + 1, darr, *status));
 	return (free(args), -1);
 }

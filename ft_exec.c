@@ -61,7 +61,7 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 	return (write(2, "bash: ", 6), write(2, bin, ft_strlen(bin)), write(2, ": command not found\n", 20), NULL);
 }
 
-int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
+int	ft_handle_exec(t_lst *lst, t_dynarray *darr, int *status)
 {
 	char	**args;
 
@@ -70,7 +70,7 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
 	{
 		if (lst->token == 0 && lst->str != NULL)
 		{
-			if (ft_builtins_exec(lst, darr))
+			if (ft_builtins_exec(lst, darr, *status))
 				return (free(args), -2);
 			if (ft_find_bin(args[0], ft_getenvval("PATH", darr,
 				0, 1), args, darr->list) == NULL) //A FINIR APRES
@@ -91,17 +91,9 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr, int status)
 	else if (!nk_strcmp(lst->str, "echo"))
 		return (ft_echo(args + 1), 1);
 	else if (!nk_strcmp(lst->str, "pwd"))
-	{
-		if (ft_pwd(args + 1))
-			return (-1);
-		return (1);
-	}
+		return (ft_pwd(args + 1));
 	else if (!nk_strcmp(lst->str, "env"))
-	{
-		if (ft_dyn_env(darr, args + 1))
-			return (-1);
-		return (1);
-	}
+		return (ft_dyn_env(darr, args + 1));
 	else if (!nk_strcmp(lst->str, "cd"))
 		return (ft_cd(args + 1));
 	else if (!nk_strcmp(lst->str, "export"))

@@ -1,12 +1,10 @@
 #include "minishell.h"
 
-int	ft_exit(char **args, t_dynarray *darr, int nb_pipes, int status)
+int	ft_exit(char **args, t_dynarray *darr, int status)
 {
 	int i;
 
 	(void)darr;
-	if (nb_pipes)
-		return (free(args - 1), -1);
 	if (!args || !args[0])
 		return (free(args - 1), status);
 	if (args[0] && args[1] && args[2])

@@ -21,6 +21,22 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
 	}
 	return (ft_close_pipes(pipefd, nb_pipes), 0);
 }
+
+t_lst *find_bin_lst(t_lst *lst)
+{
+	while (lst)
+	{
+		if (lst->token == 1)
+			return (NULL);
+		if (lst->token >= 2 && lst->token <= 5)
+			lst = lst->next;
+		if (lst && lst->token == 0)
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
 //	lst->str = "ls -la fsdljgod"
 //	lst->token = 0 string
 //				= 1 pipe
@@ -28,5 +44,4 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
 //				= 3 <
 //				= 4 >>
 //				= 5 <<
-//	argv = splitargs(lst->str)
-
+//

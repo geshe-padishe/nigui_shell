@@ -61,8 +61,6 @@ void	ft_print_list(t_lst *token)
 		//ft_print_token(*token);
 		token = token->next;
 	}
-	if (token == NULL)
-		dprintf(2, "PRINTING TOKEN:\n NULL\n");
 }
 
 void	ft_print_args(char **args)

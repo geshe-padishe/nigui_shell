@@ -6,13 +6,13 @@
 #    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/15 21:31:11 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/19 23:51:01 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address #-static-libsan
+CFLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address -static-libsan
 
 RM 		=	rm -rf
 
@@ -72,4 +72,7 @@ re:			fclean all
 
 val:		re
 		valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore ./${NAME}
+
+val2:		re
+		valgrind --suppressions=rl_ignore ./${NAME}
 .PHONY:		all clean fclean c.o re

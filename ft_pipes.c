@@ -4,6 +4,8 @@ t_lst	*ft_next_pipe(t_lst *lst)
 {
 	while (lst && lst->token != 1)
 		lst = lst->next;
+	if (lst)
+		lst = lst->next;
 	return (lst);
 }
 
@@ -46,20 +48,21 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	while (lst && lst->str)
 	{
 		ret = 0;
-		lst = start_lst;
 		b_or_w = 0;
 		if (!nb_pipes)
-			ret = ft_builtins(lst, darr, status);
-		if (!ret)
+			ret = ft_builtins(find_bin_lst(lst), darr, status);
+		if (!ret) //and if builtins return 0?
 		{
 			list[i] = fork();
 			if (list[i] == 0)
 			{
-				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in) ||
-					ft_handle_redirections(start_lst))
+				if (nb_pipes)
+					if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
+						return (free_pipe_array(pipefd, nb_pipes), 1);
+				if 	(ft_handle_redirections(lst))
 					return (ft_close_free(pipefd, nb_pipes,
 							lst, darr), exit(1), 1);
-				if (ft_handle_exec(start_lst, darr, status))
+				if (ft_handle_exec(find_bin_lst(lst), darr, status))
 					return (ft_close_free(pipefd, nb_pipes,
 							lst, darr), exit(127), 1);
 				exit(1);
@@ -68,9 +71,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 			i++; //PEUTETRE MONTER CA DANS LE if list[i] = 0
 		}
 		pipes_left--;
-		lst = ft_next_pipe(start_lst);
-		if (lst)
-			start_lst = lst->next;
+		lst = ft_next_pipe(lst);
 	}
 	ft_close_pipes(pipefd, nb_pipes);
 	if (b_or_w)
@@ -103,7 +104,7 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 
 	args = ft_splitargs(lst);
 	if (!args)
-		return (0);
+		return (-2);
 	while (lst && lst->token != 0)
 		lst = lst->next;
 	if (!nk_strcmp(lst->str, "cd"))

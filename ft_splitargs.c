@@ -21,6 +21,8 @@ char **ft_splitargs(t_lst *lst)
 		lst = lst->next;
 	}
 	argv = malloc(sizeof(char**) * (args + 1));
+	if (!argv)
+		return (NULL);
 	while (start_lst && start_lst->token != 1)
 	{
 		if (start_lst->token == 0)

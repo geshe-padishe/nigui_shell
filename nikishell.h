@@ -50,5 +50,6 @@ int		ft_close_free(int **pipefd, int nb_pipes, t_lst *lst, t_dynarray *darr);
 int		ft_export(t_dynarray *darr, char **str);
 int		ft_unset(t_dynarray *darr, char **str);
 int		ft_cd(char **str);
+t_lst	*find_bin_lst(t_lst *lst);
 
 #endif

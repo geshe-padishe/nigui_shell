@@ -47,21 +47,23 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	start_lst = lst;
 	while (lst && lst->str)
 	{
-		ret = 0;
+		printf("lst->str = %s\n", lst->str);
+		ret = -3;
 		b_or_w = 0;
 		if (!nb_pipes)
 			ret = ft_builtins(find_bin_lst(lst), darr, status);
-		if (!ret) //and if builtins return 0?
+		if (ret == -3) //and if builtins return 0?
 		{
 			list[i] = fork();
 			if (list[i] == 0)
 			{
+				dprintf(2, "FORKING\n");
 				if (nb_pipes)
 					if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
-						return (free_pipe_array(pipefd, nb_pipes), 1);
+						return (free_pipe_array(pipefd, nb_pipes), dprintf(2, "PIPE ERROR\n"), exit(1), 1);
 				if 	(ft_handle_redirections(lst))
 					return (ft_close_free(pipefd, nb_pipes,
-							lst, darr), exit(1), 1);
+							lst, darr), dprintf(2, "PIPE ERROR\n"), exit(1), 1);
 				if (ft_handle_exec(find_bin_lst(lst), darr, status))
 					return (ft_close_free(pipefd, nb_pipes,
 							lst, darr), exit(127), 1);
@@ -73,7 +75,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 		pipes_left--;
 		lst = ft_next_pipe(lst);
 	}
-	ft_close_pipes(pipefd, nb_pipes);
+	ft_close_pipes(pipefd, nb_pipes); //check if nb_pipes == 0
 	if (b_or_w)
 		*status = ft_wait_procs(i, list);
 	else
@@ -102,11 +104,12 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 {
 	char **args;
 
+	printf("INSIDE FT_BUILTINS\n");
 	args = ft_splitargs(lst);
 	if (!args)
-		return (-2);
-	while (lst && lst->token != 0)
-		lst = lst->next;
+		return (printf("unable to make args\n"), -2);
+	ft_print_args(args);
+	printf("INSIDE FT_BUILTS args = %p\n", args);
 	if (!nk_strcmp(lst->str, "cd"))
 		return (ft_cd(args + 1));
 	else if (!nk_strcmp(lst->str, "export"))
@@ -115,5 +118,5 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 		return (ft_unset(darr, args + 1));
 	else if (!nk_strcmp(lst->str, "exit"))
 		return ((unsigned char)ft_exit(args + 1, darr, *status));
-	return (free(args), -1);
+	return (free(args), -3);
 }

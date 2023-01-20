@@ -87,8 +87,9 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr, int status)
 
 	args = ft_splitargs(lst);
 	if (!args)
-		perror("malloc");
-	else if (!nk_strcmp(lst->str, "echo"))
+		return (perror("malloc"), -2);
+	ft_print_args(args);
+	if (!nk_strcmp(lst->str, "echo"))
 		return (ft_echo(args + 1), 1);
 	else if (!nk_strcmp(lst->str, "pwd"))
 		return (ft_pwd(args + 1));

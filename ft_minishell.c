@@ -28,10 +28,10 @@ t_lst *find_bin_lst(t_lst *lst)
 	{
 		if (lst->token == 1)
 			return (NULL);
-		if (lst->token >= 2 && lst->token <= 5)
-			lst = lst->next;
 		if (lst && lst->token == 0)
 			return (lst);
+		if (lst->token >= 2 && lst->token <= 5)
+			lst = lst->next;
 		lst = lst->next;
 	}
 	return (NULL);

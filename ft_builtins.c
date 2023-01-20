@@ -4,6 +4,7 @@ int	ft_cd(char **str)
 {
 	struct stat stats;
 
+	printf("inside cd\n");
 	if (!*str)
 		return (free(str - 1), 1);
 	if (stat(*str, &stats))
@@ -12,7 +13,7 @@ int	ft_cd(char **str)
 		return (free(str - 1), perror("cd"), 1);
 	else if (chdir(*str) == -1)
 		return (free(str - 1), perror("cd"), 1);
-	return (free(str - 1), 1);
+	return (free(str - 1), 0);
 
 }
 
@@ -42,6 +43,10 @@ int	ft_export(t_dynarray *darr, char **str)
 	char	**envp;
 	char	*envpi;
 
+	printf("INSIDE EXPORT args = %p\n", str - 1);
+	printf("printing args:\n");
+	ft_print_args(str);
+	printf("printing args END\n");
 	while (str && *str)
 	{
 		envp = darr->list;
@@ -62,13 +67,14 @@ int	ft_export(t_dynarray *darr, char **str)
 				return (free(str - 1), perror("push_dynarray"), 1);
 		str++;
 	}
-	return (printf("export end\n"), free(str - 1), 1);
+	return (printf("export end\n"), free(str - 1), 0);
 }
 
 int	ft_pwd(char **args)
 {
 	char	pwd[1064];
 
+	dprintf(2, "INSIDE PWD\n");
 	if (getcwd(pwd, 1064) == NULL)
 		return (free(args - 1), perror("pwd"), 1);
 	return (printf("%s\n", pwd), free(args - 1), 0);

@@ -39,14 +39,10 @@ int	ft_unset(t_dynarray *darr, char **str)
 
 int	ft_export(t_dynarray *darr, char **str)
 {
-	int	index;
+	int		index;
 	char	**envp;
 	char	*envpi;
 
-	printf("INSIDE EXPORT args = %p\n", str - 1);
-	printf("printing args:\n");
-	ft_print_args(str);
-	printf("printing args END\n");
 	while (str && *str)
 	{
 		envp = darr->list;
@@ -67,7 +63,7 @@ int	ft_export(t_dynarray *darr, char **str)
 				return (free(str - 1), perror("push_dynarray"), 1);
 		str++;
 	}
-	return (printf("export end\n"), free(str - 1), 0);
+	return (/* free(str - 1),*/ 0);
 }
 
 int	ft_pwd(char **args)
@@ -82,7 +78,7 @@ int	ft_pwd(char **args)
 
 int ft_echo(char **args)
 {
-	int	i;
+	int		i;
 	bool	flag;
 	bool	flags_ended;
 	int		is_flag;

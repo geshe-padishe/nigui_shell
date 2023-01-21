@@ -6,7 +6,7 @@
 #    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/19 23:51:01 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/21 03:16:18 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address -static-libsan
 
 RM 		=	rm -rf
 
-NAME	=	minitest
+NAME	=	minishell
 
 INC		=	./miniparsing.h\
 

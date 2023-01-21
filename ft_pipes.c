@@ -47,7 +47,6 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	start_lst = lst;
 	while (lst && lst->str)
 	{
-		printf("lst->str = %s\n", lst->str);
 		ret = -3;
 		b_or_w = 0;
 		if (!nb_pipes)
@@ -63,7 +62,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 						return (free_pipe_array(pipefd, nb_pipes), dprintf(2, "PIPE ERROR\n"), exit(1), 1);
 				if 	(ft_handle_redirections(lst))
 					return (ft_close_free(pipefd, nb_pipes,
-							lst, darr), dprintf(2, "PIPE ERROR\n"), exit(1), 1);
+							lst, darr), dprintf(2, "REDIRS ERROR\n"), exit(1), 1);
 				if (ft_handle_exec(find_bin_lst(lst), darr, status))
 					return (ft_close_free(pipefd, nb_pipes,
 							lst, darr), exit(127), 1);
@@ -104,12 +103,11 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 {
 	char **args;
 
-	printf("INSIDE FT_BUILTINS\n");
 	args = ft_splitargs(lst);
 	if (!args)
 		return (printf("unable to make args\n"), -2);
+	printf("PRINTING ARGS:\n");
 	ft_print_args(args);
-	printf("INSIDE FT_BUILTS args = %p\n", args);
 	if (!nk_strcmp(lst->str, "cd"))
 		return (ft_cd(args + 1));
 	else if (!nk_strcmp(lst->str, "export"))

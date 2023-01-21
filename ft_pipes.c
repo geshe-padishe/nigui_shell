@@ -56,16 +56,13 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 			list[i] = fork();
 			if (list[i] == 0)
 			{
-				dprintf(2, "FORKING\n");
 				if (nb_pipes)
 					if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
-						return (free_pipe_array(pipefd, nb_pipes), dprintf(2, "PIPE ERROR\n"), exit(1), 1);
+						return (ft_free_all(darr), free_lst(lst), exit(1), 1);
 				if 	(ft_handle_redirections(lst))
-					return (ft_close_free(pipefd, nb_pipes,
-							lst, darr), dprintf(2, "REDIRS ERROR\n"), exit(1), 1);
+					return (ft_free_all(darr), free_lst(lst), exit(1), 1);
 				if (ft_handle_exec(find_bin_lst(lst), darr, status))
-					return (ft_close_free(pipefd, nb_pipes,
-							lst, darr), exit(127), 1);
+					return (ft_free_all(darr), free_lst(lst), exit(127), 1);
 				exit(1);
 			}
 			b_or_w = 1;
@@ -84,9 +81,9 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 
 int	ft_wait_procs(int ac, pid_t *list)
 {
-	int i;
-	int status;
-	pid_t w;
+	int		i;
+	int		status;
+	pid_t	w;
 
 	i = 0;
 	while (i < ac)
@@ -101,13 +98,11 @@ int	ft_wait_procs(int ac, pid_t *list)
 
 int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 {
-	char **args;
+	char	**args;
 
 	args = ft_splitargs(lst);
 	if (!args)
 		return (printf("unable to make args\n"), -2);
-	printf("PRINTING ARGS:\n");
-	ft_print_args(args);
 	if (!nk_strcmp(lst->str, "cd"))
 		return (ft_cd(args + 1));
 	else if (!nk_strcmp(lst->str, "export"))

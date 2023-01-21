@@ -92,16 +92,16 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr, int status)
 	if (!nk_strcmp(lst->str, "echo"))
 		return (ft_echo(args + 1), 1);
 	else if (!nk_strcmp(lst->str, "pwd"))
-		return (ft_pwd(args + 1));
+		return (ft_pwd(args + 1), 1);
 	else if (!nk_strcmp(lst->str, "env"))
-		return (ft_dyn_env(darr, args + 1));
+		return (ft_dyn_env(darr, args + 1), 1);
 	else if (!nk_strcmp(lst->str, "cd"))
-		return (ft_cd(args + 1));
+		return (ft_cd(args + 1), 1);
 	else if (!nk_strcmp(lst->str, "export"))
-		return (ft_export(darr, args + 1));
+		return (ft_export(darr, args + 1), 1);
 	else if (!nk_strcmp(lst->str, "unset"))
-		return (ft_unset(darr, args + 1));
+		return (ft_unset(darr, args + 1), 1);
 	else if (!nk_strcmp(lst->str, "exit"))
-		return ((unsigned char)ft_exit(args + 1, darr, status));
+		return (ft_exit(args + 1, darr, status), 1);
 	return (free(args), 0);
 }

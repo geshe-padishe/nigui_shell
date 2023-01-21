@@ -21,18 +21,20 @@ int	ft_unset(t_dynarray *darr, char **str)
 {
 	int		index;
 	char	**envp;
+	int		i;
 
-	while (str && *str)
+	i = 0;
+	while (str && str[i])
 	{
 		envp = darr->list;
-		index = ft_getenv_index(envp, darr->nb_cells, *str, 0);
+		index = ft_getenv_index(envp, darr->nb_cells, str[i], 0);
 		if (index != -1)
 		{
 			free(envp[index]);
 			dynarray_extract(darr, index, 1);
 			return (free(str - 1), 0);
 		}
-		str++;
+		i++;
 	}
 	return (free(str - 1), 0);
 }
@@ -42,17 +44,19 @@ int	ft_export(t_dynarray *darr, char **str)
 	int		index;
 	char	**envp;
 	char	*envpi;
+	int		i;
 
-	while (str && *str)
+	i = 0;
+	while (str && str[i])
 	{
 		envp = darr->list;
-		if (!ft_can_exp(*str))
+		if (!ft_can_exp(str[i]))
 			return (free(str - 1), 1);
-		index = ft_getenv_index(envp, darr->nb_cells, *str, 1);
-		envpi = malloc(ft_strlen(*str) + 1);
+		index = ft_getenv_index(envp, darr->nb_cells, str[i], 1);
+		envpi = malloc(ft_strlen(str[i]) + 1);
 		if (!envpi)
 			return (free(str - 1), perror("malloc\n"), 1);
-		ft_strcpy(*str, envpi);
+		ft_strcpy(str[i], envpi);
 		if (index >= 0)
 		{
 			free(envp[index]);
@@ -61,7 +65,7 @@ int	ft_export(t_dynarray *darr, char **str)
 		else if (index == -1)
 			if (push_dynarray(darr, &envpi, 1, 1))
 				return (free(str - 1), perror("push_dynarray"), 1);
-		str++;
+		i++;
 	}
 	return (/* free(str - 1),*/ 0);
 }

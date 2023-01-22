@@ -69,7 +69,7 @@ fclean:		clean
 re:			fclean all
 
 val:		re
-		valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore ./${NAME}
+		valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore --track-origins=yes ./${NAME}
 
 val2:		re
 		valgrind --suppressions=rl_ignore ./${NAME}

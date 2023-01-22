@@ -88,6 +88,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		free(expanded);
 	//ft_printlst(lst);
 	rm_quote(lst);
-	//ft_printlst(lst);
+	ft_printlst(lst);
 	return (lst);
 }

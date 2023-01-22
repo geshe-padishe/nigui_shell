@@ -75,8 +75,6 @@ char	*dup_quote(char *s)
 	i = 0;
 	j = 0;
 	size = unquote_len(s);
-	if (size == 0)
-		return (NULL);
 	dup = malloc(sizeof(char) * (size + 1));
 	if (!dup)
 		return (NULL);

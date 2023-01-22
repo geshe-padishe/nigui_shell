@@ -75,7 +75,7 @@ int	syntax_check(char *line)
 	empty = 1;
 	while (*line)
 	{
-		if (!is_operator(*line) && *line != ' ' && empty)
+		if (!is_operator(*line) && !is_space(*line) && empty)
 			empty = 0;
 		if (is_operator(*line))
 		{

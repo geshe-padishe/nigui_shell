@@ -32,7 +32,6 @@ int	ft_unset(t_dynarray *darr, char **str)
 		{
 			free(envp[index]);
 			dynarray_extract(darr, index, 1);
-			return (free(str - 1), 0);
 		}
 		i++;
 	}

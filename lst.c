@@ -20,7 +20,7 @@ t_lst	*new_lst(void)
 	new->str = NULL;
 	new->next = NULL;
 	new->prev = NULL;
-	new->token = 0;
+	new->token = -1;
 	return (new);
 }
 

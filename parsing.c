@@ -87,7 +87,11 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (expanded)
 		free(expanded);
 	//ft_printlst(lst);
-	rm_quote(lst);
-	ft_printlst(lst);
-	return (lst);
+	if (lst)
+	{
+		rm_quote(lst);
+		ft_printlst(lst);
+		return (lst);
+	}
+	return (NULL);
 }

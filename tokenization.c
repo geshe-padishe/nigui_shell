@@ -84,5 +84,7 @@ t_lst	*tokenize(char *line)
 			line = find_str(line, lst);
 		line++;
 	}
+	if (lst->token == -1)
+		return (free(lst), NULL);
 	return (lst);
 }

@@ -20,8 +20,7 @@ NAME	=	minishell
 
 INC		=	./miniparsing.h\
 
-SRCS	=	adv_dquote.c \
-			dynarray2.c \
+SRCS	=	dynarray2.c \
 			dynarray.c \
 			expand.c \
 			ft_builtins2.c \
@@ -32,7 +31,6 @@ SRCS	=	adv_dquote.c \
 			ft_files.c \
 			ft_mems.c \
 			ft_minishell.c \
-			ft_pipelines.c \
 			ft_pipes.c \
 			ft_print.c \
 			ft_prompt.c \

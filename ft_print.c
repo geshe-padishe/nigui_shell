@@ -21,7 +21,8 @@ int	ft_dyn_env(t_dynarray *darr, char **str)
 	i = 0;
 	while (i < darr->nb_cells && ((char**)darr->list)[i])
 	{
-		printf("list[%lu] = %s\n", i, ((char**)darr->list)[i]);
+		//printf("list[%lu] = %s\n", i, ((char**)darr->list)[i]);
+		printf("%s\n", ((char**)darr->list)[i]);
 		i++;
 	}
 	return (0);
@@ -57,7 +58,7 @@ void	ft_print_list(t_lst *token)
 {
 	while (token != NULL)
 	{
-		dprintf(2, "token = %s\n", token->str);
+		//dprintf(2, "token = %s\n", token->str);
 		//ft_print_token(*token);
 		token = token->next;
 	}

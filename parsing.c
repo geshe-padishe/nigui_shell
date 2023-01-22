@@ -41,7 +41,7 @@ static void	interpret(char *str, int rev)
 			str = protect_content(str, rev);
 		if (*str)
 		{
-			if (*str == '$' * -1)
+			if (*str == '$' * -1 && rev)
 				*str *= -1;
 			str++;
 		}
@@ -74,15 +74,20 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (!quote_check(line))
 		return (0);
 	interpret(line, 0);
+	//printf("interpreted = %s\n", line);
 	if (!syntax_check(line))
 		return (0);
 	expanded = my_expand(line, ext, darr);
 	if (!expanded)
 		return (0);
+	//printf("expanded = %s\n", expanded);
 	interpret(expanded, 1);
+	//printf("re-interpreted = %s\n", expanded);
 	lst = tokenize(expanded);
 	if (expanded)
 		free(expanded);
+	//ft_printlst(lst);
 	rm_quote(lst);
+	//ft_printlst(lst);
 	return (lst);
 }

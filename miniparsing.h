@@ -19,7 +19,6 @@
 
 // Parsing.c
 t_lst	*parse(char *line, int ext, t_dynarray *darr);
-//void	close_quote(int quote);
 
 // Quotes.c
 int		var_name_len(char *str);

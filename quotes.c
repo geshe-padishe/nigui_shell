@@ -18,10 +18,11 @@ int	var_name_len(char *str)
 
 	i = 0;
 	str++;
-	if (*str == '?')
-		return (1);
+
 	if (!str)
 		return (0);
+	if (*str == '?')
+		return (1);
 	while (str[i] && is_alnumund(str[i]))
 	{
 		if (ft_isdigit(str[0]))
@@ -43,7 +44,7 @@ char	*protect_content(char *str, int rev)
 	c = *str++;
 	while (*str && *str != c)
 	{
-		if (c == '"' && *str == '$')
+		while (c == '"' && *str == '$')
 		{
 			len = var_name_len(str++);
 			if (len == 0)
@@ -74,6 +75,8 @@ char	*dup_quote(char *s)
 	i = 0;
 	j = 0;
 	size = unquote_len(s);
+	if (size == 0)
+		return (NULL);
 	dup = malloc(sizeof(char) * (size + 1));
 	if (!dup)
 		return (NULL);

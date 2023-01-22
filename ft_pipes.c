@@ -34,7 +34,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	int		fd_in;
 	int		ret;
 	int		b_or_w;
-	t_lst	*start_lst;
+	//t_lst	*start_lst;
 
 	ft_print_list(lst);
 	if (!lst)
@@ -44,7 +44,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	if (!pipefd)
 		return (perror("malloc"), 0);
 	i = 0;
-	start_lst = lst;
+	//start_lst = lst;
 	while (lst && lst->str)
 	{
 		ret = -3;

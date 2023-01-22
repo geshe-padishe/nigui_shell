@@ -74,7 +74,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (!quote_check(line))
 		return (0);
 	interpret(line, 0);
-	//printf("interpreted = %s\n", line);
 	if (!syntax_check(line))
 		return (0);
 	expanded = my_expand(line, ext, darr);
@@ -82,11 +81,9 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		return (0);
 	//printf("expanded = %s\n", expanded);
 	interpret(expanded, 1);
-	//printf("re-interpreted = %s\n", expanded);
 	lst = tokenize(expanded);
 	if (expanded)
 		free(expanded);
-	//ft_printlst(lst);
 	if (lst)
 	{
 		rm_quote(lst);

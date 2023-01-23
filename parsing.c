@@ -79,7 +79,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	expanded = my_expand(line, ext, darr);
 	if (!expanded)
 		return (0);
-	//printf("expanded = %s\n", expanded);
 	interpret(expanded, 1);
 	lst = tokenize(expanded);
 	if (expanded)

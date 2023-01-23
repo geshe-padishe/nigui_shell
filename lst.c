@@ -93,5 +93,4 @@ void	ft_printlst(t_lst *a)
 		tmp = tmp->next;
 		i++;
 	}
-	//printf("lst length is %d.\n", i);
 }

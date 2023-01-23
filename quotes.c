@@ -18,7 +18,6 @@ int	var_name_len(char *str)
 
 	i = 0;
 	str++;
-
 	if (!str)
 		return (0);
 	if (*str == '?')

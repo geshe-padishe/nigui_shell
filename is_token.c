@@ -57,22 +57,22 @@ char	*ft_free(char *str1, char *str2, char *str3, char *str4)
 	if (str1)
 	{
 		free (str1);
-		//str1 = NULL;
+		str1 = NULL;
 	}
 	if (str2)
 	{
 		free (str2);
-		//str2 = NULL;
+		str2 = NULL;
 	}
 	if (str3)
 	{
 		free (str3);
-		//str3 = NULL;
+		str3 = NULL;
 	}
 	if (str4)
 	{
 		free (str4);
-		//str4 = NULL;
+		str4 = NULL;
 	}
 	return (NULL);
 }

@@ -64,7 +64,7 @@ char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 		new = trio_merge(before, exit, after);
 	else
 		new = trio_merge(before, value, after);
-	ft_free(before, name, after, NULL);
+	ft_free(before, name, after, str);
 	if (!new)
 		return (NULL);
 	return (new);
@@ -93,8 +93,7 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 			break ;
 		}
 	}
-	free(exit);
 	if (expanded)
-		return (expanded);
-	return (str);
+		return (free(exit), expanded);
+	return (free(exit), str);
 }

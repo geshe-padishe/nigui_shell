@@ -6,7 +6,7 @@ int	**create_pipe_arr(int nb_pipes)
 	int	**pipefd;
 	int	ret;
 
-	pipefd = malloc(nb_pipes * sizeof(int*));
+	pipefd = malloc(nb_pipes * sizeof(int *));
 	if (pipefd == NULL)
 		return (NULL);
 	i = -1;

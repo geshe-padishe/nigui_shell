@@ -22,7 +22,7 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
 	return (ft_close_pipes(pipefd, nb_pipes), 0);
 }
 
-t_lst *find_bin_lst(t_lst *lst)
+t_lst	*find_bin_lst(t_lst *lst)
 {
 	while (lst)
 	{

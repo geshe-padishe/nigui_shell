@@ -37,8 +37,8 @@ bool	ft_can_exp(char *str)
 	int	i;
 
 	i = 0;
-	if (!(str[0] >= 'A' && str[0] <= 'Z') &&
-		!(str[0] >= 'a' && str[0] <= 'z') && !(str[0] == '_'))
+	if (!(str[0] >= 'A' && str[0] <= 'Z')
+		&& !(str[0] >= 'a' && str[0] <= 'z') && !(str[0] == '_'))
 		return (0);
 	while (str[i])
 	{

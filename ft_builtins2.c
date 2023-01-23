@@ -2,7 +2,7 @@
 
 int	ft_exit(char **args, t_dynarray *darr, int status)
 {
-	int i;
+	int	i;
 
 	(void)darr;
 	if (!args || !args[0])

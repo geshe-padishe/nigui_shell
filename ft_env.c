@@ -10,7 +10,7 @@ int	init_dyn_env(char **envp, t_dynarray *darr)
 	nul = NULL;
 	while (envp[i])
 		i++;
-	init_dynarray(darr, i, sizeof(char*)); // A SECURE
+	init_dynarray(darr, i, sizeof(char *)); // A SECURE
 	i = 0;
 	while (envp[i])
 	{

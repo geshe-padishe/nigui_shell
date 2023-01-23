@@ -12,6 +12,22 @@ void	ft_env(t_dynarray *darr)
 	}
 }
 
+void	ft_env_ptrs(t_dynarray *darr)
+{
+	char **envp = darr->list;
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		printf("*envp[%d] = %p\n", i, envp[i]);
+		printf("*envp[%d] = %s\n", i, envp[i]);
+		i++;
+	}
+	printf("*envp[%d] = %p\n", i, envp[i]);
+	printf("*envp[%d] = %s\n", i, envp[i]);
+}
+
 int	ft_dyn_env(t_dynarray *darr, char **str)
 {
 	uint64_t	i;

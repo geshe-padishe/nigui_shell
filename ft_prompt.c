@@ -7,6 +7,7 @@ void	sigintHandler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	write(STDIN_FILENO, "  \b\b", 4);
 }
 
 char	*ft_make_prompt(char *dir)

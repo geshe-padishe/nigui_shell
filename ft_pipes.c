@@ -45,6 +45,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 		return (perror("malloc"), 0);
 	i = 0;
 	start_lst = lst;
+	signal(SIGINT, SIG_IGN);
 	while (lst && lst->str)
 	{
 		ret = -3;
@@ -56,6 +57,9 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 			list[i] = fork();
 			if (list[i] == 0)
 			{
+				signal(SIGINT, SIG_DFL);
+				signal(SIGQUIT, SIG_DFL);
+				printf("darr = %p\n", darr);
 				if (nb_pipes)
 					if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
 						return (ft_free_all(darr), free_lst(start_lst), exit(1), 1);
@@ -76,6 +80,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 		*status = ft_wait_procs(i, list);
 	else
 		*status = ret;
+	signal(SIGINT, sigintHandler);
 	return (free_pipe_array(pipefd, nb_pipes), 1);
 }
 
@@ -102,7 +107,7 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 
 	args = ft_splitargs(lst);
 	if (!args)
-		return (printf("unable to make args\n"), -2);
+		return (perror("malloc"), -2);
 	if (!nk_strcmp(lst->str, "echo"))
 		return (ft_echo(args + 1), 1);
 	else if (!nk_strcmp(lst->str, "pwd"))

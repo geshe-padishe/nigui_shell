@@ -24,6 +24,8 @@ int	ft_unset(t_dynarray *darr, char **str)
 	int		i;
 
 	i = 0;
+	printf("LIST : \n");
+	ft_print_args((char**)darr->list);
 	while (str && str[i])
 	{
 		envp = darr->list;

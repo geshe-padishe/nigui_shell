@@ -16,6 +16,7 @@ int		ft_len_bef_col(char *paths);
 void	ft_free_all(t_dynarray *darr);
 void	sigd_handler1(int i);
 void	sigd_handler2(int i);
+void	sigintHandler(int sig);
 int		ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status);
 int		ft_wait_procs(int ac, pid_t *list);
 int		ft_close_pipes(int **pipefd, int nb_pipes);
@@ -56,5 +57,6 @@ void	ft_dir_error(char *path_name);
 void	ft_perm_error(char *path_name);
 void	ft_cmd_error(char *path_name);
 void	ft_nofile_error(char *path_name);
+void	ft_env_ptrs(t_dynarray *darr);
 
 #endif

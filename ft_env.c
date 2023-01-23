@@ -14,7 +14,7 @@ int	init_dyn_env(char **envp, t_dynarray *darr)
 	i = 0;
 	while (envp[i])
 	{
-		str = malloc(ft_strlen(envp[i]) + 1);
+		str = malloc(ft_strlen(envp[i]) + 1); //A SECURE
 		ft_strcpy(envp[i], str);
 		push_dynarray(darr, &str, 1, 1);
 		i++;

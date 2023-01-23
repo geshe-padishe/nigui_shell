@@ -1,16 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   dynarray2.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nikotikcho <marvin@42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/04 13:28:59 by nikotikch         #+#    #+#             */
-/*   Updated: 2023/01/13 05:58:31 by ngenadie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "dynarray.h"
+
+static void	ft_print_args(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+		dprintf(2, "args[%d] = %s\n", i, args[i]);
+	dprintf(2, "args[%d] = %s\n", i, args[i]);
+}
 
 int	dynarray_realloc(t_dynarray *dynarray, size_t new_byte_size)
 {
@@ -63,8 +61,7 @@ int	dyn_insr(t_dynarray *darr, void *ncells, uint64_t index, uint64_t nb_ncells)
 
 int	dynarray_extract(t_dynarray *darr, uint64_t index, uint64_t nb_ext)
 {
-	void		*ptr;
-	uint64_t	cell_size;
+	void	*ptr;
 
 	if (!darr || !darr->nb_cells || !nb_ext
 		|| index + 1 > darr->nb_cells || nb_ext + index > darr->nb_cells)
@@ -75,10 +72,19 @@ int	dynarray_extract(t_dynarray *darr, uint64_t index, uint64_t nb_ext)
 		pop_dynarray(darr, nb_ext, true);
 	else
 	{
-		cell_size = darr->cell_size;
-		ptr = darr->list + (index + nb_ext) * cell_size;
-		ft_memcpy(darr->tmp, ptr, (darr->nb_cells - nb_ext - index) * cell_size);
-		ft_memcpy(darr->list + index * cell_size, darr->tmp, nb_ext * cell_size);
+		ptr = darr->list + (index + nb_ext) * darr->cell_size;
+		printf("ptr index = %ld\n", index + nb_ext);
+		printf("darr->nb_cells - nb_ext - index = %d\n", (int)((int)(darr->nb_cells) - nb_ext - index));
+		ft_memcpy(darr->tmp, ptr,
+				(darr->nb_cells - nb_ext - index) * darr->cell_size);
+		ft_print_args((char**)darr->tmp);
+		//printf("INDEX WHERE WE COPY = %ld\n", index);
+		printf("LIST AFTER: \n");
+		ft_print_args((char**)darr->list);
+		//printf("LIST + index + 1 : \n");
+		//ft_print_args((char**)darr->list + index + 1);
+		ft_memcpy(darr->list + index * darr->cell_size,
+				darr->tmp, nb_ext * darr->cell_size);
 		darr->nb_cells -= nb_ext;
 	}
 	return (0);

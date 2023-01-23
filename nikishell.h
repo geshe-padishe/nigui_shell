@@ -51,5 +51,10 @@ int		ft_export(t_dynarray *darr, char **str);
 int		ft_unset(t_dynarray *darr, char **str);
 int		ft_cd(char **str);
 t_lst	*find_bin_lst(t_lst *lst);
+int		ft_is_dir(char *path_name);
+void	ft_dir_error(char *path_name);
+void	ft_perm_error(char *path_name);
+void	ft_cmd_error(char *path_name);
+void	ft_nofile_error(char *path_name);
 
 #endif

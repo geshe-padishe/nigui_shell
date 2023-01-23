@@ -28,3 +28,14 @@ int	ft_open_create(char *filename, bool apnd_or_not, int token)
 		return (free(pathname2), dprintf(2, "File permission denied\n"), -1);
 	return (free(pathname2), fd);
 }
+
+int	ft_is_dir(char *path_name)
+{
+	struct stat	stats;
+
+	if (stat(path_name, &stats))
+		return (0);
+	if (S_ISDIR(stats.st_mode))
+		return (1);
+	return (0);
+}

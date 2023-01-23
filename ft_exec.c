@@ -38,27 +38,35 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 {
 	char	*bin_path;
 
-	if (access(bin, F_OK & X_OK) == 0)
+	if (!bin[0])
+		return (write(2, "bash: : command not found\n", 26), NULL);
+	else if (bin[0] == '.' || bin[0] == '/')
+	{
+		if (access(bin, F_OK))
+			return (ft_nofile_error(bin), NULL);
+		if (ft_is_dir(bin))
+			return (ft_dir_error(bin), NULL);
+		if (access(bin, X_OK))
+			return (ft_perm_error(bin), NULL);
 		if (execve(bin, argv, envp))
 			return (perror("execve"), NULL); //FREE
-	if (bin && bin[0] != '.')
-		while (*paths)
-		{
-			bin_path = ft_check_bin_path(bin, paths);
-			if (bin_path == (char *)3)
-				return (NULL);
-			if (access(bin_path, F_OK & X_OK) == 0)
-			{
-				if (execve(bin_path, argv, envp))
-					return (perror("execve"), free(bin_path), NULL); //FREE ALL
-			}
-			else
-				free(bin_path);
-			paths += ft_len_bef_col(paths) + 1;
-			if (*paths)
-				paths += 1;
-		}
-	return (write(2, "bash: ", 6), write(2, bin, ft_strlen(bin)), write(2, ": command not found\n", 20), NULL);
+	}
+	while (*paths)
+	{
+		bin_path = ft_check_bin_path(bin, paths);
+		if (bin_path == (char *)3)
+			return (perror("ft_find_bin\n"), NULL);
+		if (!access(bin_path, F_OK))
+			if (!ft_is_dir(bin_path))
+				if (!access(bin_path, X_OK))
+					if (execve(bin_path, argv, envp))
+						return (perror("execve"), free(bin_path), NULL); //FREE ALL
+		free(bin_path);
+		paths += ft_len_bef_col(paths) + 1;
+		if (*paths)
+			paths += 1;
+	}
+	return (ft_cmd_error(bin), NULL);
 }
 
 int	ft_handle_exec(t_lst *lst, t_dynarray *darr, int *status)
@@ -66,17 +74,13 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr, int *status)
 	char	**args;
 
 	args = ft_splitargs(lst);
-	while (lst && lst->token != 1)
+	if (lst->token == 0 && lst->str != NULL)
 	{
-		if (lst->token == 0 && lst->str != NULL)
-		{
-			if (ft_builtins_exec(lst, darr, *status))
-				return (free(args), -2);
-			if (ft_find_bin(args[0], ft_getenvval("PATH", darr,
-				0, 1), args, darr->list) == NULL) //A FINIR APRES
-				return (free(args), -1);
-		}
-		lst = lst->next;
+		if (ft_builtins_exec(lst, darr, *status))
+			return (free(args), -2);
+		if (ft_find_bin(args[0], ft_getenvval("PATH", darr,
+			0, 1), args, darr->list) == NULL) //A FINIR APRES
+			return (free(args), -1);
 	}
 	return (free(args), 0);
 }

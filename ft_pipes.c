@@ -34,7 +34,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	int		fd_in;
 	int		ret;
 	int		b_or_w;
-	//t_lst	*start_lst;
+	t_lst	*start_lst;
 
 	ft_print_list(lst);
 	if (!lst)
@@ -44,7 +44,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 	if (!pipefd)
 		return (perror("malloc"), 0);
 	i = 0;
-	//start_lst = lst;
+	start_lst = lst;
 	while (lst && lst->str)
 	{
 		ret = -3;
@@ -58,11 +58,11 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 			{
 				if (nb_pipes)
 					if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
-						return (ft_free_all(darr), free_lst(lst), exit(1), 1);
+						return (ft_free_all(darr), free_lst(start_lst), exit(1), 1);
 				if 	(ft_handle_redirections(lst))
-					return (ft_free_all(darr), free_lst(lst), exit(1), 1);
+					return (ft_free_all(darr), free_lst(start_lst), exit(1), 1);
 				if (ft_handle_exec(find_bin_lst(lst), darr, status))
-					return (ft_free_all(darr), free_lst(lst), exit(127), 1);
+					return (ft_free_all(darr), free_lst(start_lst), exit(127), 1);
 				exit(1);
 			}
 			b_or_w = 1;
@@ -116,6 +116,6 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 	else if (!nk_strcmp(lst->str, "unset"))
 		return (ft_unset(darr, args + 1), 1);
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (ft_exit(args + 1, darr, *status), 1);
+		return (ft_exit(args + 1, darr, *status), 1); //ajouter lst pour free avant exit
 	return (free(args), -3);
 }

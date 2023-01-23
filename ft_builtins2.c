@@ -2,7 +2,7 @@
 
 int	ft_exit(char **args, t_dynarray *darr, int status)
 {
-	int	i;
+	int i;
 
 	(void)darr;
 	if (!args || !args[0])
@@ -76,6 +76,8 @@ int	ft_is_flag(char *str)
 {
 	if (str)
 	{
+		if (!str[0])
+			return (0);
 		if (str[0] && str[0] == '-')
 		{
 			str++;

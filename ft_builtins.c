@@ -2,7 +2,7 @@
 
 int	ft_cd(char **str)
 {
-	struct stat stats;
+	struct stat	stats;
 
 	printf("inside cd\n");
 	if (!*str)

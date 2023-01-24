@@ -56,7 +56,7 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 		ret_built = -3;
 		b_or_w = 0;
 		if (!nb_pipes)
-			ret_built = ft_builtins(find_bin_lst(lst), darr);
+			ret_built = ft_builtins(find_bin_lst(lst), darr, pipefd, nb_pipes);
 		if (ret_built == -3) //and if builtins return 0?
 		{
 			list[i] = fork();
@@ -68,12 +68,12 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(1), 1);
 				if 	(ft_handle_redirections(lst))
 					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(1), 1);
-				if (ft_handle_exec(find_bin_lst(lst), darr))
+				if (ft_handle_exec(find_bin_lst(lst), darr, pipefd, nb_pipes))
 					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(127), 1);
 				exit(1);
 			}
 			b_or_w = 1;
-			i++; //PEUTETRE MONTER CA DANS LE if list[i] = 0
+			i++;
 		}
 		pipes_left--;
 		lst = ft_next_pipe(lst);
@@ -95,36 +95,39 @@ int	ft_wait_procs(int ac, pid_t *list)
 	pid_t	w;
 
 	i = 0;
+	status = 0;
 	while (i < ac)
 	{
 		w = waitpid(list[i], &status, 0);
 		if (w == -1)
 			perror("waitpid");
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
 		i++;
 	}
-	return (WEXITSTATUS(status));
+	return (status);
 }
 
-int	ft_builtins(t_lst *lst, t_dynarray *darr)
+int	ft_builtins(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
 {
 	char	**args;
 
 	args = ft_splitargs(lst);
 	if (!args)
-		return (perror("malloc"), -2);
+		return (perror("malloc"), 1);
 	if (!nk_strcmp(lst->str, "echo"))
-		return (ft_echo(args + 1), 1);
+		return (ft_echo(args + 1));
 	else if (!nk_strcmp(lst->str, "pwd"))
-		return (ft_pwd(args + 1), 1);
+		return (ft_pwd(args + 1));
 	else if (!nk_strcmp(lst->str, "env"))
-		return (ft_dyn_env(darr, args + 1), 1);
+		return (ft_dyn_env(darr, args + 1));
 	else if (!nk_strcmp(lst->str, "cd"))
-		return (ft_cd(args + 1), 1);
+		return (ft_cd(args + 1));
 	else if (!nk_strcmp(lst->str, "export"))
-		return (ft_export(darr, args + 1), 1);
+		return (ft_export(darr, args + 1));
 	else if (!nk_strcmp(lst->str, "unset"))
-		return (ft_unset(darr, args + 1), 1);
+		return (ft_unset(darr, args + 1));
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (ft_exit(args + 1, darr), 1); //ajouter lst pour free avant exit
-	return (printf("I FREE ARGS?\n"), free(args), -3);
+		return (free(args), ft_exit(lst, darr, pipefd, nb_pipes)); //FINIR EXIT
+	return (free(args), -3);
 }

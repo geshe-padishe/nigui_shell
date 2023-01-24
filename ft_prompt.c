@@ -8,6 +8,7 @@ void	sigintHandler(int sig)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	write(STDIN_FILENO, "  \b\b", 4);
+	g_vrac.status = 130;
 }
 
 char	*ft_make_prompt(char *dir)

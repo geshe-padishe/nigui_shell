@@ -1,21 +1,31 @@
 #include "minishell.h"
 
-int	ft_exit(char **args, t_dynarray *darr)
+int	ft_exit(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
 {
-	int i;
+	int		i;
+	char	**args;
 
-	(void)darr;
-	if (!args || !args[0])
-		return (free(args - 1), exit(g_vrac.status), 1);
+	args = ft_splitargs(lst);
+	if (!args)
+		return (ft_free_all(darr, lst, pipefd, nb_pipes),
+				perror("malloc"), exit(1), 1);
+	if (!args || !args[0] || !args[1])
+		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
+				exit(g_vrac.status), 1);
 	if (args[0] && args[1] && args[2])
-		return (write(2, "exit: too many arguments\n", 25), free(args - 1), 2);
-	if (!ft_is_number(args[0]))
-		return (write(2, "exit: numeric argument required\n", 32), free(args - 1), 2);
+		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
+				write(2, "exit: too many arguments\n", 25), exit(2), 2);
+	if (!ft_is_number(args[1]))
+		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
+				write(2, "exit: numeric argument required\n", 32), exit(2), 2);
 	else
 	{
-		i = ft_ps_atoi(args[0]);
-		return (free(args - 1), i);
+		i = ft_ps_atoi(args[1]);
+		return (ft_free_all(darr, lst, pipefd, nb_pipes),
+				free(args), exit((unsigned char)i), i);
 	}
+	return (ft_free_all(darr, lst, pipefd, nb_pipes),
+			free(args), exit(1), 1);
 }
 
 int	ft_atoi_sign(char **nstr)

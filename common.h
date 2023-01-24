@@ -38,6 +38,7 @@ typedef struct s_safe
 	t_dynarray	*darr;
 	int			**pipefd;
 	int			nb_pipes;
+	int			status;
 }	t_safe;
 
 extern t_safe	g_vrac;

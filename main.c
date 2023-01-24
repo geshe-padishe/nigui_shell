@@ -13,8 +13,7 @@ int	main(int ac, char **av, char **envp)
 	if (init_dyn_env(envp, &darr))
 		return (-1);
 	g_vrac.darr = &darr;
-	printf("darr = %p\n", &darr);
-	ft_env_ptrs(&darr);
+	g_vrac.status = 0;
 	signal(SIGINT, sigintHandler);
 	signal(SIGQUIT, SIG_IGN);
 	ret = ft_readline(&darr);

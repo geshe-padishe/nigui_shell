@@ -45,30 +45,19 @@ int	ft_readline(t_dynarray *darr)
 {
 	char		*line;
 	t_lst		*lst;
-	int			status;
 
-	status = 0;
 	while (1)
 	{
 		line = readline("> ");
 		if (line == NULL)
-			return (0);
+			return (ft_free_env(darr), 0);
 		if (*line)
 		{
 			add_history(line);
-			lst = parse(line, status, darr);
+			lst = parse(line, g_vrac.status, darr);
 			if (lst)
-			{
-				ft_pipes(lst, ft_pipes_left(lst), darr, &status);
-				if (status == -2)
-					status = 1;
-				if (status == -3)
-					status = 0;
-				free_lst(lst);
-				lst = NULL;
-			}
+				ft_pipes(lst, ft_pipes_left(lst), darr);
 		}
-		//free(line);
 	}
 	rl_clear_history();
 	return (0);

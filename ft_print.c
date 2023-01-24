@@ -41,7 +41,7 @@ int	ft_dyn_env(t_dynarray *darr, char **str)
 		printf("%s\n", ((char**)darr->list)[i]);
 		i++;
 	}
-	return (0);
+	return (free(str - 1), 0);
 }
 
 void	ft_print_pipes(int **pipefd, int nb_pipes)

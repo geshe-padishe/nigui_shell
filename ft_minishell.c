@@ -4,6 +4,8 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
 {
 	int	fd_out;
 
+	if (!nb_pipes)
+		return (0);
 	if (pipes_left != nb_pipes)
 	{
 		*fd_in = dup2(pipefd[nb_pipes - pipes_left - 1][0], STDIN_FILENO);

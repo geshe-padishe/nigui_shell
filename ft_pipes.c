@@ -25,48 +25,51 @@ int	ft_pipes_left(t_lst *lst)
 	return (pipes);
 }
 
-int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
+int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
 {
 	int		**pipefd;
 	int		i;
 	pid_t	list[nb_pipes + 1];
 	int		pipes_left;
 	int		fd_in;
-	int		ret;
+	int		ret_built;
+	int		ret_wait;
 	int		b_or_w;
 	t_lst	*start_lst;
 
 	ft_print_list(lst);
 	if (!lst)
-		return (0);
+		return (1);
 	pipes_left = nb_pipes;
-	pipefd = create_pipe_arr(nb_pipes);
-	if (!pipefd)
-		return (perror("malloc"), 0);
+	pipefd = NULL;
+	if (nb_pipes)
+	{
+		pipefd = create_pipe_arr(nb_pipes);
+		if (!pipefd)
+			return (perror("malloc"), 0);
+	}
 	i = 0;
 	start_lst = lst;
 	signal(SIGINT, SIG_IGN);
 	while (lst && lst->str)
 	{
-		ret = -3;
+		ret_built = -3;
 		b_or_w = 0;
 		if (!nb_pipes)
-			ret = ft_builtins(find_bin_lst(lst), darr, status);
-		if (ret == -3) //and if builtins return 0?
+			ret_built = ft_builtins(find_bin_lst(lst), darr);
+		if (ret_built == -3) //and if builtins return 0?
 		{
 			list[i] = fork();
 			if (list[i] == 0)
 			{
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
-				printf("darr = %p\n", darr);
-				if (nb_pipes)
-					if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
-						return (ft_free_all(darr), free_lst(start_lst), exit(1), 1);
+				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
+					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(1), 1);
 				if 	(ft_handle_redirections(lst))
-					return (ft_free_all(darr), free_lst(start_lst), exit(1), 1);
-				if (ft_handle_exec(find_bin_lst(lst), darr, status))
-					return (ft_free_all(darr), free_lst(start_lst), exit(127), 1);
+					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(1), 1);
+				if (ft_handle_exec(find_bin_lst(lst), darr))
+					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(127), 1);
 				exit(1);
 			}
 			b_or_w = 1;
@@ -75,13 +78,14 @@ int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr, int *status)
 		pipes_left--;
 		lst = ft_next_pipe(lst);
 	}
-	ft_close_pipes(pipefd, nb_pipes); //check if nb_pipes == 0
+	ft_close_pipes(pipefd, nb_pipes);
+	ret_wait = ft_wait_procs(i, list);
 	if (b_or_w)
-		*status = ft_wait_procs(i, list);
+		g_vrac.status = ret_wait;
 	else
-		*status = ret;
+		g_vrac.status = ret_built;
 	signal(SIGINT, sigintHandler);
-	return (free_pipe_array(pipefd, nb_pipes), 1);
+	return (free_pipe_array(pipefd, nb_pipes), free_lst(start_lst), 0);
 }
 
 int	ft_wait_procs(int ac, pid_t *list)
@@ -101,7 +105,7 @@ int	ft_wait_procs(int ac, pid_t *list)
 	return (WEXITSTATUS(status));
 }
 
-int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
+int	ft_builtins(t_lst *lst, t_dynarray *darr)
 {
 	char	**args;
 
@@ -121,6 +125,6 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int *status)
 	else if (!nk_strcmp(lst->str, "unset"))
 		return (ft_unset(darr, args + 1), 1);
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (ft_exit(args + 1, darr, *status), 1); //ajouter lst pour free avant exit
-	return (free(args), -3);
+		return (ft_exit(args + 1, darr), 1); //ajouter lst pour free avant exit
+	return (printf("I FREE ARGS?\n"), free(args), -3);
 }

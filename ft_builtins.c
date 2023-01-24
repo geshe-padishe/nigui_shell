@@ -4,7 +4,6 @@ int	ft_cd(char **str)
 {
 	struct stat	stats;
 
-	printf("inside cd\n");
 	if (!*str)
 		return (free(str - 1), 1);
 	if (stat(*str, &stats))
@@ -24,8 +23,6 @@ int	ft_unset(t_dynarray *darr, char **str)
 	int		i;
 
 	i = 0;
-	printf("LIST : \n");
-	ft_print_args((char**)darr->list);
 	while (str && str[i])
 	{
 		envp = darr->list;
@@ -68,14 +65,13 @@ int	ft_export(t_dynarray *darr, char **str)
 				return (free(str - 1), perror("push_dynarray"), 1);
 		i++;
 	}
-	return (/* free(str - 1),*/ 0);
+	return (free(str - 1), 0);
 }
 
 int	ft_pwd(char **args)
 {
 	char	pwd[1064];
 
-	dprintf(2, "INSIDE PWD\n");
 	if (getcwd(pwd, 1064) == NULL)
 		return (free(args - 1), perror("pwd"), 1);
 	return (printf("%s\n", pwd), free(args - 1), 0);

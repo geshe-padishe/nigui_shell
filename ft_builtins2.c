@@ -1,12 +1,12 @@
 #include "minishell.h"
 
-int	ft_exit(char **args, t_dynarray *darr, int status)
+int	ft_exit(char **args, t_dynarray *darr)
 {
 	int i;
 
 	(void)darr;
 	if (!args || !args[0])
-		return (free(args - 1), status);
+		return (free(args - 1), exit(g_vrac.status), 1);
 	if (args[0] && args[1] && args[2])
 		return (write(2, "exit: too many arguments\n", 25), free(args - 1), 2);
 	if (!ft_is_number(args[0]))

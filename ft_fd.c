@@ -30,7 +30,7 @@ void	free_pipe_array(int **pipefd, int nb_pipes)
 {
 	int	i;
 
-	if (!pipefd)
+	if (!pipefd || !nb_pipes)
 		return ;
 	i = -1;
 	while (++i < nb_pipes)

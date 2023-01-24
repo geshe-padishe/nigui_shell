@@ -69,14 +69,14 @@ char	*ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 	return (ft_cmd_error(bin), NULL);
 }
 
-int	ft_handle_exec(t_lst *lst, t_dynarray *darr, int *status)
+int	ft_handle_exec(t_lst *lst, t_dynarray *darr)
 {
 	char	**args;
 
 	args = ft_splitargs(lst);
 	if (lst->token == 0 && lst->str != NULL)
 	{
-		if (ft_builtins_exec(lst, darr, *status))
+		if (ft_builtins_exec(lst, darr))
 			return (free(args), -2);
 		if (ft_find_bin(args[0], ft_getenvval("PATH", darr,
 			0, 1), args, darr->list) == NULL) //A FINIR APRES
@@ -85,14 +85,13 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr, int *status)
 	return (free(args), 0);
 }
 
-int	ft_builtins_exec(t_lst *lst, t_dynarray *darr, int status)
+int	ft_builtins_exec(t_lst *lst, t_dynarray *darr)
 {
 	char	**args;
 
 	args = ft_splitargs(lst);
 	if (!args)
 		return (perror("malloc"), -2);
-	//ft_print_args(args);
 	if (!nk_strcmp(lst->str, "echo"))
 		return (ft_echo(args + 1), 1);
 	else if (!nk_strcmp(lst->str, "pwd"))
@@ -106,6 +105,6 @@ int	ft_builtins_exec(t_lst *lst, t_dynarray *darr, int status)
 	else if (!nk_strcmp(lst->str, "unset"))
 		return (ft_unset(darr, args + 1), 1);
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (ft_exit(args + 1, darr, status), 1);
+		return (ft_exit(args + 1, darr), 1);
 	return (free(args), 0);
 }

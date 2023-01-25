@@ -13,11 +13,17 @@ int	ft_exit(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
 		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
 				exit(g_vrac.status), 1);
 	if (args[0] && args[1] && args[2])
+	{
+		if (ft_is_number(args[1]))
+			return (put_err("bash: exit: too many arguments\n"), 0);
 		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
-				write(2, "exit: too many arguments\n", 25), exit(2), 2);
+				put_err("bash: exit: "), put_err(args[1]),
+				put_err(": numeric argument required\n"), exit(2), 2);
+	}
 	if (!ft_is_number(args[1]))
 		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
-				write(2, "exit: numeric argument required\n", 32), exit(2), 2);
+				put_err("bash: exit: "), put_err(args[1]),
+				put_err(": numeric argument required\n"), exit(2), 2);
 	else
 	{
 		i = ft_ps_atoi(args[1]);
@@ -73,9 +79,13 @@ int	ft_is_number(char *str)
 	i = 0;
 	if (!str || !str[0])
 		return (0);
+	while (is_space(str[i]))
+		i++;
 	if (*str == '-' || *str == '+')
 		str++;
 	while (str[i] >= '0' && str[i] <= '9')
+		i++;
+	while (is_space(str[i]))
 		i++;
 	if (!str[i])
 		return (1);

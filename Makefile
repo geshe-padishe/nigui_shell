@@ -6,7 +6,7 @@
 #    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/21 03:16:18 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/25 02:02:46 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,4 +73,5 @@ val:		re
 
 val2:		re
 		valgrind --suppressions=rl_ignore ./${NAME}
+
 .PHONY:		all clean fclean c.o re

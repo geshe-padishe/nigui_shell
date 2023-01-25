@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/14 04:09:58 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/25 02:27:39 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_lst	*tokenize(char *line);
 // Lst.c
 void	free_lst(t_lst *src);
 void	push_lst(t_lst *neww, t_lst *lst);
+char	*put_err(char *str);
 int		lst_len(t_lst *lst);
 t_lst	*new_lst(void);
 void	ft_printlst(t_lst *a);

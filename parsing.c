@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/14 04:35:21 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/25 01:31:39 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (lst)
 	{
 		rm_quote(lst);
-		ft_printlst(lst);
+//		ft_printlst(lst);
 		return (lst);
 	}
 	return (NULL);

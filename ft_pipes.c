@@ -101,8 +101,10 @@ int	ft_wait_procs(int ac, pid_t *list)
 		w = waitpid(list[i], &status, 0);
 		if (w == -1)
 			perror("waitpid");
+		if (WSTOPSIG(status))
+			return (WTERMSIG(status));
 		if (WIFEXITED(status))
-			status = WEXITSTATUS(status);
+			return (WEXITSTATUS(status));
 		i++;
 	}
 	return (status);

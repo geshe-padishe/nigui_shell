@@ -16,12 +16,9 @@ int	find_dollar(char *str)
 {
 	if (!str)
 		return (0);
-	while (*str)
-	{
+	while (*str++)
 		if (*str == '$')
 			return (1);
-		str++;
-	}
 	return (0);
 }
 
@@ -49,7 +46,7 @@ char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	char	*value;
 	char	*new;
 
-	if (len[1] == 1)
+	if (len[1] == 1 && str[len[0] + 1] != '\'')
 	{
 		str[len[0]] *= -1;
 		return (str);

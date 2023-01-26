@@ -71,7 +71,7 @@ int	ft_pwd(char **args)
 
 	if (getcwd(pwd, 1064) == NULL)
 		return (free(args - 1),
-				perror("pwd: error retrieving current directory: getcwd: cannot access parent directories"), 1);
+			perror("pwd: error retrieving current directory: getcwd: cannot access parent directories"), 1);
 	return (printf("%s\n", pwd), free(args - 1), 0);
 }
 

@@ -86,7 +86,7 @@ int	ft_handle_exec(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
 	if (ret == -3)
 	{
 		ret = ft_find_bin(args[0], ft_getenvval("PATH", darr,
-			0, 1), args, darr->list);
+					0, 1), args, darr->list);
 		return (ft_free_all(darr, lst, pipefd, nb_pipes), exit(ret), 1);
 	}
 	return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args), exit(ret), 1);

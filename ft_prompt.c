@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	sigintHandler(int sig)
+void	siginthandler(int sig)
 {
 	(void)sig;
 	write(STDIN_FILENO, "\n", 1);
@@ -46,6 +46,8 @@ int	ft_readline(t_dynarray *darr)
 {
 	char		*line;
 	t_lst		*lst;
+	t_tout		tout;
+	pid_t		list[10000];
 
 	while (1)
 	{
@@ -57,7 +59,12 @@ int	ft_readline(t_dynarray *darr)
 			add_history(line);
 			lst = parse(line, g_vrac.status, darr);
 			if (lst)
-				ft_pipes(lst, ft_pipes_left(lst), darr);
+			{
+				ft_memset(&tout, 0, sizeof(t_tout));
+				tout.darr = darr;
+				tout.list = list;
+				ft_pipes(lst, &tout);
+			}
 		}
 	}
 	rl_clear_history();

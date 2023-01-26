@@ -1,33 +1,5 @@
 #include "minishell.h"
 
-void	ft_env(t_dynarray *darr)
-{
-	uint64_t	i;
-
-	i = 0;
-	while (i < darr->nb_cells)
-	{
-		printf("list[%lu] = %s\n", i, ((char**)darr->list)[i]);
-		i++;
-	}
-}
-
-void	ft_env_ptrs(t_dynarray *darr)
-{
-	char **envp = darr->list;
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		printf("*envp[%d] = %p\n", i, envp[i]);
-		printf("*envp[%d] = %s\n", i, envp[i]);
-		i++;
-	}
-	printf("*envp[%d] = %p\n", i, envp[i]);
-	printf("*envp[%d] = %s\n", i, envp[i]);
-}
-
 int	ft_dyn_env(t_dynarray *darr, char **str)
 {
 	uint64_t	i;
@@ -35,10 +7,9 @@ int	ft_dyn_env(t_dynarray *darr, char **str)
 	if (*str)
 		return (write(2, "env: Too many arguments\n", 24), 1);
 	i = 0;
-	while (i < darr->nb_cells && ((char**)darr->list)[i])
+	while (i < darr->nb_cells && ((char **)darr->list)[i])
 	{
-		//printf("list[%lu] = %s\n", i, ((char**)darr->list)[i]);
-		printf("%s\n", ((char**)darr->list)[i]);
+		printf("%s\n", ((char **)darr->list)[i]);
 		i++;
 	}
 	return (free(str - 1), 0);
@@ -74,8 +45,7 @@ void	ft_print_list(t_lst *token)
 {
 	while (token != NULL)
 	{
-		//dprintf(2, "token = %s\n", token->str);
-		//ft_print_token(*token);
+		printf("token->str = %s\n", token->str);
 		token = token->next;
 	}
 }
@@ -88,32 +58,4 @@ void	ft_print_args(char **args)
 	while (args[++i])
 		dprintf(2, "args[%d] = %s\n", i, args[i]);
 	dprintf(2, "args[%d] = %s\n", i, args[i]);
-}
-
-void	ft_dir_error(char *path_name)
-{
-	write(2, "bash: ", 6);
-	write(2, path_name, ft_strlen(path_name));
-	write(2, ": Is a directory\n", 17);
-}
-
-void	ft_cmd_error(char *path_name)
-{
-	write(2, "bash: ", 6);
-	write(2, path_name, ft_strlen(path_name));
-	write(2, ": command not found\n", 20);
-}
-
-void	ft_perm_error(char *path_name)
-{
-	write(2, "bash: ", 6);
-	write(2, path_name, ft_strlen(path_name));
-	write(2, ": Permission denied\n", 20);
-}
-
-void	ft_nofile_error(char *path_name)
-{
-	write(2, "bash: ", 6);
-	write(2, path_name, ft_strlen(path_name));
-	write(2, ": No such file or directory\n", 28);
 }

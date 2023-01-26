@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:16:13 by hkhater           #+#    #+#             */
-/*   Updated: 2022/12/30 12:16:45 by hkhater          ###   ########.fr       */
+/*   Updated: 2023/01/26 07:25:52 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,11 @@ void	ft_printlst(t_lst *a)
 		tmp = tmp->next;
 		i++;
 	}
+}
+
+t_lst	*first_lst(t_lst *lst)
+{
+	while (lst && lst->prev)
+		lst = lst->prev;
+	return (lst);
 }

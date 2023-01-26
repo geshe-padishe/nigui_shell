@@ -2,6 +2,8 @@
 
 # include "dynarray.h"
 
+int		launch_child(t_tout *tout);
+void	num_arg(char **args);
 char	*ft_get_dir(char *path);
 char	*ft_make_prompt(char *dir);
 int		init_dyn_env(char **envp, t_dynarray *darr);
@@ -15,12 +17,12 @@ int		ft_find_bin(char *bin, char *paths, char **argv, char **envp);
 int		ft_len_bef_col(char *paths);
 void	sigd_handler1(int i);
 void	sigd_handler2(int i);
-void	sigintHandler(int sig);
-int		ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr);
+void	siginthandler(int sig);
+int		ft_pipes(t_lst *lst, t_tout *tout);
 int		ft_wait_procs(int ac, pid_t *list);
 int		ft_close_pipes(int **pipefd, int nb_pipes);
 int		**create_pipe_arr(int nb_pipes);
-void	free_pipe_array(int **pipefd, int	nb_pipes);
+void	free_pipe_array(int **pipefd, int nb_pipes);
 int		ft_pipes_left(t_lst *lst);
 char	*ft_strjoin(char *str, char *str2);
 int		nk_strcmp(char const *str, char const *str2);
@@ -33,7 +35,8 @@ void	ft_print_token(t_lst token);
 void	ft_print_list(t_lst *token);
 int		ft_handle_redirections(t_lst *lst);
 int		ft_open_dup(t_lst *lst, int token, bool apnd_or_not);
-int		ft_handle_exec(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes);
+int		ft_handle_exec(t_lst *lst, t_dynarray *darr,
+			int **pipefd, int nb_pipes);
 int		ft_builtins_exec(t_lst *lst, t_dynarray *darr);
 int		ft_pwd(char **args);
 int		ft_echo(char **args);

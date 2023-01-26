@@ -8,30 +8,28 @@ int	ft_exit(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
 	args = ft_splitargs(lst);
 	if (!args)
 		return (ft_free_all(darr, lst, pipefd, nb_pipes),
-				perror("malloc"), exit(1), 1);
+			perror("malloc"), exit(1), 1);
 	if (!args || !args[0] || !args[1])
 		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
-				exit(g_vrac.status), 1);
+			exit(g_vrac.status), 1);
 	if (args[0] && args[1] && args[2])
 	{
 		if (ft_is_number(args[1]))
 			return (put_err("bash: exit: too many arguments\n"), 0);
-		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
-				put_err("bash: exit: "), put_err(args[1]),
-				put_err(": numeric argument required\n"), exit(2), 2);
+		return (num_arg(args), ft_free_all(darr, lst, pipefd, nb_pipes),
+			exit(2), 1);
 	}
 	if (!ft_is_number(args[1]))
-		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
-				put_err("bash: exit: "), put_err(args[1]),
-				put_err(": numeric argument required\n"), exit(2), 2);
+		return (num_arg(args), ft_free_all(darr, lst, pipefd, nb_pipes),
+			exit(2), 2);
 	else
 	{
 		i = ft_ps_atoi(args[1]);
 		return (ft_free_all(darr, lst, pipefd, nb_pipes),
-				free(args), exit((unsigned char)i), i);
+			free(args), exit((unsigned char)i), i);
 	}
 	return (ft_free_all(darr, lst, pipefd, nb_pipes),
-			free(args), exit(1), 1);
+		free(args), exit(1), 1);
 }
 
 int	ft_atoi_sign(char **nstr)

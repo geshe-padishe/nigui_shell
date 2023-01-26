@@ -25,67 +25,29 @@ int	ft_pipes_left(t_lst *lst)
 	return (pipes);
 }
 
-int	ft_pipes(t_lst *lst, int nb_pipes, t_dynarray *darr)
+int	ft_pipes(t_lst *lst, t_tout *tout)
 {
-	int		**pipefd;
-	int		i;
-	pid_t	list[nb_pipes + 1];
-	int		pipes_left;
-	int		fd_in;
-	int		ret_built;
-	int		ret_wait;
-	int		b_or_w;
-	t_lst	*start_lst;
-
 	ft_print_list(lst);
-	if (!lst)
-		return (1);
-	pipes_left = nb_pipes;
-	pipefd = NULL;
-	if (nb_pipes)
+	tout->lst = lst;
+	tout->pipes_left = ft_pipes_left(lst);
+	tout->nb_pipes = tout->pipes_left;
+	if (tout->nb_pipes)
 	{
-		pipefd = create_pipe_arr(nb_pipes);
-		if (!pipefd)
+		tout->pipefd = create_pipe_arr(tout->nb_pipes);
+		if (!tout->pipefd)
 			return (perror("malloc"), 0);
 	}
-	i = 0;
-	start_lst = lst;
 	signal(SIGINT, SIG_IGN);
-	while (lst && lst->str)
-	{
-		ret_built = -3;
-		b_or_w = 0;
-		if (!nb_pipes)
-			ret_built = ft_builtins(find_bin_lst(lst), darr, pipefd, nb_pipes);
-		if (ret_built == -3) //and if builtins return 0?
-		{
-			list[i] = fork();
-			if (list[i] == 0)
-			{
-				signal(SIGINT, SIG_DFL);
-				signal(SIGQUIT, SIG_DFL);
-				if (ft_handle_pipe(pipefd, pipes_left, nb_pipes, &fd_in))
-					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(1), 1);
-				if 	(ft_handle_redirections(lst))
-					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(1), 1);
-				if (ft_handle_exec(find_bin_lst(lst), darr, pipefd, nb_pipes))
-					return (ft_free_all(darr, start_lst, pipefd, nb_pipes), exit(127), 1);
-				exit(1);
-			}
-			b_or_w = 1;
-			i++;
-		}
-		pipes_left--;
-		lst = ft_next_pipe(lst);
-	}
-	ft_close_pipes(pipefd, nb_pipes);
-	ret_wait = ft_wait_procs(i, list);
-	if (b_or_w)
-		g_vrac.status = ret_wait;
+	launch_child(tout);
+	ft_close_pipes(tout->pipefd, tout->nb_pipes);
+	tout->ret_wait = ft_wait_procs(tout->i, tout->list);
+	if (tout->b_or_w)
+		g_vrac.status = tout->ret_wait;
 	else
-		g_vrac.status = ret_built;
-	signal(SIGINT, sigintHandler);
-	return (free_pipe_array(pipefd, nb_pipes), free_lst(start_lst), 0);
+		g_vrac.status = tout->ret_built;
+	signal(SIGINT, siginthandler);
+	return (free_pipe_array(tout->pipefd, tout->nb_pipes),
+		free_lst(first_lst(lst)), 0);
 }
 
 int	ft_wait_procs(int ac, pid_t *list)
@@ -101,12 +63,12 @@ int	ft_wait_procs(int ac, pid_t *list)
 		w = waitpid(list[i], &status, 0);
 		if (w == -1)
 			perror("waitpid");
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		if (WSTOPSIG(status))
-			return (WTERMSIG(status));
 		i++;
 	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WSTOPSIG(status))
+		return (WTERMSIG(status));
 	return (status);
 }
 
@@ -130,6 +92,6 @@ int	ft_builtins(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
 	else if (!nk_strcmp(lst->str, "unset"))
 		return (ft_unset(darr, args + 1));
 	else if (!nk_strcmp(lst->str, "exit"))
-		return (free(args), ft_exit(lst, darr, pipefd, nb_pipes)); //FINIR EXIT
+		return (free(args), ft_exit(lst, darr, pipefd, nb_pipes));
 	return (free(args), -3);
 }

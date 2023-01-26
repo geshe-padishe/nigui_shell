@@ -6,7 +6,7 @@
 #    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/25 02:02:46 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/26 10:40:32 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRCS	=	dynarray2.c \
 			syntax.c \
 			tokenization.c \
 			niki_utils.c \
+			ft_print_errors.c \
 			ft_splitargs.c
 
 OBJS 	=	${SRCS:.c=.o}
@@ -69,7 +70,7 @@ fclean:		clean
 re:			fclean all
 
 val:		re
-		valgrind --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore --track-origins=yes ./${NAME}
+		valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore --track-origins=yes ./${NAME}
 
 val2:		re
 		valgrind --suppressions=rl_ignore ./${NAME}

@@ -65,7 +65,8 @@ int	ft_envcmp(char *str, char *str2)
 	return (-1);
 }
 
-char	*ft_getenvval(char *str, t_dynarray *darr, bool val_or_all, bool un_or_exp)
+char	*ft_getenvval(char *str, t_dynarray *darr,
+		bool val_or_all, bool un_or_exp)
 {
 	int		i;
 	int		index;

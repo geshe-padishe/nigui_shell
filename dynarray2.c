@@ -64,10 +64,10 @@ int	dynarray_extract(t_dynarray *darr, uint64_t index, uint64_t nb_ext)
 	{
 		ptr = darr->list + (index + nb_ext) * darr->cell_size;
 		ft_memcpy(darr->tmp, ptr,
-				(darr->nb_cells - nb_ext - index) * darr->cell_size);
+			(darr->nb_cells - nb_ext - index) * darr->cell_size);
 		memcpy(darr->list + index * darr->cell_size,
-				darr->tmp,
-				(darr->nb_cells - (index + nb_ext)) * darr->cell_size);
+			darr->tmp,
+			(darr->nb_cells - (index + nb_ext)) * darr->cell_size);
 		darr->nb_cells -= nb_ext;
 	}
 	return (0);

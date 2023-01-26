@@ -13,7 +13,6 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
 			return (perror("dup2"), ft_close_pipes(pipefd, nb_pipes),
 				free_pipe_array(pipefd, nb_pipes), -1);
 	}
-/*separation*/
 	if (pipes_left != 0)
 	{
 		fd_out = dup2(pipefd[nb_pipes - pipes_left][1], STDOUT_FILENO);
@@ -39,11 +38,44 @@ t_lst	*find_bin_lst(t_lst *lst)
 	return (NULL);
 }
 
-//	lst->str = "ls -la fsdljgod"
-//	lst->token = 0 string
-//				= 1 pipe
-//				= 2 >
-//				= 3 <
-//				= 4 >>
-//				= 5 <<
-//
+int	child_routine(t_tout *tout)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (ft_handle_pipe(tout->pipefd, tout->pipes_left,
+			tout->nb_pipes, &tout->fd_in))
+		return (ft_free_all(tout->darr, first_lst(tout->lst),
+				tout->pipefd, tout->nb_pipes), exit(1), 1);
+	if (ft_handle_redirections(tout->lst))
+		return (ft_free_all(tout->darr, first_lst(tout->lst),
+				tout->pipefd, tout->nb_pipes), exit(1), 1);
+	if (ft_handle_exec(find_bin_lst(tout->lst), tout->darr,
+			tout->pipefd, tout->nb_pipes))
+		return (ft_free_all(tout->darr, first_lst(tout->lst),
+				tout->pipefd, tout->nb_pipes), exit(127), 1);
+	exit(1);
+	return (0);
+}
+
+int	launch_child(t_tout *tout)
+{
+	while (tout->lst && tout->lst->str)
+	{
+		tout->ret_built = -3;
+		tout->b_or_w = 0;
+		if (!tout->nb_pipes)
+			tout->ret_built = ft_builtins(find_bin_lst(tout->lst),
+					tout->darr, tout->pipefd, tout->nb_pipes);
+		if (tout->ret_built == -3)
+		{
+			tout->list[tout->i] = fork();
+			if (tout->list[tout->i] == 0)
+				child_routine(tout);
+			tout->b_or_w = 1;
+			tout->i++;
+		}
+		tout->pipes_left--;
+		tout->lst = ft_next_pipe(tout->lst);
+	}
+	return (0);
+}

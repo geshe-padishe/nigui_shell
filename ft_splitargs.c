@@ -1,17 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_splitargs.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 03:48:03 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/26 03:52:12 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-char **ft_splitargs(t_lst *lst)
+int	ft_count_args(t_lst *lst)
 {
-	t_lst	*start_lst;
-	char	**argv;
-	size_t	args;
-	size_t	i;
+	int	args;
 
-	start_lst = lst;
 	args = 0;
-	i = 0;
 	while (lst && lst->token != 1)
 	{
 		if (lst->token == 0)
@@ -20,7 +27,20 @@ char **ft_splitargs(t_lst *lst)
 			lst = lst->next;
 		lst = lst->next;
 	}
-	argv = malloc(sizeof(char**) * (args + 1));
+	return (args);
+}
+
+char	**ft_splitargs(t_lst *lst)
+{
+	t_lst	*start_lst;
+	char	**argv;
+	size_t	args;
+	size_t	i;
+
+	start_lst = lst;
+	args = ft_count_args(lst);
+	i = 0;
+	argv = malloc(sizeof(char **) * (args + 1));
 	if (!argv)
 		return (NULL);
 	while (start_lst && start_lst->token != 1)

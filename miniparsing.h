@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/25 02:27:39 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/26 07:26:14 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		recognize_op(char *str);
 t_lst	*tokenize(char *line);
 
 // Lst.c
+t_lst	*first_lst(t_lst *lst);
 void	free_lst(t_lst *src);
 void	push_lst(t_lst *neww, t_lst *lst);
 char	*put_err(char *str);

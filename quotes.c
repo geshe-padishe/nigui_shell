@@ -25,11 +25,7 @@ int	var_name_len(char *str)
 	while (str[i] && is_alnumund(str[i]))
 	{
 		if (ft_isdigit(str[0]))
-		{
-			while (ft_isdigit(str[i]))
-				i++;
-			break ;
-		}
+			return (1);
 		i++;
 	}
 	return (i);

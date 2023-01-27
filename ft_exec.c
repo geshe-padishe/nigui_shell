@@ -12,12 +12,30 @@
 
 #include "minishell.h"
 
+static
+char	*ft_strchr(char const *s, int c)
+{
+	if (c == '\0')
+	{
+		while (*s)
+			s++;
+		return ((char *)s);
+	}
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	return (0);
+}
+
 char	*ft_check_bin_path(char *bin, char *paths)
 {
 	char	*bin_path;
 	char	*init_path;
 
-	if (paths[0] != '/')
+	if (ft_strchr(bin, '/'))
 		bin_path = malloc(ft_strlen(bin) + ft_len_bef_col(paths) + 5);
 	else
 		bin_path = malloc(ft_strlen(bin) + ft_len_bef_col(paths) + 4);
@@ -65,9 +83,9 @@ int	ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 
 	if (!bin[0])
 		return (write(2, "bash: : command not found\n", 26), 127);
-	else if (bin[0] == '.' || bin[0] == '/')
+	else if (ft_strchr(bin, '/'))
 		return (ft_launch_bin(bin, argv, envp));
-	while (*paths)
+	while (paths && *paths)
 	{
 		bin_path = ft_check_bin_path(bin, paths);
 		if (bin_path == (char *)3)

@@ -1,35 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_builtins2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 23:46:17 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/26 23:59:50 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	ft_exit(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
+int	ft_exit(t_tout *tout, char **args)
 {
-	int		i;
-	char	**args;
+	int	i;
 
-	args = ft_splitargs(lst);
-	if (!args)
-		return (ft_free_all(darr, lst, pipefd, nb_pipes),
-			perror("malloc"), exit(1), 1);
-	if (!args || !args[0] || !args[1])
-		return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args),
+	if (!(args - 1) || !args[0])
+		return (ft_free_all(tout->darr, tout->lst,
+				tout->pipefd, tout->nb_pipes), free(args - 1),
 			exit(g_vrac.status), 1);
-	if (args[0] && args[1] && args[2])
+	if (args[0] && args[1])
 	{
-		if (ft_is_number(args[1]))
+		if (ft_is_number(args[0]))
 			return (put_err("bash: exit: too many arguments\n"), 0);
-		return (num_arg(args), ft_free_all(darr, lst, pipefd, nb_pipes),
+		return (num_arg(args - 1), ft_free_all(tout->darr, tout->lst,
+				tout->pipefd, tout->nb_pipes),
 			exit(2), 1);
 	}
-	if (!ft_is_number(args[1]))
-		return (num_arg(args), ft_free_all(darr, lst, pipefd, nb_pipes),
-			exit(2), 2);
+	if (!ft_is_number(args[0]))
+		return (num_arg(args - 1), ft_free_all(tout->darr,
+				tout->lst, tout->pipefd, tout->nb_pipes),
+			exit(2), 1);
 	else
 	{
-		i = ft_ps_atoi(args[1]);
-		return (ft_free_all(darr, lst, pipefd, nb_pipes),
-			free(args), exit((unsigned char)i), i);
+		i = ft_ps_atoi(args[0]);
+		return (ft_free_all(tout->darr, tout->lst,
+				tout->pipefd, tout->nb_pipes),
+			free(args - 1), exit((unsigned char)i), i);
 	}
-	return (ft_free_all(darr, lst, pipefd, nb_pipes),
-		free(args), exit(1), 1);
 }
 
 int	ft_atoi_sign(char **nstr)

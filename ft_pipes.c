@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pipes.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 00:00:38 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 02:24:17 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_lst	*ft_next_pipe(t_lst *lst)
@@ -68,30 +80,30 @@ int	ft_wait_procs(int ac, pid_t *list)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WSTOPSIG(status))
-		return (WTERMSIG(status));
+		return (WTERMSIG(status) + 128);
 	return (status);
 }
 
-int	ft_builtins(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
+int	ft_builtins(t_tout *tout)
 {
 	char	**args;
 
-	args = ft_splitargs(lst);
+	args = ft_splitargs(tout->lst);
 	if (!args)
 		return (perror("malloc"), 1);
-	if (!nk_strcmp(lst->str, "echo"))
+	if (!nk_strcmp(tout->lst->str, "echo"))
 		return (ft_echo(args + 1));
-	else if (!nk_strcmp(lst->str, "pwd"))
+	else if (!nk_strcmp(tout->lst->str, "pwd"))
 		return (ft_pwd(args + 1));
-	else if (!nk_strcmp(lst->str, "env"))
-		return (ft_dyn_env(darr, args + 1));
-	else if (!nk_strcmp(lst->str, "cd"))
+	else if (!nk_strcmp(tout->lst->str, "env"))
+		return (ft_dyn_env(tout->darr, args + 1));
+	else if (!nk_strcmp(tout->lst->str, "cd"))
 		return (ft_cd(args + 1));
-	else if (!nk_strcmp(lst->str, "export"))
-		return (ft_export(darr, args + 1));
-	else if (!nk_strcmp(lst->str, "unset"))
-		return (ft_unset(darr, args + 1));
-	else if (!nk_strcmp(lst->str, "exit"))
-		return (free(args), ft_exit(lst, darr, pipefd, nb_pipes));
+	else if (!nk_strcmp(tout->lst->str, "export"))
+		return (ft_export(tout->darr, args + 1, (char **)tout->darr->list));
+	else if (!nk_strcmp(tout->lst->str, "unset"))
+		return (ft_unset(tout->darr, args + 1));
+	else if (!nk_strcmp(tout->lst->str, "exit"))
+		return (ft_exit(tout, args + 1));
 	return (free(args), -3);
 }

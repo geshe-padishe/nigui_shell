@@ -1,4 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 23:47:01 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 04:26:25 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+int	ft_print_env(t_dynarray *darr)
+{
+	uint64_t	i;
+
+	i = 0;
+	while (i < darr->nb_cells && ((char **)darr->list)[i])
+	{
+		printf("%s\n", ((char **)darr->list)[i]);
+		i++;
+	}
+	return (0);
+}
 
 int	ft_dyn_env(t_dynarray *darr, char **str)
 {

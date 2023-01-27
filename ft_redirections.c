@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_redirections.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 00:01:57 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 07:38:40 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_handle_redirections(t_lst *lst)
@@ -25,15 +37,19 @@ int	ft_open_dup(t_lst *lst, int token, bool apnd_or_not)
 		if (token == 4)
 			apnd_or_not = 1;
 		fd = ft_open_create(lst->next->str, apnd_or_not, token);
-		if (fd != -1 && dup2(fd, STDOUT_FILENO) == -1)
-			return (close(fd), perror("dup"), -1);
+		if (fd == -1)
+			return (-1);
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			return (close(fd), perror("dup2"), -1);
 		close(fd);
 	}
 	else
 	{
 		fd = ft_open_create(lst->next->str, 0, token);
-		if (fd != -1 && dup2(fd, STDIN_FILENO) == -1)
-			return (close(fd), perror("dup"), -1);
+		if (fd == -1)
+			return (-1);
+		if (dup2(fd, STDIN_FILENO) == -1)
+			return (close(fd), perror("dup2"), -1);
 	}
 	if (fd != -1)
 		close(fd);

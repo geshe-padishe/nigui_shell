@@ -6,7 +6,7 @@
 /*   By: nikotikcho <marvin@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 18:11:57 by nikotikch         #+#    #+#             */
-/*   Updated: 2023/01/13 05:58:43 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 04:34:32 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	init_dynarray(t_dynarray *dynarray, uint64_t nb_cells, size_t cell_size)
 		return (-1);
 	ft_memset(dynarray, 0, sizeof(t_dynarray));
 	dynarray->byte_size = cell_size * nb_cells;
+	if (nb_cells == 0)
+		dynarray->byte_size = 1;
 	dynarray->list = malloc(dynarray->byte_size);
 	if (!(dynarray->list))
 		return (perror("malloc"), -1);
@@ -27,8 +29,6 @@ int	init_dynarray(t_dynarray *dynarray, uint64_t nb_cells, size_t cell_size)
 		free(dynarray->list);
 		return (perror("malloc"), -1);
 	}
-	if (nb_cells == 0)
-		dynarray->byte_size = 1;
 	dynarray->cell_size = cell_size;
 	return (0);
 }

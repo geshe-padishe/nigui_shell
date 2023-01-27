@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nikishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 23:46:47 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 04:23:26 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef NIKISHELL_H
 
 # include "dynarray.h"
 
+int		ft_print_env(t_dynarray *darr);
 int		launch_child(t_tout *tout);
 void	num_arg(char **args);
 char	*ft_get_dir(char *path);
@@ -35,12 +48,11 @@ void	ft_print_token(t_lst token);
 void	ft_print_list(t_lst *token);
 int		ft_handle_redirections(t_lst *lst);
 int		ft_open_dup(t_lst *lst, int token, bool apnd_or_not);
-int		ft_handle_exec(t_lst *lst, t_dynarray *darr,
-			int **pipefd, int nb_pipes);
+int		ft_handle_exec(t_tout *tout);
 int		ft_builtins_exec(t_lst *lst, t_dynarray *darr);
 int		ft_pwd(char **args);
 int		ft_echo(char **args);
-int		ft_builtins(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes);
+int		ft_builtins(t_tout *tout);
 void	ft_print_args(char **args);
 void	ft_env(t_dynarray *darr);
 int		ft_is_number(char *str);
@@ -48,9 +60,9 @@ int		ft_atoi_sign(char **nstr);
 int		ft_ps_atoi(char *nstr);
 char	**ft_splitargs(t_lst *lst);
 int		ft_is_flag(char *str);
-int		ft_exit(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes);
+int		ft_exit(t_tout *tout, char **args);
 int		ft_close_free(int **pipefd, int nb_pipes, t_lst *lst, t_dynarray *darr);
-int		ft_export(t_dynarray *darr, char **str);
+int		ft_export(t_dynarray *darr, char **str, char **envp);
 int		ft_unset(t_dynarray *darr, char **str);
 int		ft_cd(char **str);
 t_lst	*find_bin_lst(t_lst *lst);
@@ -62,5 +74,6 @@ void	ft_nofile_error(char *path_name);
 void	ft_env_ptrs(t_dynarray *darr);
 void	ft_free_env(t_dynarray *darr);
 void	ft_free_all(t_dynarray *darr, t_lst *lst, int **pipefd, int nb_pipes);
+void	ft_free_bcwrd(t_dynarray *darr, int i);
 
 #endif

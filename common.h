@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   common.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 00:00:17 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 00:45:20 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef COMMON_H
 # define COMMON_H
 
@@ -50,6 +62,8 @@ typedef struct s_tout
 	t_lst		*lst;
 	t_dynarray	*darr;
 	int			**pipefd;
+	int			std_out;
+	int			std_in;
 	int			nb_pipes;
 	int			i;
 	int			pipes_left;

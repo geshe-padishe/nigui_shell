@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_builtins.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 00:01:49 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 00:01:50 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_cd(char **str)
@@ -36,12 +48,12 @@ int	ft_unset(t_dynarray *darr, char **str)
 	return (free(str - 1), 0);
 }
 
-int	ft_export(t_dynarray *darr, char **str)
+int	ft_export(t_dynarray *darr, char **str, char **envp)
 {
-	int		i_ind[2] = {0, 0};
-	char	**envp;
-	char	*envpi;
+	static int		i_ind[2];
+	char			*envpi;
 
+	ft_memset(i_ind, 0, 2 * sizeof(int));
 	while (str && str[i_ind[0]])
 	{
 		envp = darr->list;
@@ -71,7 +83,8 @@ int	ft_pwd(char **args)
 
 	if (getcwd(pwd, 1064) == NULL)
 		return (free(args - 1),
-			perror("pwd: error retrieving current directory: getcwd: cannot access parent directories"), 1);
+			perror("pwd: error retrieving current directory:\
+				getcwd: cannot access parent directories"), 1);
 	return (printf("%s\n", pwd), free(args - 1), 0);
 }
 

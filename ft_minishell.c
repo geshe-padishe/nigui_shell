@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_minishell.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 00:00:51 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 01:06:55 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
@@ -49,8 +61,7 @@ int	child_routine(t_tout *tout)
 	if (ft_handle_redirections(tout->lst))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),
 				tout->pipefd, tout->nb_pipes), exit(1), 1);
-	if (ft_handle_exec(find_bin_lst(tout->lst), tout->darr,
-			tout->pipefd, tout->nb_pipes))
+	if (ft_handle_exec(tout))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),
 				tout->pipefd, tout->nb_pipes), exit(127), 1);
 	exit(1);
@@ -64,8 +75,7 @@ int	launch_child(t_tout *tout)
 		tout->ret_built = -3;
 		tout->b_or_w = 0;
 		if (!tout->nb_pipes)
-			tout->ret_built = ft_builtins(find_bin_lst(tout->lst),
-					tout->darr, tout->pipefd, tout->nb_pipes);
+			tout->ret_built = ft_builtins(tout);
 		if (tout->ret_built == -3)
 		{
 			tout->list[tout->i] = fork();

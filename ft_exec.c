@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_exec.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 00:00:57 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/27 07:15:09 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*ft_check_bin_path(char *bin, char *paths)
@@ -74,20 +86,23 @@ int	ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 	return (free(argv), ft_cmd_error(bin), 127);
 }
 
-int	ft_handle_exec(t_lst *lst, t_dynarray *darr, int **pipefd, int nb_pipes)
+int	ft_handle_exec(t_tout *tout)
 {
 	char	**args;
 	int		ret;
 
-	args = ft_splitargs(lst);
+	args = ft_splitargs(tout->lst);
 	if (!args)
-		return (ft_free_all(darr, lst, pipefd, nb_pipes), exit(1), 1);
-	ret = ft_builtins(lst, darr, pipefd, nb_pipes);
+		return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
+				tout->nb_pipes), exit(1), 1);
+	ret = ft_builtins(tout);
 	if (ret == -3)
 	{
-		ret = ft_find_bin(args[0], ft_getenvval("PATH", darr,
-					0, 1), args, darr->list);
-		return (ft_free_all(darr, lst, pipefd, nb_pipes), exit(ret), 1);
+		ret = ft_find_bin(args[0], ft_getenvval("PATH", tout->darr,
+					0, 0), args, tout->darr->list);
+		return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
+				tout->nb_pipes), exit(ret), 1);
 	}
-	return (ft_free_all(darr, lst, pipefd, nb_pipes), free(args), exit(ret), 1);
+	return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
+			tout->nb_pipes), free(args), exit(ret), 1);
 }

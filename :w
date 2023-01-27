@@ -10,17 +10,15 @@ int	init_dyn_env(char **envp, t_dynarray *darr)
 	nul = NULL;
 	while (envp[i])
 		i++;
-	if (init_dynarray(darr, i + 10, sizeof(char *)))
-		return (-1);
-	i = -1;
-	while (envp[++i])
+	init_dynarray(darr, i + 10, sizeof(char *)); // A SECURE
+	i = 0;
+	while (envp[i])
 	{
 		str = malloc(ft_strlen(envp[i]) + 1); //A SECURE
-		if (!str)
-			return (ft_free_bcwrd(darr, i - 1), -1);
 		ft_strcpy(envp[i], str);
-		if (push_dynarray(darr, &str, 1, 0))
-			return (free(str), ft_free_bcwrd(darr, i - 1), -1);
+		if (push_dynarray(darr, &str, 1, 1))
+			return (-1);
+		i++;
 	}
 	if (push_dynarray(darr, &nul, 1, 0))
 		return (-1);

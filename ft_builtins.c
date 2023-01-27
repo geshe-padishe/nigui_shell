@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:49 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 00:01:50 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:24:55 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_export(t_dynarray *darr, char **str, char **envp)
 	{
 		envp = darr->list;
 		if (!ft_can_exp(str[i_ind[0]]))
-			return (free(str - 1), 1);
+			return (free(str - 1), 0);
 		i_ind[1] = ft_getenv_index(envp, darr->nb_cells, str[i_ind[0]], 1);
 		envpi = malloc(ft_strlen(str[i_ind[0]]) + 1);
 		if (!envpi)

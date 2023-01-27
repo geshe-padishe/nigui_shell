@@ -48,6 +48,16 @@ static void	interpret(char *str, int rev)
 	}
 }
 
+int		redir_check(char *line)
+{
+	if (!line)
+		return (0);
+	while (*line)
+		if (is_redir(*line++))
+			return (write(2, "Syntax error: Redirections not handled\n", 39), 0);
+	return (1);
+}
+
 static void	rm_quote(t_lst *lst)
 {
 	char	*old;
@@ -74,7 +84,7 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (!quote_check(line))
 		return (0);
 	interpret(line, 0);
-	if (!syntax_check(line))
+	if (!syntax_check(line) || !redir_check(line))
 		return (0);
 	expanded = my_expand(line, ext, darr);
 	if (!expanded)

@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 21:40:18 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 22:10:30 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,26 @@ int	ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 	char	*bin_path;
 
 	if (!bin[0])
-		return (free(argv), write(2, "bash: : command not found\n", 26), 127);
+		return (write(2, "bash: : command not found\n", 26), 127);
 	else if (bin[0] == '.' || bin[0] == '/')
 		return (ft_launch_bin(bin, argv, envp));
 	while (*paths)
 	{
 		bin_path = ft_check_bin_path(bin, paths);
 		if (bin_path == (char *)3)
-			return (free(argv), perror("ft_find_bin"), 1);
+			return (perror("ft_find_bin"), 1);
 		if (!access(bin_path, F_OK))
 			if (!ft_is_dir(bin_path))
 				if (!access(bin_path, X_OK))
 					if (execve(bin_path, argv, envp))
-						return (free(argv), perror("execve"),
+						return (perror("execve"),
 							free(bin_path), 1);
 		free(bin_path);
 		paths += ft_len_bef_col(paths) + 1;
 		if (*paths)
 			paths += 1;
 	}
-	return (free(argv), ft_cmd_error(bin), 127);
+	return (ft_cmd_error(bin), 127);
 }
 
 int	ft_handle_exec(t_tout *tout)
@@ -91,18 +91,18 @@ int	ft_handle_exec(t_tout *tout)
 	char	**args;
 	int		ret;
 
-	args = ft_splitargs(find_bin_lst(tout->lst));
-	if (!args)
-		return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
-				tout->nb_pipes), exit(1), 1);
 	ret = ft_builtins(tout);
 	if (ret == -3)
 	{
+		args = ft_splitargs(find_bin_lst(tout->lst));
+		if (!args)
+			return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
+					tout->nb_pipes), exit(1), 1);
 		ret = ft_find_bin(args[0], ft_getenvval("PATH", tout->darr,
 					0, 0), args, tout->darr->list);
-		return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
+		return (free(args), ft_free_all(tout->darr, tout->lst, tout->pipefd,
 				tout->nb_pipes), exit(ret), 1);
 	}
 	return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
-			tout->nb_pipes), free(args), exit(ret), 1);
+			tout->nb_pipes), exit(ret), 1);
 }

@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:49 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 21:24:55 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:56:35 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,5 @@ int	ft_echo(char **args)
 	}
 	if (!vars[1])
 		printf("\n");
-	return (free(args - 1), 1);
+	return (free(args - 1), 0);
 }

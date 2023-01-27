@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:03:25 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 00:03:26 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:52:17 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	ft_nofile_error(char *path_name)
 
 void	num_arg(char **args)
 {
-	free(args);
 	put_err("bash: exit: ");
 	put_err(args[1]);
 	put_err(": numeric argument required\n");
+	free(args);
 }

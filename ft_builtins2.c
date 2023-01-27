@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/26 23:59:50 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:54:46 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_exit(t_tout *tout, char **args)
 	if (args[0] && args[1])
 	{
 		if (ft_is_number(args[0]))
-			return (put_err("bash: exit: too many arguments\n"), 0);
+			return (free(args - 1), put_err("bash: exit: too many arguments\n"), 0);
 		return (num_arg(args - 1), ft_free_all(tout->darr, tout->lst,
 				tout->pipefd, tout->nb_pipes),
 			exit(2), 1);

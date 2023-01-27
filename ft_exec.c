@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 07:15:09 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:10:30 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_find_bin(char *bin, char *paths, char **argv, char **envp)
 		if (*paths)
 			paths += 1;
 	}
-	return (free(argv), ft_cmd_error(bin), 127);
+	return (ft_cmd_error(bin), 127);
 }
 
 int	ft_handle_exec(t_tout *tout)
@@ -91,7 +91,7 @@ int	ft_handle_exec(t_tout *tout)
 	char	**args;
 	int		ret;
 
-	args = ft_splitargs(tout->lst);
+	args = ft_splitargs(find_bin_lst(tout->lst));
 	if (!args)
 		return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
 				tout->nb_pipes), exit(1), 1);

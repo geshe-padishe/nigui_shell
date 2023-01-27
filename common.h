@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 00:45:20 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:09:58 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ typedef struct s_tout
 	int			**pipefd;
 	int			std_out;
 	int			std_in;
+	int			out_ch;
+	int			in_ch;
 	int			nb_pipes;
 	int			i;
 	int			pipes_left;

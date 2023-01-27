@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:47 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 04:23:26 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:08:39 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in);
 void	ft_print_pipes(int **pipefd, int nb_pipes);
 void	ft_print_token(t_lst token);
 void	ft_print_list(t_lst *token);
-int		ft_handle_redirections(t_lst *lst);
+int		ft_handle_redirections(t_tout *tout, int alone);
 int		ft_open_dup(t_lst *lst, int token, bool apnd_or_not);
 int		ft_handle_exec(t_tout *tout);
 int		ft_builtins_exec(t_lst *lst, t_dynarray *darr);

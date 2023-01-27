@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 03:48:03 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/26 03:52:12 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 17:46:45 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	**ft_splitargs(t_lst *lst)
 	size_t	args;
 	size_t	i;
 
+	if (!lst)
+		return (NULL);
 	start_lst = lst;
 	args = ft_count_args(lst);
 	i = 0;

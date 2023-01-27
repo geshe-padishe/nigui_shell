@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:51 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 01:06:55 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:08:53 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ int	child_routine(t_tout *tout)
 			tout->nb_pipes, &tout->fd_in))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),
 				tout->pipefd, tout->nb_pipes), exit(1), 1);
-	if (ft_handle_redirections(tout->lst))
-		return (ft_free_all(tout->darr, first_lst(tout->lst),
-				tout->pipefd, tout->nb_pipes), exit(1), 1);
 	if (ft_handle_exec(tout))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),
 				tout->pipefd, tout->nb_pipes), exit(127), 1);
@@ -70,6 +67,7 @@ int	child_routine(t_tout *tout)
 
 int	launch_child(t_tout *tout)
 {
+	tout->i = 0;
 	while (tout->lst && tout->lst->str)
 	{
 		tout->ret_built = -3;

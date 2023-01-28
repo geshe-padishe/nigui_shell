@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:38 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 00:14:49 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 00:33:37 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_pipes_left(t_lst *lst)
 
 int	ft_pipes(t_lst *lst, t_tout *tout)
 {
-	//ft_print_list(lst);
+	ft_print_list(lst);
 	tout->lst = lst;
 	tout->pipes_left = ft_pipes_left(lst);
 	tout->nb_pipes = tout->pipes_left;
@@ -78,10 +78,12 @@ int	ft_wait_procs(int ac, pid_t *list)
 			perror("waitpid");
 		i++;
 	}
-	if (WSTOPSIG(status))
-		return (WTERMSIG(status) + 128);
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+		status = WEXITSTATUS(status);
+	if (status == 131)
+		put_err("Quit (core dumped)\n");
+	if (status == 2)
+		put_err("\n");
 	return (status);
 }
 

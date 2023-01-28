@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/26 07:26:14 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 00:56:08 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "dynarray.h"
 
-# define SYNTAX_ERR     "bash: syntax error near unexpected token `"
+# define SYNTAX_ERR "bash: syntax error near unexpected token `"
 
 // Parsing.c
 t_lst	*parse(char *line, int ext, t_dynarray *darr);

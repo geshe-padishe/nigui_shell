@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/28 01:23:14 by ngenadie          #+#    #+#             */
+/*   Updated: 2023/01/28 01:23:15 by ngenadie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	init_dyn_env(char **envp, t_dynarray *darr)
@@ -15,7 +27,7 @@ int	init_dyn_env(char **envp, t_dynarray *darr)
 	i = -1;
 	while (envp[++i])
 	{
-		str = malloc(ft_strlen(envp[i]) + 1); //A SECURE
+		str = malloc(ft_strlen(envp[i]) + 1);
 		if (!str)
 			return (ft_free_bcwrd(darr, i - 1), -1);
 		ft_strcpy(envp[i], str);

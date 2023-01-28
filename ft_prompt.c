@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:45:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 04:26:20 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:14:07 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_readline(t_dynarray *darr)
 	{
 		line = readline("> ");
 		if (line == NULL)
-			return (ft_free_env(darr), 0);
+			return (printf("exit\n"), ft_free_env(darr), 0);
 		if (*line)
 		{
 			add_history(line);

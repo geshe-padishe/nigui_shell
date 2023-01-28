@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:16:13 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/26 07:25:52 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:25:05 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,27 +72,6 @@ void	free_lst(t_lst *src)
 	}
 	src = 0;
 	next = 0;
-}
-
-void	ft_printlst(t_lst *a)
-{
-	int		i;
-	t_lst	*tmp;
-
-	i = 0;
-	tmp = a;
-	while (tmp->prev != NULL)
-		tmp = tmp->prev;
-	printf("TOKENS:\n");
-	while (tmp)
-	{
-		if (tmp->str == NULL)
-			printf("maillon nul\n");
-		if (tmp->str)
-			printf("%d -> %s\n", i + 1, tmp->str);
-		tmp = tmp->next;
-		i++;
-	}
 }
 
 t_lst	*first_lst(t_lst *lst)

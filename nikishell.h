@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:47 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 21:08:39 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:20:28 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 # include "dynarray.h"
 
+# define PWD_ER "pwd: error retrieving current directory: "
+# define CWD_ER "getcwd: cannot access parent directories: "
+# define NO_FILE "No such file or directory"
+# define ARGS "bash: exit: too many arguments\n"
+
+char	*ft_strchr(char const *s, int c);
 int		ft_print_env(t_dynarray *darr);
 int		launch_child(t_tout *tout);
 void	num_arg(char **args);

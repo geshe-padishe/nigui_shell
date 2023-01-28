@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:49 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 21:56:35 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:04:06 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,8 @@ int	ft_pwd(char **args)
 	char	pwd[1064];
 
 	if (getcwd(pwd, 1064) == NULL)
-		return (free(args - 1),
-			perror("pwd: error retrieving current directory:\
-				getcwd: cannot access parent directories"), 1);
+		return (free(args - 1), put_err(PWD_ER), put_err(CWD_ER),
+			perror(""), 1);
 	return (printf("%s\n", pwd), free(args - 1), 0);
 }
 

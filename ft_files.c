@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:47:24 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 20:02:40 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:21:15 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_open_create2(char *path2, int token, int apnd_or_not)
 			return (free(path2), perror("open"), -1);
 	}
 	else
-		return (free(path2), perror("access"), -1); //LE PROBLEME EST LA
+		return (free(path2), perror("access"), -1);
 	return (free(path2), fd);
 }
 

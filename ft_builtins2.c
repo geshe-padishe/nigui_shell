@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 21:54:46 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:20:20 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,25 @@ int	ft_exit(t_tout *tout, char **args)
 	int	i;
 
 	if (!(args - 1) || !args[0])
-		return (ft_free_all(tout->darr, tout->lst,
+		return (printf("exit\n"), ft_free_all(tout->darr, tout->lst,
 				tout->pipefd, tout->nb_pipes), free(args - 1),
 			exit(g_vrac.status), 1);
 	if (args[0] && args[1])
 	{
 		if (ft_is_number(args[0]))
-			return (free(args - 1), put_err("bash: exit: too many arguments\n"), 0);
-		return (num_arg(args - 1), ft_free_all(tout->darr, tout->lst,
-				tout->pipefd, tout->nb_pipes),
+			return (free(args - 1), put_err(ARGS), 0);
+		return (printf("exit\n"), num_arg(args - 1), ft_free_all(tout->darr,
+				tout->lst, tout->pipefd, tout->nb_pipes),
 			exit(2), 1);
 	}
 	if (!ft_is_number(args[0]))
-		return (num_arg(args - 1), ft_free_all(tout->darr,
+		return (printf("exit\n"), num_arg(args - 1), ft_free_all(tout->darr,
 				tout->lst, tout->pipefd, tout->nb_pipes),
 			exit(2), 1);
 	else
 	{
 		i = ft_ps_atoi(args[0]);
-		return (ft_free_all(tout->darr, tout->lst,
+		return (printf("exit\n"), ft_free_all(tout->darr, tout->lst,
 				tout->pipefd, tout->nb_pipes),
 			free(args - 1), exit((unsigned char)i), i);
 	}

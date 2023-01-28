@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/25 01:31:39 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:22:02 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	interpret(char *str, int rev)
 	}
 }
 
-int		redir_check(char *line)
+int	redir_check(char *line)
 {
 	if (!line)
 		return (0);

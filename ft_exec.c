@@ -6,29 +6,11 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 22:10:30 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 00:40:52 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static
-char	*ft_strchr(char const *s, int c)
-{
-	if (c == '\0')
-	{
-		while (*s)
-			s++;
-		return ((char *)s);
-	}
-	while (*s)
-	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
-	}
-	return (0);
-}
 
 char	*ft_check_bin_path(char *bin, char *paths)
 {
@@ -67,13 +49,13 @@ int	ft_len_bef_col(char *paths)
 int	ft_launch_bin(char *bin, char **argv, char **envp)
 {
 	if (access(bin, F_OK))
-		return (free(argv), ft_nofile_error(bin), 127);
+		return (ft_nofile_error(bin), 127);
 	if (ft_is_dir(bin))
-		return (free(argv), ft_dir_error(bin), 126);
+		return (ft_dir_error(bin), 126);
 	if (access(bin, X_OK))
-		return (free(argv), ft_perm_error(bin), 126);
+		return (ft_perm_error(bin), 126);
 	if (execve(bin, argv, envp))
-		return (free(argv), perror("execve"), 1);
+		return (perror("execve"), 1);
 	return (0);
 }
 

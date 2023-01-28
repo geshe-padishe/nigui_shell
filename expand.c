@@ -46,7 +46,7 @@ char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	char	*value;
 	char	*new;
 
-	if (len[1] == 1 && str[len[0] + 1] != '\'')
+	if (len[1] == 1 && !is_quote(str[len[0] + 1]))
 	{
 		str[len[0]] *= -1;
 		return (str);

@@ -6,7 +6,7 @@ char	*has_heredoc(char *line)
 		return (NULL);
 	while (*line && *(line + 2))
 	{
-		if (*line == '<' && *(line + 1) == '<' && !is_operator(*(line + 2)))
+		if (*line == '<' && *(line + 1) == '<')
 			return (line + 2);
 		line++;
 	}
@@ -24,8 +24,12 @@ char	*find_limiter(char *line)
 			line++;
 		if (is_operator(*line))
 			return (NULL);
-		while (line &&!is_space(*(line + len)) && !is_operator(*(line + len)))
+		while (*(line + len) != '\0' &&!is_space(*(line + len)) && !is_operator(*(line + len)))
+		{
+			printf("char is %c", *(line + len));
 			len++;
+			printf("len is %d\n", len);
+		}
 		return (ft_substr(line, 0, len));
 	}
 	return(NULL);
@@ -42,7 +46,7 @@ char	*hd_exp(char *limiter)
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
 	while (1)
 	{
-		line = readline(">");
+		line = readline("heredoc>");
 		diff = strcmp(line, limiter);
 		if (diff == 0)
 			break ;
@@ -62,9 +66,12 @@ char	*heredoc(char *line)
 	char	*file;
 
 	here = has_heredoc(line);
+	printf("has heredoc %s\n", here);
 	if (!here)
 		return (line);
 	limiter = find_limiter(here);
+	printf("limiter is %s\n", limiter);
 	file = hd_exp(limiter);
+	printf("tmp file is %s\n", here);
 	return (file);
 }

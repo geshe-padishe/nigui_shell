@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniparsing.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/28 00:56:08 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 15:47:14 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr);
 int		var_name_len(char *str);
 char	*protect_content(char *str, int rev);
 char	*dup_quote(char *s);
+
+// Heredoc.c
+char	*heredoc(char *line);
 
 // Syntax.c
 int		syntax_check(char *line);

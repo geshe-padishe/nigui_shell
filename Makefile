@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
+#    By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/29 04:40:27 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/29 15:48:45 by nvasilev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -g3
+CFLAGS	=	-Wall -Wextra ###-Werror -g3
 
 RM 		=	rm -rf
 
@@ -41,6 +41,7 @@ SRCS	=	dynarray2.c \
 			ft_redirections.c \
 			ft_sig.c \
 			ft_str.c \
+			heredoc.c\
 			is.c \
 			is_token.c \
 			libft.c \

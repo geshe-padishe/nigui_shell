@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/28 21:04:54 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 15:45:57 by nvasilev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,6 @@ static void	interpret(char *str, int rev)
 	}
 }
 
-//static int	redir_check(char *line)
-//{
-//	if (!line)
-//		return (0);
-//	while (*line)
-//		if (is_redir(*line++))
-//			return (write(2, "Syntax error: Redirections not handled\n", 39), 0);
-//	return (1);
-//}
-
 static void	rm_quote(t_lst *lst)
 {
 	char	*old;
@@ -77,6 +67,7 @@ static void	rm_quote(t_lst *lst)
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*expanded;
+	char	*hd;
 	t_lst	*lst;
 
 	if (!line)
@@ -84,6 +75,8 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (!quote_check(line))
 		return (0);
 	interpret(line, 0);
+	hd = heredoc(line);
+	printf("hd = %s\n", hd);
 	if (!syntax_check(line))
 		return (0);
 	expanded = my_expand(line, ext, darr);

@@ -66,17 +66,24 @@ char	*hd_exp(char *limiter)
 char	*heredoc(char *line)
 {
 	char	*here;
+	char	*tmp;
 	char	*limiter;
 	char	*file;
 	int		nb;
 
+	nb = -1;
 	here = has_heredoc(line);
+	tmp = line;
 	printf("has heredoc %s\n", here);
 	if (!here)
 		return (line);
-
+	while (tmp)
+	{
+		tmp = has_heredoc(tmp);
+		nb++;
+	}
+	printf("%d heredoc(s) in the line\n", nb);
 	limiter = find_limiter(here);
-	printf("limiter is %s\n", limiter);
 	file = hd_exp(limiter);
 	printf("tmp file is %s\n", here);
 	return (file);

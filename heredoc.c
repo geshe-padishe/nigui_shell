@@ -1,5 +1,11 @@
 #include "miniparsing.h"
 
+void	here_sig(int sig)
+{
+	if(sig == SIGINT)
+		exit (1);
+}
+
 char	*has_heredoc(char *line)
 {
 	if (!line)
@@ -25,11 +31,7 @@ char	*find_limiter(char *line)
 		if (is_operator(*line))
 			return (NULL);
 		while (*(line + len) != '\0' &&!is_space(*(line + len)) && !is_operator(*(line + len)))
-		{
-			printf("char is %c", *(line + len));
 			len++;
-			printf("len is %d\n", len);
-		}
 		return (ft_substr(line, 0, len));
 	}
 	return(NULL);
@@ -46,6 +48,8 @@ char	*hd_exp(char *limiter)
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, &here_sig);
 		line = readline("heredoc>");
 		diff = strcmp(line, limiter);
 		if (diff == 0)
@@ -64,11 +68,13 @@ char	*heredoc(char *line)
 	char	*here;
 	char	*limiter;
 	char	*file;
+	int		nb;
 
 	here = has_heredoc(line);
 	printf("has heredoc %s\n", here);
 	if (!here)
 		return (line);
+
 	limiter = find_limiter(here);
 	printf("limiter is %s\n", limiter);
 	file = hd_exp(limiter);

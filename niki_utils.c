@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:52 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 00:40:42 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 21:28:35 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,22 @@ int	ft_close_free(int **pipefd, int nb_pipes, t_lst *lst, t_dynarray *darr)
 	free_pipe_array(pipefd, nb_pipes);
 	ft_free_all(darr, lst, pipefd, nb_pipes);
 	return (0);
+}
+
+int	malloc_envpi(char **envpi, int i)
+{
+	*envpi = malloc(i);
+	if (!*envpi)
+		return (0);
+	return (1);
+}
+
+void	prep_tout(t_tout *tout)
+{
+	tout->ret_built = -3;
+	tout->b_or_w = 0;
+	tout->std_out = 0;
+	tout->std_in = 0;
+	tout->out_ch = 0;
+	tout->in_ch = 0;
 }

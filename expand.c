@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	find_dollar(char *str)
+static int	find_dollar(char *str)
 {
 	if (!str)
 		return (0);
@@ -22,7 +22,7 @@ int	find_dollar(char *str)
 	return (0);
 }
 
-char	*trio_merge(char *before, char *value, char *after)
+static char	*trio_merge(char *before, char *value, char *after)
 {
 	char	*expanded;
 	size_t	len;
@@ -38,7 +38,7 @@ char	*trio_merge(char *before, char *value, char *after)
 	return (expanded);
 }
 
-char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
+static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 {
 	char	*before;
 	char	*name;

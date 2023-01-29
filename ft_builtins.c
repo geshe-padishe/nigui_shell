@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:49 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 01:04:06 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 05:34:46 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	ft_cd(char **str)
 
 	if (!*str)
 		return (free(str - 1), 1);
+	if (str[0] && str[1])
+		return (free(str - 1), put_err("bash: cd: too many arguments\n"), 1);
 	if (stat(*str, &stats))
 		return (free(str - 1), perror("cd"), 1);
 	if (!S_ISDIR(stats.st_mode))
@@ -57,21 +59,21 @@ int	ft_export(t_dynarray *darr, char **str, char **envp)
 	while (str && str[i_ind[0]])
 	{
 		envp = darr->list;
-		if (!ft_can_exp(str[i_ind[0]]))
-			return (free(str - 1), 0);
-		i_ind[1] = ft_getenv_index(envp, darr->nb_cells, str[i_ind[0]], 1);
-		envpi = malloc(ft_strlen(str[i_ind[0]]) + 1);
-		if (!envpi)
-			return (free(str - 1), perror("malloc\n"), 1);
-		ft_strcpy(str[i_ind[0]], envpi);
-		if (i_ind[1] >= 0)
+		if (ft_can_exp(str[i_ind[0]]))
 		{
-			free(envp[i_ind[1]]);
-			envp[i_ind[1]] = envpi;
+			i_ind[1] = ft_getenv_index(envp, darr->nb_cells, str[i_ind[0]], 1);
+			if (!malloc_envpi(&envpi, ft_strlen(str[i_ind[0]]) + 1))
+				return (free(str - 1), perror("malloc\n"), 1);
+			ft_strcpy(str[i_ind[0]], envpi);
+			if (i_ind[1] >= 0)
+			{
+				free(envp[i_ind[1]]);
+				envp[i_ind[1]] = envpi;
+			}
+			else if (i_ind[1] == -1)
+				if (push_dynarray(darr, &envpi, 1, 1))
+					return (free(str - 1), perror("push_dynarray"), 1);
 		}
-		else if (i_ind[1] == -1)
-			if (push_dynarray(darr, &envpi, 1, 1))
-				return (free(str - 1), perror("push_dynarray"), 1);
 		i_ind[0]++;
 	}
 	return (free(str - 1), 0);
@@ -96,7 +98,8 @@ int	ft_echo(char **args)
 	{
 		while (args[vars[0]])
 		{
-			vars[3] = ft_is_flag(args[vars[0]]);
+			if (!vars[2])
+				vars[3] = ft_is_flag(args[vars[0]]);
 			if (vars[3] == 0)
 				vars[2] = 1;
 			else

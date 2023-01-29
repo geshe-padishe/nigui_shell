@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:38 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 00:33:37 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 05:28:01 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_pipes_left(t_lst *lst)
 
 int	ft_pipes(t_lst *lst, t_tout *tout)
 {
-	ft_print_list(lst);
+	//print_lst(tout->lst);
 	tout->lst = lst;
 	tout->pipes_left = ft_pipes_left(lst);
 	tout->nb_pipes = tout->pipes_left;

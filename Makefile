@@ -6,19 +6,23 @@
 #    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/26 10:40:32 by ngenadie         ###   ########.fr        #
+#    Updated: 2023/01/29 04:40:27 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address -static-libsan
+CFLAGS	=	-Wall -Wextra -Werror -g3
 
 RM 		=	rm -rf
 
 NAME	=	minishell
 
 INC		=	./miniparsing.h\
+			./minishell.h\
+			./nikishell.h\
+			./common.h\
+			./dynarray.h\
 
 SRCS	=	dynarray2.c \
 			dynarray.c \
@@ -56,12 +60,12 @@ OBJS 	=	${SRCS:.c=.o}
 .c.o:
 		${CC} ${CFLAGS} -c $< -o $(<:.c=.o)
 
-${NAME}:	$(OBJS)
+${NAME}:	$(OBJS) $(INC)
 		$(CC) $(FLAGS) $(OBJS) -lreadline -o $(NAME)
 
 all:		${NAME}
 
-clean:		
+clean:
 				${RM} $(OBJS)
 
 fclean:		clean
@@ -71,8 +75,5 @@ re:			fclean all
 
 val:		re
 		valgrind --track-fds=yes --leak-check=full --show-leak-kinds=all --suppressions=rl_ignore --track-origins=yes ./${NAME}
-
-val2:		re
-		valgrind --suppressions=rl_ignore ./${NAME}
 
 .PHONY:		all clean fclean c.o re

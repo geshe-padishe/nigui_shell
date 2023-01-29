@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:47:24 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 01:21:15 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 02:59:28 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,17 @@ int	ft_open_create2(char *path2, int token, int apnd_or_not)
 {
 	int	fd;
 
-	if (access(path2, F_OK))
-	{
-		if (token == 3)
-			return (free(path2), perror("access"), -1);
-		fd = open(path2, O_RDWR | O_CREAT | O_APPEND * apnd_or_not, S_IRWXU);
-		if (fd == -1)
-			return (free(path2), perror("open"), -1);
-	}
-	else if (!access(path2, R_OK | W_OK))
-	{
-		fd = open(path2, O_RDWR | O_APPEND * apnd_or_not);
-		if (fd == -1)
-			return (free(path2), perror("open"), -1);
-	}
+	(void)apnd_or_not;
+	if (token == 2)
+		fd = open(path2, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	else if (token == 3)
+		fd = open(path2, O_RDONLY);
+	else if (token == 4)
+		fd = open(path2, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	else
-		return (free(path2), perror("access"), -1);
+		fd = open(path2, O_RDONLY);
+	if (fd == -1)
+		return (free(path2), perror("open"), -1);
 	return (free(path2), fd);
 }
 

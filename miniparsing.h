@@ -62,7 +62,6 @@ void	push_lst(t_lst *neww, t_lst *lst);
 char	*put_err(char *str);
 int		lst_len(t_lst *lst);
 t_lst	*new_lst(void);
-void	ft_printlst(t_lst *a);
 void	push_first_lst(t_lst *neww, t_lst *lst);
 
 #endif

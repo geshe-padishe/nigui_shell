@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 21:24:40 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 05:23:00 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,19 @@ int	ft_save_fds(t_tout *tout, t_lst *lst, int alone)
 {
 	if (!alone)
 		return (0);
-	if ((lst->token == 2 || lst->token == 4) && !tout->out_ch)
+	if ((lst->token == 2 || lst->token == 4))
 	{
+		if (tout->out_ch)
+			return (0);
 		tout->std_out = dup(STDOUT_FILENO);
 		if (tout->std_out == -1)
 			return (perror("dup"), -1);
 		tout->out_ch = 1;
 	}
-	if ((lst->token == 3 || lst->token == 5) && !tout->in_ch)
+	if ((lst->token == 3 || lst->token == 5))
 	{
+		if (tout->in_ch)
+			return (0);
 		tout->std_in = dup(STDIN_FILENO);
 		if (tout->std_in == -1)
 			return (perror("dup"), -1);
@@ -37,10 +41,13 @@ int	ft_handle_redirections(t_tout *tout, int alone)
 {
 	t_lst	*lst;
 
+	if (ft_save_fds(tout, tout->lst, alone))
+		return (-1);
 	lst = tout->lst;
 	while (lst && lst->token != 1)
 	{
-		if (lst->token == 2 || lst->token == 3 || lst->token == 4)
+		if (lst->token == 2 || lst->token == 3 ||
+			lst->token == 4 || lst->token == 5)
 		{
 			if (ft_save_fds(tout, lst, alone))
 				return (-1);
@@ -60,40 +67,32 @@ int	ft_open_dup(t_lst *lst, int token, bool apnd_or_not)
 	fd = -1;
 	if (!lst->next)
 		return (put_err("ambigous redirect\n"), -1);
-	if (token == 2 || token == 4)
-	{
-		if (token == 4)
-			apnd_or_not = 1;
-		fd = ft_open_create(lst->next->str, apnd_or_not, token);
-		if (fd == -1)
-			return (-1);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (close(fd), perror("dup2"), -1);
-	}
-	else
-	{
-		fd = ft_open_create(lst->next->str, 0, token);
-		if (fd == -1)
-			return (-1);
-		if (dup2(fd, STDIN_FILENO) == -1)
-			return (close(fd), perror("dup2"), -1);
-	}
-	return (fd);
+	fd = ft_open_create(lst->next->str, apnd_or_not, token);
+	if (fd == -1)
+		return (-1);
+	if (token % 2 == 0 && dup2(fd, STDOUT_FILENO) == -1)
+		return (close(fd), perror("dup2"), -1);
+	if (token % 2 == 1 && dup2(fd, STDIN_FILENO) == -1)
+		return (close(fd), perror("dup2"), -1);
+	close(fd);
+	return (0);
 }
 
 int	ft_rewind_fds(t_tout *tout)
 {
 	if (tout->in_ch)
 	{
-		close(STDIN_FILENO);
 		if (dup2(tout->std_in, STDIN_FILENO) == -1)
-			return (perror("dup2"), -1);
+			return (close(tout->std_in), perror("dup2"), -1);
+		if (tout->std_in != 0)
+			close(tout->std_in);
 	}
 	if (tout->out_ch)
 	{
-		close(STDOUT_FILENO);
 		if (dup2(tout->std_out, STDOUT_FILENO) == -1)
-			return (perror("dup2"), -1);
+			return (close(tout->std_out), perror("dup2"), -1);
+		if (tout->std_out != 1)
+			close(tout->std_out);
 	}
 	return (0);
 }

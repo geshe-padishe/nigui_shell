@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 19:09:58 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 02:43:13 by hkhater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,7 @@ typedef struct s_lst
 	struct s_lst	*next;
 	struct s_lst	*prev;
 }					t_lst;
-//	lst->str = "ls -la fsdljgod"
-//	lst->token = 0 string
-//				= 1 pipe
-//				= 2 >
-//				= 3 <
-//				= 4 >>
-//				= 5 <<
+
 typedef struct s_safe
 {
 	int			status;

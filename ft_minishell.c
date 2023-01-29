@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:51 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/27 21:08:53 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 05:23:07 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ int	child_routine(t_tout *tout)
 			tout->nb_pipes, &tout->fd_in))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),
 				tout->pipefd, tout->nb_pipes), exit(1), 1);
+	if (ft_handle_redirections(tout, 0))
+		return (ft_free_all(tout->darr, first_lst(tout->lst),
+				tout->pipefd, tout->nb_pipes), exit(1), 1);
 	if (ft_handle_exec(tout))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),
 				tout->pipefd, tout->nb_pipes), exit(127), 1);
@@ -70,10 +73,14 @@ int	launch_child(t_tout *tout)
 	tout->i = 0;
 	while (tout->lst && tout->lst->str)
 	{
-		tout->ret_built = -3;
-		tout->b_or_w = 0;
-		if (!tout->nb_pipes)
-			tout->ret_built = ft_builtins(tout);
+		prep_tout(tout);
+		if (!tout->nb_pipes && ft_is_built(find_bin_lst(tout->lst)))
+			if (ft_have_redirs(tout->lst))
+			{
+				if (ft_handle_redirections(tout, 1))
+					return (-1);
+				tout->ret_built = ft_builtins(tout);
+			}
 		if (tout->ret_built == -3)
 		{
 			tout->list[tout->i] = fork();
@@ -84,6 +91,33 @@ int	launch_child(t_tout *tout)
 		}
 		tout->pipes_left--;
 		tout->lst = ft_next_pipe(tout->lst);
+	}
+	ft_rewind_fds(tout);
+	return (0);
+}
+
+int	ft_is_built(t_lst *lst)
+{
+	char	*str;
+
+	if (!lst || !lst->str || !lst->str[0])
+		return (0);
+	str = lst->str;
+	if (!nk_strcmp(str, "echo") || !nk_strcmp(str, "pwd") ||
+		!nk_strcmp(str, "env") || !nk_strcmp(str, "cd") ||
+		!nk_strcmp(str, "export") || !nk_strcmp(str, "unset") ||
+		!nk_strcmp(str, "exit"))
+		return (1);
+	return (0);
+}
+
+int	ft_have_redirs(t_lst *lst)
+{
+	while (lst && lst->token != 1)
+	{
+		if (lst->token == 2 || lst->token == 3 || lst->token == 4)
+			return (1);
+		lst = lst->next;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:45:32 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 02:01:56 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 05:10:33 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,14 @@ bool	ft_can_exp(char *str)
 	i = 0;
 	if (!(str[0] >= 'A' && str[0] <= 'Z')
 		&& !(str[0] >= 'a' && str[0] <= 'z') && !(str[0] == '_'))
-		return (0);
+		return (put_err("bash: export: "), print_quoted(str), put_err(ID), 0);
 	while (str[i])
 	{
 		if (i != 0 && str[i] == '=')
 			return (1);
 		if (!is_alnumund(str[i]))
-			return (0);
+			return (put_err("bash: export: "), print_quoted(str),
+				put_err(ID), 0);
 		i++;
 	}
 	return (0);

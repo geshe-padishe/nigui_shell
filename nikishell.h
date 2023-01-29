@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:47 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 01:20:28 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 04:36:08 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,15 @@
 # define CWD_ER "getcwd: cannot access parent directories: "
 # define NO_FILE "No such file or directory"
 # define ARGS "bash: exit: too many arguments\n"
+# define ID ": not a valid identifier\n"
 
+void	print_lst(t_lst *lst);
+int		ft_rewind_fds(t_tout *tout);
+int		ft_have_redirs(t_lst *lst);
+void	prep_tout(t_tout *tout);
+int		ft_is_built(t_lst *lst);
+int		malloc_envpi(char **envpi, int i);
+void	print_quoted(char *str);
 char	*ft_strchr(char const *s, int c);
 int		ft_print_env(t_dynarray *darr);
 int		launch_child(t_tout *tout);

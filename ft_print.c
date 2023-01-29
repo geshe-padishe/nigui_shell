@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:47:01 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 01:25:33 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/29 04:37:25 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,23 @@ int	ft_dyn_env(t_dynarray *darr, char **str)
 	return (free(str - 1), 0);
 }
 
-void	ft_print_pipes(int **pipefd, int nb_pipes)
+void	print_quoted(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (i < nb_pipes)
-	{
-		printf("-----------------------------\n");
-		printf("pipefd[%d][0] = %d\n", i, pipefd[i][0]);
-		printf("pipefd[%d][1] = %d\n", i, pipefd[i][1]);
-		printf("-----------------------------\n");
-		i++;
-	}
+	put_err("'");
+	put_err(str);
+	put_err("'");
 }
 
-void	ft_print_list(t_lst *token)
+void	print_lst(t_lst *lst)
 {
-	while (token != NULL)
+	while (lst && lst->str)
 	{
-		printf("token->str = %s\n", token->str);
-		token = token->next;
+		printf("%s\n", lst->str);
+		lst = lst->next;
 	}
+	if (lst == NULL)
+		printf("lst(nil)\n");
 }

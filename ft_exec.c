@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 00:40:52 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/30 16:27:18 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,5 @@ int	ft_handle_exec(t_tout *tout)
 				tout->nb_pipes), exit(ret), 1);
 	}
 	return (ft_free_all(tout->darr, tout->lst, tout->pipefd,
-			tout->nb_pipes), exit(ret), 1);
+			tout->nb_pipes), exit(ret), 0);
 }

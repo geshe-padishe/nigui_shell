@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 09:00:57 by hkhater           #+#    #+#             */
-/*   Updated: 2022/12/22 07:33:52 by hkhater          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:31:18 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 char	*put_err(char *str)
 {
 	if (str)
-		while (*str)
-			write(2, str++, 1);
+		write(2, str, ft_strlen(str));
 	return (NULL);
 }
 

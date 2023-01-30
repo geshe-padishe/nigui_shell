@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:51 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/29 05:23:07 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/30 16:29:49 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,13 @@ int	launch_child(t_tout *tout)
 	{
 		prep_tout(tout);
 		if (!tout->nb_pipes && ft_is_built(find_bin_lst(tout->lst)))
+		{
 			if (ft_have_redirs(tout->lst))
-			{
 				if (ft_handle_redirections(tout, 1))
-					return (-1);
-				tout->ret_built = ft_builtins(tout);
-			}
-		if (tout->ret_built == -3)
+					return (ft_rewind_fds(tout), -1);
+			tout->ret_built = ft_builtins(tout);
+		}
+		else
 		{
 			tout->list[tout->i] = fork();
 			if (tout->list[tout->i] == 0)

@@ -6,13 +6,13 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:47:24 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/29 02:59:28 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/30 16:28:41 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_open_create2(char *path2, int token, int apnd_or_not)
+int	ft_open_create2(char *path2, char *filename, int token, int apnd_or_not)
 {
 	int	fd;
 
@@ -26,7 +26,8 @@ int	ft_open_create2(char *path2, int token, int apnd_or_not)
 	else
 		fd = open(path2, O_RDONLY);
 	if (fd == -1)
-		return (free(path2), perror("open"), -1);
+		return (put_err("bash: "), put_err(filename),
+				perror(" "), free(path2), -1);
 	return (free(path2), fd);
 }
 
@@ -43,11 +44,10 @@ int	ft_open_create(char *filename, bool apnd_or_not, int token)
 		return (perror("malloc"), -1);
 	path2 = ft_strjoin(path, filename);
 	if (!path2)
-		return (perror("malloc"), -1);
+		return (free(path), perror("malloc"), -1);
 	free(path);
-	return (ft_open_create2(path2, token, apnd_or_not));
+	return (ft_open_create2(path2, filename, token, apnd_or_not));
 }
-
 int	ft_is_dir(char *path_name)
 {
 	struct stat	stats;

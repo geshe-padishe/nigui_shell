@@ -38,6 +38,8 @@ ft_splitargs.c
 ft_splitargs.o
 ft_str.c
 ft_str.o
+heredoc.c
+heredoc.o
 is.c
 is.o
 is_token.c
@@ -46,6 +48,7 @@ libft.c
 libft.o
 libft_utils.c
 libft_utils.o
+ls
 lst.c
 lst.o
 main.c

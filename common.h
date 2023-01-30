@@ -70,6 +70,14 @@ typedef struct s_tout
 	pid_t		*list;
 }	t_tout;
 
+/*
+typedef struct t_here
+{
+	char *limiter;
+
+}
+*/
+
 extern t_safe	g_vrac;
 
 char	*ft_getenvval(char *str, t_dynarray *darr,

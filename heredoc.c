@@ -12,6 +12,11 @@
 
 #include "miniparsing.h"
 
+// 	*singleton()
+// {
+// 	static
+// }
+
 void	here_sig(int sig)
 {
 	if (sig == SIGINT)
@@ -61,7 +66,9 @@ char	*hd_exp(char *limiter, int exp, int ext, t_dynarray *darr)
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, &here_sig);
 		line = readline("heredoc>");
-		diff = strcmp(line, limiter);
+		if (!line)
+			break ;
+		diff = ft_strcmp(line, limiter);
 		if (diff == 0)
 			break ;
 		if (exp)

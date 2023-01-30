@@ -65,6 +65,30 @@ static void	rm_quote(t_lst *lst)
 	}
 }
 
+char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
+{
+	char	*last;
+	char	*tmp;
+	int		nb;
+
+	tmp = has_heredoc(line);
+	last = line;
+	nb = 0;
+	if (!tmp)
+		return (line);
+	while (tmp)
+	{
+		tmp = has_heredoc(tmp);
+		nb++;
+	}
+	while (nb--)
+	{
+		last = heredoc(last, ext, darr);
+		printf("last is %s\n", last);
+	}
+	return (last);
+}
+
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*expanded;
@@ -75,7 +99,7 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		return (0);
 	if (!quote_check(line))
 		return (0);
-	hd = heredoc(line, ext, darr);
+	hd = mult_heredoc(line, ext, darr);
 	interpret(line, 0);
 	if (!syntax_check(hd))
 		return (0);
@@ -84,7 +108,8 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		return (0);
 	interpret(expanded, 1);
 	lst = tokenize(expanded);
-	if (expanded)
+	interpret(line, 0);
+	if (!strcmp(line, expanded))
 		free(expanded);
 	if (lst)
 		return (rm_quote(lst), lst);

@@ -22,7 +22,7 @@ static int	find_dollar(char *str)
 	return (0);
 }
 
-static char	*trio_merge(char *before, char *value, char *after)
+char	*trio_merge(char *before, char *value, char *after)
 {
 	char	*expanded;
 	size_t	len;

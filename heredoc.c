@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
+/*   Updated: 2023/01/30 16:29:15 by hkhater          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniparsing.h"
 
 void	here_sig(int sig)
 {
-	if(sig == SIGINT)
+	if (sig == SIGINT)
 		exit (1);
 }
 
@@ -13,12 +25,12 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 	char	*after;
 	int		pos;
 
-	printf("strnstr is %s", ft_strnstr(line, limiter, ft_strlen(limiter)));
-	pos = ft_strnstr(line, limiter, ft_strlen(limiter)) - *line;
+	printf("strnstr is %s\n", ft_strnstr(line, limiter, ft_strlen(line)));
+	pos = ft_strnstr(line, limiter, ft_strlen(line)) - line;
 	printf("pos is %d\n", pos);
-	//before = ft_substr(line, 0, pos);
-	//printf("before: %s\n", before);
-	after = ft_strnstr(line, limiter, ft_strlen(limiter)) + ft_strlen(limiter);
+	before = ft_substr(line, 0, pos);
+	printf("before: %s\n", before);
+	after = ft_strnstr(line, limiter, ft_strlen(line)) + ft_strlen(limiter);
 	printf("after: %s\n", after);
 	repl = trio_merge(before, filename, after);
 	printf("replaced: %s\n", repl);
@@ -53,7 +65,7 @@ char	*find_limiter(char *line)
 			len++;
 		return (ft_substr(line, 0, len));
 	}
-	return(NULL);
+	return (NULL);
 }
 
 char	*hd_exp(char *limiter)
@@ -63,8 +75,10 @@ char	*hd_exp(char *limiter)
 	int		fd;
 	int		diff;
 
-	file = "/tmp/file1";
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 066);
+	file = "/tmp/file2";
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (fd == -1)
+		return (perror("OPEN"), NULL);
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -105,5 +119,5 @@ char	*heredoc(char *line)
 	printf("tmp file is %s\n", file);
 	tmp = limitertofile(line, limiter, file);
 	free(limiter);
-	return (file);
+	return (tmp);
 }

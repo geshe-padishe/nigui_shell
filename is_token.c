@@ -47,7 +47,7 @@ int	recognize_op(char *str)
 	else if (ft_strcmp(str, ">>") == 0)
 		return (4);
 	else if (ft_strcmp(str, "<<") == 0)
-		return (5);
+		return (3);
 	else
 		return (-1);
 }

@@ -6,13 +6,13 @@
 #    By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/29 15:48:45 by nvasilev         ###   ########.fr        #
+#    Updated: 2023/01/30 16:58:16 by hkhater          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 		=	cc
 
-CFLAGS	=	-Wall -Wextra ###-Werror -g3
+CFLAGS	=	-Wall -Wextra -Werror -g3
 
 RM 		=	rm -rf
 

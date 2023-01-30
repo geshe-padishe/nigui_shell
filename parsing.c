@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "miniparsing.h"
+#include "minishell.h"
 
 static int	quote_check(char *s)
 {
@@ -89,6 +90,7 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (lst)
 	{
 		rm_quote(lst);
+		print_lst(lst);
 		return (lst);
 	}
 	return (NULL);

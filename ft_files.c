@@ -6,17 +6,16 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:47:24 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/30 16:28:41 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/30 19:50:48 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_open_create2(char *path2, char *filename, int token, int apnd_or_not)
+int	ft_open_create2(char *path2, char *filename, int token)
 {
 	int	fd;
 
-	(void)apnd_or_not;
 	if (token == 2)
 		fd = open(path2, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	else if (token == 3)
@@ -26,17 +25,20 @@ int	ft_open_create2(char *path2, char *filename, int token, int apnd_or_not)
 	else
 		fd = open(path2, O_RDONLY);
 	if (fd == -1)
-		return (put_err("bash: "), put_err(filename),
-			perror(" "), free(path2), -1);
-	return (free(path2), fd);
+		return (put_err("bash: "), put_err(filename), perror(" "), -1);
+	return (fd);
 }
 
 int	ft_open_create(char *filename, bool apnd_or_not, int token)
 {
+	int		ret;
 	char	*path;
 	char	*path2;
 	char	buffer[10000];
 
+	(void)apnd_or_not;
+	if (filename && filename[0] == '/')
+		return (ft_open_create2(filename, filename, token));
 	if (!getcwd(buffer, 10000))
 		return (perror("getcwd"), -1);
 	path = ft_strjoin(buffer, "/");
@@ -46,7 +48,8 @@ int	ft_open_create(char *filename, bool apnd_or_not, int token)
 	if (!path2)
 		return (free(path), perror("malloc"), -1);
 	free(path);
-	return (ft_open_create2(path2, filename, token, apnd_or_not));
+	ret = ft_open_create2(path2, filename, token);
+	return (free(path2), ret);
 }
 
 int	ft_is_dir(char *path_name)

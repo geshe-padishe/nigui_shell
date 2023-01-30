@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:38 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/29 05:28:01 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/30 20:33:58 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	ft_wait_procs(int ac, pid_t *list)
 {
 	int		i;
 	int		status;
+	int		status2;
 	pid_t	w;
 
 	i = 0;
@@ -78,13 +79,17 @@ int	ft_wait_procs(int ac, pid_t *list)
 			perror("waitpid");
 		i++;
 	}
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == 3)
+			put_err("Quit (core dumped)\n");
+		if (WTERMSIG(status) == 2)
+			put_err("\n");
+		status2 = WTERMSIG(status) + 128;
+	}
 	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	if (status == 131)
-		put_err("Quit (core dumped)\n");
-	if (status == 2)
-		put_err("\n");
-	return (status);
+		status2 = WEXITSTATUS(status);
+	return (status2);
 }
 
 int	ft_builtins(t_tout *tout)

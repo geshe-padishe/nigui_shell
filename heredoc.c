@@ -25,60 +25,34 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 	char	*after;
 	int		pos;
 
-	printf("strnstr is %s\n", ft_strnstr(line, limiter, ft_strlen(line)));
 	pos = ft_strnstr(line, limiter, ft_strlen(line)) - line;
-	printf("pos is %d\n", pos);
 	before = ft_substr(line, 0, pos);
-	printf("before: %s\n", before);
 	after = ft_strnstr(line, limiter, ft_strlen(line)) + ft_strlen(limiter);
-	printf("after: %s\n", after);
 	repl = trio_merge(before, filename, after);
 	ft_free(before, limiter, NULL, NULL);
-	printf("replaced: %s\n", repl);
 	return (repl);
 }
 
-char	*has_heredoc(char *line)
+char	*namefile(void)
 {
-	if (!line || ft_strlen(line) < 3)
-		return (NULL);
-	while (*line && *(line + 2))
-	{
-		if (*line == '<' && *(line + 1) == '<')
-			return (line + 2);
-		line++;
-	}
-	return (NULL);
+	static int	i = 0;
+	char		*nb;
+	char		*file;
+
+	nb = ft_itoa(i++);
+	file = trio_merge("/tmp/file", nb, "");
+	free (nb);
+	return (file);	
 }
 
-char	*find_limiter(char *line)
+char	*hd_exp(char *limiter, int exp, int ext, t_dynarray *darr)
 {
-	int		len;
+	char		*file;
+	char		*line;
+	int			fd;
+	int			diff;
 
-	len = 0;
-	while (*line)
-	{
-		while (is_space(*line))
-			line++;
-		if (*line == '\0')
-			return (NULL);
-		if (is_operator(*line))
-			return (NULL);
-		while (*(line + len) != '\0' &&!is_space(*(line + len)) && !is_operator(*(line + len)))
-			len++;
-		return (ft_substr(line, 0, len));
-	}
-	return (NULL);
-}
-
-char	*hd_exp(char *limiter)
-{
-	char	*file;
-	char	*line;
-	int		fd;
-	int		diff;
-
-	file = "/tmp/file2";
+	file = namefile();
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (fd == -1)
 		return (perror("OPEN"), NULL);
@@ -90,16 +64,16 @@ char	*hd_exp(char *limiter)
 		diff = strcmp(line, limiter);
 		if (diff == 0)
 			break ;
+		if (exp)
+			line = my_expand(line, ext, darr);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 	}
-	free(line);
-	close(fd);
-	return (file);
+	return (ft_free(line, 0, 0, 0), close(fd), file);
 }
 
-char	*heredoc(char *line)
+char	*heredoc(char *line, int ext, t_dynarray *darr)
 {
 	char	*here;
 	char	*tmp;
@@ -120,7 +94,10 @@ char	*heredoc(char *line)
 	limiter = find_limiter(here);
 	if (!limiter)
 		return (line);
-	file = hd_exp(limiter);
+	if (!act_has_quote(limiter))
+		file = hd_exp(limiter, 1, ext, darr);
+	else
+		file = hd_exp(limiter, 0, ext, darr);
 	tmp = limitertofile(line, limiter, file);
-	return (tmp);
+	return (free(file), tmp);
 }

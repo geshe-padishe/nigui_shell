@@ -25,8 +25,11 @@ int		var_name_len(char *str);
 char	*protect_content(char *str, int rev);
 char	*dup_quote(char *s);
 
-// Heredoc.c
-char	*heredoc(char *line);
+// Heredoc.c + hd_utils.c
+char	*heredoc(char *line, int ext, t_dynarray *darr);
+char	*find_limiter(char *s);
+char	*has_heredoc(char *line);
+int		act_has_quote(char *s);
 
 // Syntax.c
 int		syntax_check(char *line);

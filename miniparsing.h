@@ -39,6 +39,7 @@ int		is_operator(char c);
 int		is_sep(char c);
 
 // Expand.c
+char	*trio_merge(char *before, char *value, char *after);
 char	*my_expand(char *str, int ext, t_dynarray *darr);
 
 // Libft.c + Libft_utils.c
@@ -66,5 +67,7 @@ char	*put_err(char *str);
 int		lst_len(t_lst *lst);
 t_lst	*new_lst(void);
 void	push_first_lst(t_lst *neww, t_lst *lst);
+
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 
 #endif

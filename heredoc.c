@@ -6,6 +6,25 @@ void	here_sig(int sig)
 		exit (1);
 }
 
+char	*limitertofile(char *line, char *limiter, char *filename)
+{
+	char	*repl;
+	char	*before;
+	char	*after;
+	int		pos;
+
+	printf("strnstr is %s", ft_strnstr(line, limiter, ft_strlen(limiter)));
+	pos = ft_strnstr(line, limiter, ft_strlen(limiter)) - *line;
+	printf("pos is %d\n", pos);
+	//before = ft_substr(line, 0, pos);
+	//printf("before: %s\n", before);
+	after = ft_strnstr(line, limiter, ft_strlen(limiter)) + ft_strlen(limiter);
+	printf("after: %s\n", after);
+	repl = trio_merge(before, filename, after);
+	printf("replaced: %s\n", repl);
+	return (repl);
+}
+
 char	*has_heredoc(char *line)
 {
 	if (!line)
@@ -45,7 +64,7 @@ char	*hd_exp(char *limiter)
 	int		diff;
 
 	file = "/tmp/file1";
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 066);
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -74,7 +93,6 @@ char	*heredoc(char *line)
 	nb = -1;
 	here = has_heredoc(line);
 	tmp = line;
-	printf("has heredoc %s\n", here);
 	if (!here)
 		return (line);
 	while (tmp)
@@ -82,9 +100,10 @@ char	*heredoc(char *line)
 		tmp = has_heredoc(tmp);
 		nb++;
 	}
-	printf("%d heredoc(s) in the line\n", nb);
 	limiter = find_limiter(here);
 	file = hd_exp(limiter);
-	printf("tmp file is %s\n", here);
+	printf("tmp file is %s\n", file);
+	tmp = limitertofile(line, limiter, file);
+	free(limiter);
 	return (file);
 }

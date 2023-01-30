@@ -29,6 +29,31 @@ char	*ft_strchr(char const *s, int c)
 	return (0);
 }
 
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!*needle)
+		return ((char *)haystack);
+	while (haystack[i] && i < len)
+	{
+		j = 0;
+		if (needle[j] == haystack[i])
+		{
+			while (i + j < len && (needle[j] == haystack[i + j]))
+			{
+				if (needle[j + 1] == '\0')
+					return ((char *)&haystack[i]);
+				j++;
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	ft_close_free(int **pipefd, int nb_pipes, t_lst *lst, t_dynarray *darr)
 {
 	if (lst)

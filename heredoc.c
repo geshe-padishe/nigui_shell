@@ -76,21 +76,13 @@ char	*hd_exp(char *limiter, int exp, int ext, t_dynarray *darr)
 char	*heredoc(char *line, int ext, t_dynarray *darr)
 {
 	char	*here;
-	char	*tmp;
 	char	*limiter;
 	char	*file;
-	int		nb;
+	char	*repl;
 
-	nb = -1;
 	here = has_heredoc(line);
-	tmp = line;
 	if (!here)
 		return (line);
-	while (tmp)
-	{
-		tmp = has_heredoc(tmp);
-		nb++;
-	}
 	limiter = find_limiter(here);
 	if (!limiter)
 		return (line);
@@ -98,6 +90,6 @@ char	*heredoc(char *line, int ext, t_dynarray *darr)
 		file = hd_exp(limiter, 1, ext, darr);
 	else
 		file = hd_exp(limiter, 0, ext, darr);
-	tmp = limitertofile(line, limiter, file);
-	return (free(file), tmp);
+	repl = limitertofile(line, limiter, file);
+	return (free(file), repl);
 }

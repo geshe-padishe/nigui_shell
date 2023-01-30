@@ -27,7 +27,7 @@ int	ft_open_create2(char *path2, char *filename, int token, int apnd_or_not)
 		fd = open(path2, O_RDONLY);
 	if (fd == -1)
 		return (put_err("bash: "), put_err(filename),
-				perror(" "), free(path2), -1);
+			perror(" "), free(path2), -1);
 	return (free(path2), fd);
 }
 
@@ -48,6 +48,7 @@ int	ft_open_create(char *filename, bool apnd_or_not, int token)
 	free(path);
 	return (ft_open_create2(path2, filename, token, apnd_or_not));
 }
+
 int	ft_is_dir(char *path_name)
 {
 	struct stat	stats;

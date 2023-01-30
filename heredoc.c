@@ -33,13 +33,14 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 	after = ft_strnstr(line, limiter, ft_strlen(line)) + ft_strlen(limiter);
 	printf("after: %s\n", after);
 	repl = trio_merge(before, filename, after);
+	ft_free(before, limiter, NULL, NULL);
 	printf("replaced: %s\n", repl);
 	return (repl);
 }
 
 char	*has_heredoc(char *line)
 {
-	if (!line)
+	if (!line || ft_strlen(line) < 3)
 		return (NULL);
 	while (*line && *(line + 2))
 	{
@@ -59,6 +60,8 @@ char	*find_limiter(char *line)
 	{
 		while (is_space(*line))
 			line++;
+		if (*line == '\0')
+			return (NULL);
 		if (is_operator(*line))
 			return (NULL);
 		while (*(line + len) != '\0' &&!is_space(*(line + len)) && !is_operator(*(line + len)))
@@ -115,9 +118,9 @@ char	*heredoc(char *line)
 		nb++;
 	}
 	limiter = find_limiter(here);
+	if (!limiter)
+		return (line);
 	file = hd_exp(limiter);
-	printf("tmp file is %s\n", file);
 	tmp = limitertofile(line, limiter, file);
-	free(limiter);
 	return (tmp);
 }

@@ -77,7 +77,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		return (0);
 	interpret(line, 0);
 	hd = heredoc(line);
-	printf("hd = %s\n", hd);
 	if (!syntax_check(hd))
 		return (0);
 	expanded = my_expand(hd, ext, darr);
@@ -88,10 +87,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (expanded)
 		free(expanded);
 	if (lst)
-	{
-		rm_quote(lst);
-		print_lst(lst);
-		return (lst);
-	}
+		return (rm_quotes(lst));
 	return (NULL);
 }

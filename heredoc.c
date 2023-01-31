@@ -100,7 +100,7 @@ char	*heredoc(char *line)
 	limiter = dup_quote(limiter);
 	ft_exec_heredoc(limiter, file);
 	repl = limitertofile(line, limiter, file);
-	return (free(file), repl);
+	return (repl);
 }
 
 char	*mult_heredoc(char *line)

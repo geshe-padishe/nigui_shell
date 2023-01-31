@@ -61,7 +61,7 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 		new = trio_merge(before, exit, after);
 	else
 		new = trio_merge(before, value, after);
-	ft_free(before, name, after, str);
+	ft_free(before, name, after, 0);
 	if (!new)
 		return (NULL);
 	return (new);

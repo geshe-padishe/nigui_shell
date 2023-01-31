@@ -60,6 +60,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_itoa(int n);
 size_t	unquote_len(const char *str);
 char	*ft_free(char *str1, char *str2, char *str3, char *str4);
+void	safe_free(char *line, char *str);
 
 // is_token.c
 int		is_space(char c);

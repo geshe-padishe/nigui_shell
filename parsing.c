@@ -65,7 +65,7 @@ static void	rm_quote(t_lst *lst)
 	}
 }
 
-char	*choose(char *line, char *hd, char *exp, int nb)
+char	*x(char *line, char *hd, char *exp, int nb)
 {
 	if (nb == 1)
 		return (line);
@@ -76,22 +76,16 @@ char	*choose(char *line, char *hd, char *exp, int nb)
 	return (line);
 }
 
-void	safe_free(char *line, char * str)
-{
-	if (str && &str != &line)
-		free(str);
-}
-
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
-	char	*expanded;
+	char	*exp;
 	char	*hd;
 	t_lst	*lst;
 	int		upd;
 
 	upd = 1;
 	hd = NULL;
-	expanded = NULL;
+	exp = NULL;
 	if (!line || !quote_check(line))
 		return (0);
 	if (has_heredoc(line))
@@ -99,19 +93,18 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		hd = mult_heredoc(line);
 		upd = 2;
 	}
-	interpret(choose(line, hd, NULL, upd), 0);
-	if (!syntax_check(choose(line, hd, NULL, upd)))
-		return (0);
-	if (find_dollar(choose(line, hd, NULL, upd)))
+	interpret(x(line, hd, NULL, upd), 0);
+	if (!syntax_check(x(line, hd, NULL, upd)))
+		return (safe_free(line, hd), NULL);
+	if (find_dollar(x(line, hd, NULL, upd)))
 	{
-		expanded = my_expand(choose(line, hd, NULL, upd), ext, darr);
+		exp = my_expand(x(line, hd, NULL, upd), ext, darr);
 		safe_free(line, hd);
 		upd = 3;
 	}
-	interpret(choose(line, hd, expanded, upd), 1);
-	lst = tokenize(choose(line, hd, expanded, upd));
-	safe_free(line, choose(line, hd, expanded, upd));
+	interpret(x(line, hd, exp, upd), 1);
+	lst = tokenize(x(line, hd, exp, upd));
 	if (lst)
-		return (rm_quote(lst), lst);
-	return (NULL);
+		return (safe_free(line, x(line, hd, exp, upd)), rm_quote(lst), lst);
+	return (safe_free(line, x(line, hd, exp, upd)), NULL);
 }

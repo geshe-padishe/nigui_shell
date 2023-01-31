@@ -43,3 +43,12 @@ void	neg_quotes(char *s)
 		s++;
 	}
 }
+
+void	safe_free(char *line, char *str)
+{
+	if (str && str != line)
+	{
+		free(str);
+		str = NULL;
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:06:13 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 21:20:19 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:31:21 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,6 @@ char	*has_heredoc(char *line)
 		line++;
 	}
 	return (NULL);
-}
-
-void	here_sig(int sig)
-{
-	if (sig == SIGINT)
-		exit (1);
 }
 
 int	act_has_quote(char *s)

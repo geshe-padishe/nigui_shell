@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 20:57:02 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 23:32:26 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,10 @@ int	ft_open_dup(t_lst *lst, int token, bool apnd_or_not)
 	fd = ft_open_create(lst->next->str, apnd_or_not, token);
 	if (fd == -1)
 		return (-1);
-	if (token % 2 == 0 && dup2(fd, STDOUT_FILENO) == -1)
+	if (token != 0 && token % 2 == 0 && dup2(fd, STDOUT_FILENO) == -1)
 		return (close(fd), perror("dup2"), -1);
-	if (token % 2 == 1 && dup2(fd, STDIN_FILENO) == -1)
+	if (token == 3 && dup2(fd, STDIN_FILENO) == -1)
 		return (close(fd), perror("dup2"), -1);
-	dprintf(2, "lst->str = %s: open_dup token = %d\n", lst->prev->str, token);
 	close(fd);
 	return (0);
 }

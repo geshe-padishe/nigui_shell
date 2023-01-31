@@ -6,7 +6,7 @@
 #    By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/30 16:58:16 by hkhater          ###   ########.fr        #
+#    Updated: 2023/01/31 21:09:23 by ngenadie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ SRCS	=	dynarray2.c \
 			tokenization.c \
 			niki_utils.c \
 			ft_print_errors.c \
+			niki_utils2.c \
 			ft_splitargs.c
 
 OBJS 	=	${SRCS:.c=.o}

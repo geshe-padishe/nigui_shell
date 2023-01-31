@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:51 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 20:06:19 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:10:23 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes)
 		return (0);
 	if (pipes_left != nb_pipes)
 	{
-		dprintf(2, "dup2 in handle_pipe\n");
 		fd_in = dup2(pipefd[nb_pipes - pipes_left - 1][0], STDIN_FILENO);
 		if (fd_in == -1)
 			return (perror("dup2"), ft_close_pipes(pipefd, nb_pipes),
@@ -29,28 +28,12 @@ int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes)
 	}
 	if (pipes_left != 0)
 	{
-		dprintf(2, "dup2 out handle_pipe\n");
 		fd_out = dup2(pipefd[nb_pipes - pipes_left][1], STDOUT_FILENO);
 		if (fd_out == -1)
 			return (perror("dup2"), ft_close_pipes(pipefd, nb_pipes),
 				free_pipe_array(pipefd, nb_pipes), -1);
 	}
 	return (ft_close_pipes(pipefd, nb_pipes), 0);
-}
-
-t_lst	*find_bin_lst(t_lst *lst)
-{
-	while (lst)
-	{
-		if (lst->token == 1)
-			return (NULL);
-		if (lst && lst->token == 0)
-			return (lst);
-		if (lst->token >= 2 && lst->token <= 5)
-			lst = lst->next;
-		lst = lst->next;
-	}
-	return (NULL);
 }
 
 int	child_routine(t_tout *tout)
@@ -107,10 +90,10 @@ int	ft_is_built(t_lst *lst)
 	if (!lst || !lst->str || !lst->str[0])
 		return (0);
 	str = lst->str;
-	if (!nk_strcmp(str, "echo") || !nk_strcmp(str, "pwd") ||
-		!nk_strcmp(str, "env") || !nk_strcmp(str, "cd") ||
-		!nk_strcmp(str, "export") || !nk_strcmp(str, "unset") ||
-		!nk_strcmp(str, "exit"))
+	if (!nk_strcmp(str, "echo") || !nk_strcmp(str, "pwd")
+		|| !nk_strcmp(str, "env") || !nk_strcmp(str, "cd")
+		|| !nk_strcmp(str, "export") || !nk_strcmp(str, "unset")
+		|| !nk_strcmp(str, "exit"))
 		return (1);
 	return (0);
 }

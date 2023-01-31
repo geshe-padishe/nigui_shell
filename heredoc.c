@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 16:30:58 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:21:37 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 	char	*after;
 	int		pos;
 
-	pos = ft_strnstr(has_heredoc(line), limiter, ft_strlen(has_heredoc(line))) - line;
+	pos = ft_strnstr(has_heredoc(line), limiter,
+			ft_strlen(has_heredoc(line))) - line;
 	before = ft_substr(line, 0, pos);
-	after = ft_strnstr(has_heredoc(line), limiter, ft_strlen(has_heredoc(line))) + ft_strlen(limiter);
+	after = ft_strnstr(has_heredoc(line), limiter,
+			ft_strlen(has_heredoc(line))) + ft_strlen(limiter);
 	repl = trio_merge(before, filename, after);
 	ft_free(before, limiter, NULL, NULL);
 	return (repl);
@@ -40,10 +42,7 @@ void	hd_exp(char *limiter, char *file)
 
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (fd == -1)
-	{
-		perror("OPEN");
-		return ;
-	}
+		return (free(file), perror("open"));
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -58,7 +57,7 @@ void	hd_exp(char *limiter, char *file)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	ft_free(line, 0, 0, 0);
+	ft_free(line, file, 0, 0);
 	close(fd);
 	exit(0);
 }
@@ -87,6 +86,8 @@ char	*heredoc(char *line)
 
 	here = has_heredoc(line);
 	file = namefile();
+	if (!file)
+		return (NULL);
 	signal(SIGQUIT, &ft_child_sig);
 	signal(SIGINT, &ft_child_sig);
 	if (!here)

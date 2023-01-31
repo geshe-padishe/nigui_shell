@@ -6,11 +6,11 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:06:13 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/30 21:08:02 by hkhater          ###   ########.fr       */
+/*   Updated: 2023/01/31 21:20:19 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "miniparsing.h"
+#include "miniparsing.h"
 
 char	*find_limiter(char *s)
 {
@@ -40,7 +40,8 @@ char	*namefile(void)
 
 	nb = ft_itoa(i++);
 	file = trio_merge("/tmp/file", nb, "");
-	free (nb);
+	if (nb)
+		free (nb);
 	return (file);
 }
 

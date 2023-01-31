@@ -6,11 +6,11 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 05:37:00 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 05:49:39 by hkhater          ###   ########.fr       */
+/*   Updated: 2023/01/31 20:56:35 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 void	ft_child_sig(int sig)
 {

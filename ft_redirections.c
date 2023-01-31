@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 17:38:21 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 20:57:02 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	ft_handle_redirections(t_tout *tout, int alone)
 	lst = tout->lst;
 	while (lst && lst->token != 1)
 	{
-		if (lst->token == 2 || lst->token == 3 ||
-			lst->token == 4 || lst->token == 5)
+		if (lst->token == 2 || lst->token == 3
+			|| lst->token == 4 || lst->token == 5)
 		{
 			if (ft_save_fds(tout, lst, alone))
 				return (-1);

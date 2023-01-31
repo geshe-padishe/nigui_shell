@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:49 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 23:56:22 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 23:59:22 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	ft_cd(char **str)
 		return (free(str - 1), put_err("bash: cd: too many arguments\n"), 1);
 	if (stat(*str, &stats))
 		return (put_err("bash: cd: "), put_err(*str),
-				perror(" \b"), free(str - 1), 1);
+			perror(" \b"), free(str - 1), 1);
 	if (!S_ISDIR(stats.st_mode))
 		return (put_err("bash: cd: "), put_err(*str),
-				put_err(": Not a directory\n") , free(str - 1), 1);
+			put_err(": Not a directory\n"), free(str - 1), 1);
 	else if (chdir(*str) == -1)
 		return (put_err("bash: cd: "), put_err(*str),
-				perror(" \b"), free(str - 1), 1);
+			perror(" \b"), free(str - 1), 1);
 	return (free(str - 1), 0);
 }
 

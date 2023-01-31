@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 23:03:44 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 20:02:07 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	interpret(char *str, int rev)
 		return ;
 	while (*str)
 	{
-		if (is_quote(*str))
+		if (is_quote(*str) && !rev)
 			str = protect_content(str, rev);
 		if (*str)
 		{
@@ -65,28 +65,53 @@ static void	rm_quote(t_lst *lst)
 	}
 }
 
+char	*choose(char *line, char *hd, char *exp, int nb)
+{
+	if (nb == 1)
+		return (line);
+	if (nb == 2)
+		return (hd);
+	if (nb == 3)
+		return (exp);
+	return (line);
+}
+
+void	safe_free(char *line, char * str)
+{
+	if (str && &str != &line)
+		free(str);
+}
+
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*expanded;
 	char	*hd;
 	t_lst	*lst;
+	int		upd;
 
-	if (!line)
+	upd = 1;
+	hd = NULL;
+	expanded = NULL;
+	if (!line || !quote_check(line))
 		return (0);
-	if (!quote_check(line))
-		return (0);
-	hd = line;
 	if (has_heredoc(line))
+	{
 		hd = mult_heredoc(line);
-	interpret(hd, 0);
-	if (!syntax_check(hd))
+		upd = 2;
+	}
+	interpret(choose(line, hd, NULL, upd), 0);
+	if (!syntax_check(choose(line, hd, NULL, upd)))
 		return (0);
-	expanded = my_expand(hd, ext, darr);
-	if (!expanded)
-		return (0);
-	interpret(expanded, 1);
-	lst = tokenize(expanded);
+	if (find_dollar(choose(line, hd, NULL, upd)))
+	{
+		expanded = my_expand(choose(line, hd, NULL, upd), ext, darr);
+		safe_free(line, hd);
+		upd = 3;
+	}
+	interpret(choose(line, hd, expanded, upd), 1);
+	lst = tokenize(choose(line, hd, expanded, upd));
+	safe_free(line, choose(line, hd, expanded, upd));
 	if (lst)
-		return (rm_quote(lst), free(hd), lst);
+		return (rm_quote(lst), lst);
 	return (NULL);
 }

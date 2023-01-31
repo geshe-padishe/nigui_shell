@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 21:55:20 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:21:37 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 	char	*repl;
 	char	*before;
 	char	*after;
+	char	*point;
 	int		pos;
 
-	pos = ft_strnstr(has_heredoc(line), limiter,
-			ft_strlen(has_heredoc(line))) - line;
+	point = has_heredoc(line);
+	pos = ft_strnstr(point, limiter, ft_strlen(point)) - line;
 	before = ft_substr(line, 0, pos);
-	after = ft_strnstr(has_heredoc(line), limiter,
-			ft_strlen(has_heredoc(line))) + ft_strlen(limiter);
+	if (!ft_strncmp(line, "/tmp/file", 9))
+		free (line);
+	after = ft_strnstr(point, limiter, ft_strlen(point)) + ft_strlen(limiter);
 	repl = trio_merge(before, filename, after);
 	ft_free(before, limiter, NULL, NULL);
 	return (repl);
@@ -62,19 +64,17 @@ void	hd_exp(char *limiter, char *file)
 	exit(0);
 }
 
-char	*ft_exec_heredoc(char *limiter, char *file)
+void	ft_exec_heredoc(char *limiter, char *file)
 {
 	int		pid;
-	char	*done;
 
 	pid = fork();
-	done = NULL;
 	if (pid == 0)
 		hd_exp(limiter, file);
 	waitpid(pid, &g_vrac.status, 0);
 	if (WIFEXITED(g_vrac.status))
 		g_vrac.status = WEXITSTATUS(g_vrac.status);
-	return (done);
+	return ;
 }
 
 char	*heredoc(char *line)
@@ -88,13 +88,11 @@ char	*heredoc(char *line)
 	file = namefile();
 	if (!file)
 		return (NULL);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, &ft_child_sig);
 	signal(SIGINT, &ft_child_sig);
 	if (!here)
 		return (line);
 	limiter = find_limiter(here);
-	if (!ft_strncmp(limiter, "/tmp/file", 9))
-		limiter = new_limiter(line, limiter);
 	if (!limiter)
 		return (line);
 	neg_quotes(limiter);
@@ -102,7 +100,7 @@ char	*heredoc(char *line)
 		limiter = dup_quote(limiter);
 	ft_exec_heredoc(limiter, file);
 	repl = limitertofile(line, limiter, file);
-	return (repl);
+	return (ft_free(file, 0, 0, 0), repl);
 }
 
 char	*mult_heredoc(char *line)
@@ -124,8 +122,7 @@ char	*mult_heredoc(char *line)
 	{
 		tmp = last;
 		last = heredoc(last);
-		printf("last is %s\n", last);
-		if (tmp != last && nb - 1)
+		if (tmp != line && nb != -1)
 			free(tmp);
 	}
 	return (last);

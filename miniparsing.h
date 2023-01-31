@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 22:53:54 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 19:46:45 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ void	ft_child_sig(int sig);
 char	*has_heredoc(char *line);
 int		act_has_quote(char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_exec_heredoc(char *line, char *file);
+void	ft_exec_heredoc(char *line, char *file);
 char	*mult_heredoc(char *line);
-char	*new_limiter(char *line, char *limiter);
 void	neg_quotes(char *s);
 
 // Syntax.c
@@ -50,6 +49,7 @@ int		is_operator(char c);
 int		is_sep(char c);
 
 // Expand.c
+int		find_dollar(char *str);
 char	*trio_merge(char *before, char *value, char *after);
 char	*my_expand(char *str, int ext, t_dynarray *darr);
 
@@ -80,5 +80,7 @@ t_lst	*new_lst(void);
 void	push_first_lst(t_lst *neww, t_lst *lst);
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+
+char	*ft_strcp(char *s, unsigned int start, size_t len);
 
 #endif

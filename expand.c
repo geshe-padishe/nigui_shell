@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	find_dollar(char *str)
+int	find_dollar(char *str)
 {
 	if (!str)
 		return (0);
@@ -72,12 +72,13 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 	int		i_len[2];
 	char	*expanded;
 	char	*exit;
+	char	*tmp;
 
 	i_len[0] = -1;
 	expanded = NULL;
 	exit = ft_itoa(ext);
 	if (!str || !exit)
-		return (free(exit), NULL);
+		return (free(exit), str);
 	while (str[++i_len[0]])
 	{
 		if (str[i_len[0]] == '$')
@@ -86,7 +87,12 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 			i_len[1]++;
 			expanded = trio_split(str, i_len, exit, darr);
 			while (find_dollar(expanded))
+			{
+				tmp = expanded;
 				expanded = my_expand(expanded, ext, darr);
+				if (find_dollar(tmp))
+					free (tmp);
+			}
 			break ;
 		}
 	}

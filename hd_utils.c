@@ -27,6 +27,10 @@ char	*find_limiter(char *s)
 			return (NULL);
 		while (*(s + i) != '\0' &&!is_space(*(s + i)) && !is_operator(*(s + i)))
 			i++;
+		if (!ft_strncmp(s, "/tmp/file", 9))
+		{
+			return (find_limiter(has_heredoc(s)));
+		}
 		return (ft_substr(s, 0, i));
 	}
 	return (NULL);

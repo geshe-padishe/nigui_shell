@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 21:48:13 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:55:20 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*heredoc(char *line)
 	file = namefile();
 	if (!file)
 		return (NULL);
-	signal(SIGQUIT, &ft_child_sig);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ft_child_sig);
 	if (!here)
 		return (line);

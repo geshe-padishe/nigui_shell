@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 05:37:00 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 21:31:19 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:54:44 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void	here_sig(int sig)
 void	ft_child_sig(int sig)
 {
 	if (sig == SIGINT)
+	{
+		ft_free_env(g_vrac.darr);
 		printf("\n");
+	}
 }
 
 char	*new_limiter(char *line, char *limiter)

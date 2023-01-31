@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 19:46:45 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 22:53:54 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define SYNTAX_ERR "bash: syntax error near unexpected token `"
 
 // Parsing.c
-t_lst	*parse(char *line, int ext, t_dynarray *darr, char **envp);
+t_lst	*parse(char *line, int ext, t_dynarray *darr);
 
 // Quotes.c
 int		var_name_len(char *str);

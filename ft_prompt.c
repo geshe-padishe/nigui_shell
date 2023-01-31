@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:45:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 19:55:52 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 22:53:09 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_get_dir(char *path)
 	return (NULL);
 }
 
-int	ft_readline(t_dynarray *darr, char **envp)
+int	ft_readline(t_dynarray *darr)
 {
 	char		*line;
 	t_lst		*lst;
@@ -69,7 +69,7 @@ int	ft_readline(t_dynarray *darr, char **envp)
 		if (*line)
 		{
 			add_history(line);
-			lst = parse(line, g_vrac.status, darr, envp);
+			lst = parse(line, g_vrac.status, darr);
 			if (lst)
 			{
 				ft_memset(&tout, 0, sizeof(t_tout));

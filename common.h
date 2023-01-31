@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 16:45:10 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:50:03 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_lst
 typedef struct s_safe
 {
 	int			status;
+	t_dynarray	*darr;
 }	t_safe;
 
 typedef struct s_tout

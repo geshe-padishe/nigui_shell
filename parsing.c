@@ -87,6 +87,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	interpret(expanded, 1);
 	lst = tokenize(expanded);
 	if (lst)
-		return (rm_quote(lst), lst);
+		return (rm_quote(lst), free(hd), lst);
 	return (NULL);
 }

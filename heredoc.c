@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 21:21:37 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:48:13 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ char	*heredoc(char *line)
 	if (!limiter)
 		return (line);
 	neg_quotes(limiter);
-	limiter = dup_quote(limiter);
+	if (act_has_quote(limiter))
+		limiter = dup_quote(limiter);
 	ft_exec_heredoc(limiter, file);
 	repl = limitertofile(line, limiter, file);
 	return (repl);

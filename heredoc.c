@@ -32,17 +32,18 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 	return (repl);
 }
 
-char	*hd_exp(char *limiter, int exp, int ext, t_dynarray *darr)
+void	hd_exp(char *limiter, char *file)
 {
-	char		*file;
 	char		*line;
 	int			fd;
 	int			diff;
 
-	file = namefile();
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (fd == -1)
-		return (perror("OPEN"), NULL);
+	{
+		perror("OPEN");
+		return ;
+	}
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -53,16 +54,31 @@ char	*hd_exp(char *limiter, int exp, int ext, t_dynarray *darr)
 		diff = ft_strcmp(line, limiter);
 		if (diff == 0)
 			break ;
-		if (exp)
-			line = my_expand(line, ext, darr);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 	}
-	return (ft_free(line, 0, 0, 0), close(fd), file);
+	ft_free(line, 0, 0, 0);
+	close(fd);
+	exit(0);
 }
 
-char	*heredoc(char *line, int ext, t_dynarray *darr)
+char	*ft_exec_heredoc(char *limiter, char *file)
+{
+	int		pid;
+	char	*done;
+
+	pid = fork();
+	done = NULL;
+	if (pid == 0)
+		hd_exp(limiter, file);
+	waitpid(pid, &g_vrac.status, 0);
+	if (WIFEXITED(g_vrac.status))
+		g_vrac.status = WEXITSTATUS(g_vrac.status);
+	return (done);
+}
+
+char	*heredoc(char *line)
 {
 	char	*here;
 	char	*limiter;
@@ -70,6 +86,9 @@ char	*heredoc(char *line, int ext, t_dynarray *darr)
 	char	*repl;
 
 	here = has_heredoc(line);
+	file = namefile();
+	signal(SIGQUIT, &ft_child_sig);
+	signal(SIGINT, &ft_child_sig);
 	if (!here)
 		return (line);
 	limiter = find_limiter(here);
@@ -77,20 +96,14 @@ char	*heredoc(char *line, int ext, t_dynarray *darr)
 		limiter = new_limiter(line, limiter);
 	if (!limiter)
 		return (line);
-	if (!act_has_quote(limiter))
-		file = hd_exp(limiter, 1, ext, darr);
-	else
-	{
-		neg_quotes(limiter);
-		printf("neg quotes limiter is %s\n", limiter);
-		limiter = dup_quote(limiter);
-		file = hd_exp(limiter, 0, ext, darr);
-	}
+	neg_quotes(limiter);
+	limiter = dup_quote(limiter);
+	ft_exec_heredoc(limiter, file);
 	repl = limitertofile(line, limiter, file);
 	return (free(file), repl);
 }
 
-char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
+char	*mult_heredoc(char *line)
 {
 	char	*last;
 	char	*tmp;
@@ -99,8 +112,6 @@ char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
 	tmp = has_heredoc(line);
 	last = line;
 	nb = 0;
-	signal(SIGQUIT, &ft_child_sig);
-	signal(SIGINT, &ft_child_sig);
 	while (tmp)
 	{
 		tmp = has_heredoc(tmp);
@@ -110,25 +121,10 @@ char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
 	while (nb--)
 	{
 		tmp = last;
-		last = heredoc(last, ext, darr);
+		last = heredoc(last);
 		printf("last is %s\n", last);
 		if (tmp != last && nb - 1)
 			free(tmp);
 	}
 	return (last);
-}
-
-char	*ft_exec_heredoc(char *line, int ext, t_dynarray *darr)
-{
-	int		pid;
-	char	*done;
-
-	pid = fork();
-	done = NULL;
-	if (pid == 0)
-		done = mult_heredoc(line, ext, darr);
-	waitpid(pid, &g_vrac.status, 0);
-	if (WIFEXITED(g_vrac.status))
-		g_vrac.status = WEXITSTATUS(g_vrac.status);
-	return (done);
 }

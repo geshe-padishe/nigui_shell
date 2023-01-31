@@ -77,7 +77,7 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		return (0);
 	hd = line;
 	if (has_heredoc(line))
-		hd = ft_exec_heredoc(line, ext, darr);
+		hd = mult_heredoc(line);
 	interpret(hd, 0);
 	if (!syntax_check(hd))
 		return (0);

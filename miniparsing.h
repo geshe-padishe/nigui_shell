@@ -26,7 +26,7 @@ char	*protect_content(char *str, int rev);
 char	*dup_quote(char *s);
 
 // Heredoc.c + hd_utils.c
-char	*heredoc(char *line, int ext, t_dynarray *darr);
+char	*heredoc(char *line);
 char	*find_limiter(char *s);
 char	*namefile(void);
 void	here_sig(int sig);
@@ -34,7 +34,8 @@ void	ft_child_sig(int sig);
 char	*has_heredoc(char *line);
 int		act_has_quote(char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_exec_heredoc(char *line, int ext, t_dynarray *darr);
+char	*ft_exec_heredoc(char *line, char *file);
+char	*mult_heredoc(char *line);
 char	*new_limiter(char *line, char *limiter);
 void	neg_quotes(char *s);
 

@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:51 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 17:45:51 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 20:06:19 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	child_routine(t_tout *tout)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	//signal(SIGPIPE, sig_pipehand);
+	signal(SIGPIPE, sig_pipehand);
 	if (ft_handle_pipe(tout->pipefd, tout->pipes_left,
 			tout->nb_pipes))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),

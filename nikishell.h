@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:47 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 16:45:28 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 19:54:15 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		ft_dyn_env(t_dynarray *darr, char **str);
 int		ft_getenv_index(char **envp, uint64_t len, char *str, bool un_exp);
 int		ft_envcmp(char *str, char *str2);
 bool	ft_can_exp(char *str);
-int		ft_readline(t_dynarray *darr);
+int		ft_readline(t_dynarray *darr, char **envp);
 char	*ft_check_bin_path(char *bin, char *paths);
 int		ft_find_bin(char *bin, char *paths, char **argv, char **envp);
 int		ft_len_bef_col(char *paths);

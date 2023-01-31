@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:45:06 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 01:16:18 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 19:56:48 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ int	main(int ac, char **av, char **envp)
 		return (0);
 	(void)av;
 	(void)ac;
-	if (init_dyn_env(envp, &darr))
-		return (-1);
 	g_vrac.status = 0;
+	ft_memset(&darr, 0, sizeof(t_dynarray));
 	signal(SIGINT, siginthandler);
 	signal(SIGQUIT, SIG_IGN);
-	ret = ft_readline(&darr);
+	ret = ft_readline(&darr, envp);
 	return (ret);
 }

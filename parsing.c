@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 16:33:07 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 20:02:07 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	rm_quote(t_lst *lst)
 	}
 }
 
-t_lst	*parse(char *line, int ext, t_dynarray *darr)
+t_lst	*parse(char *line, int ext, t_dynarray *darr, char **envp)
 {
 	char	*expanded;
 	char	*hd;
@@ -81,6 +81,8 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	interpret(hd, 0);
 	if (!syntax_check(hd))
 		return (0);
+	if (init_dyn_env(envp, darr))
+		return (NULL);
 	expanded = my_expand(hd, ext, darr);
 	if (!expanded)
 		return (0);

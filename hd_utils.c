@@ -32,6 +32,18 @@ char	*find_limiter(char *s)
 	return (NULL);
 }
 
+char	*namefile(void)
+{
+	static int	i = 0;
+	char		*nb;
+	char		*file;
+
+	nb = ft_itoa(i++);
+	file = trio_merge("/tmp/file", nb, "");
+	free (nb);
+	return (file);
+}
+
 char	*has_heredoc(char *line)
 {
 	if (!line || ft_strlen(line) < 3)
@@ -43,6 +55,12 @@ char	*has_heredoc(char *line)
 		line++;
 	}
 	return (NULL);
+}
+
+void	here_sig(int sig)
+{
+	if (sig == SIGINT)
+		exit (1);
 }
 
 int	act_has_quote(char *s)

@@ -16,11 +16,10 @@
 // {
 // 	static
 // }
-
-void	here_sig(int sig)
+static void	ft_child_sig(int signal)
 {
-	if (sig == SIGINT)
-		exit (1);
+	if (signal == SIGINT)
+		printf("\n");
 }
 
 char	*limitertofile(char *line, char *limiter, char *filename)
@@ -36,18 +35,6 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 	repl = trio_merge(before, filename, after);
 	ft_free(before, limiter, NULL, NULL);
 	return (repl);
-}
-
-char	*namefile(void)
-{
-	static int	i = 0;
-	char		*nb;
-	char		*file;
-
-	nb = ft_itoa(i++);
-	file = trio_merge("/tmp/file", nb, "");
-	free (nb);
-	return (file);	
 }
 
 char	*hd_exp(char *limiter, int exp, int ext, t_dynarray *darr)
@@ -115,4 +102,51 @@ char	*heredoc(char *line, int ext, t_dynarray *darr)
 		file = hd_exp(limiter, 0, ext, darr);
 	repl = limitertofile(line, limiter, file);
 	return (free(file), repl);
+}
+
+char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
+{
+	char	*last;
+	char	*tmp;
+	int		nb;
+	int		i;
+	
+	i = 0;	
+	tmp = has_heredoc(line);
+	last = line;
+	nb = 0;
+	signal(SIGQUIT, &ft_child_sig);
+	signal(SIGINT, &ft_child_sig);
+	if (!tmp)
+		return (line);
+	while (tmp)
+	{
+		tmp = has_heredoc(tmp);
+		nb++;
+	}
+	tmp = NULL;
+	while (nb--)
+	{
+		tmp = last;
+		last = heredoc(last, ext, darr);
+		if (tmp != last && i)
+			free(tmp);
+		--i;
+	}
+	return (last);
+}
+
+char	*ft_exec_heredoc(char *line, int ext, t_dynarray *darr)
+{
+	int		pid;
+	char	*done;
+
+	pid = fork();
+	done = NULL;
+	if (pid == 0)
+		done = mult_heredoc(line, ext, darr);
+	waitpid(pid, &g_vrac.status, 0);
+	if (WIFEXITED(g_vrac.status))
+		g_vrac.status = WEXITSTATUS(g_vrac.status);
+	return (done);
 }

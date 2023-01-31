@@ -65,34 +65,6 @@ static void	rm_quote(t_lst *lst)
 	}
 }
 
-char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
-{
-	char	*last;
-	char	*tmp;
-	int		nb;
-	int		i = 0;	
-	tmp = has_heredoc(line);
-	last = line;
-	nb = 0;
-	if (!tmp)
-		return (line);
-	while (tmp)
-	{
-		tmp = has_heredoc(tmp);
-		nb++;
-	}
-	tmp = NULL;
-	while (nb--)
-	{
-		tmp = last;
-		last = heredoc(last, ext, darr);
-		if (tmp != last && i)
-			free(tmp);
-		--i;
-	}
-	return (last);
-}
-
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*expanded;
@@ -103,7 +75,7 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		return (0);
 	if (!quote_check(line))
 		return (0);
-	hd = mult_heredoc(line, ext, darr);
+	hd = ft_exec_heredoc(line, ext, darr);
 	interpret(hd, 0);
 	if (!syntax_check(hd))
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:47 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 04:45:19 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:45:28 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define ARGS "bash: exit: too many arguments\n"
 # define ID ": not a valid identifier\n"
 
+void	sig_pipehand(int i);
 void	print_lst(t_lst *lst);
 int		ft_rewind_fds(t_tout *tout);
 int		ft_have_redirs(t_lst *lst);

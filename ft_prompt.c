@@ -70,7 +70,6 @@ int	ft_readline(t_dynarray *darr)
 		{
 			add_history(line);
 			lst = parse(line, g_vrac.status, darr);
-			dprintf(2, "lst = %p\n", lst);
 			if (lst)
 			{
 				ft_memset(&tout, 0, sizeof(t_tout));

@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:27 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 16:43:58 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:50:48 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,8 @@ void	sigd_handler2(int i)
 
 void	sig_pipehand(int i)
 {
-	printf("errno = %d\n", errno());
+	(void)i;
+	dprintf(2, "ERRNO = %d\n", errno);
+	dprintf(2, "ERRNO = %d\n", errno);
+	dprintf(2, "ERRNO = %d\n", errno);
 }

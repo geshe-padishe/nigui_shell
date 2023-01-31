@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/28 02:43:13 by hkhater          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:45:10 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <errno.h>
 
 typedef struct s_dynarray
 {

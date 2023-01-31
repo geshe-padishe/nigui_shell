@@ -142,7 +142,6 @@ char	*ft_exec_heredoc(char *line, int ext, t_dynarray *darr)
 	int		pid;
 	char	*done;
 
-	printf("FORK HEREDOC\n");
 	pid = fork();
 	done = NULL;
 	if (pid == 0)

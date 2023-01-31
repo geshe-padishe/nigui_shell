@@ -6,27 +6,30 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:51 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/30 16:29:49 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:36:04 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in)
+int	ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes)
 {
 	int	fd_out;
+	int	fd_in;
 
 	if (!nb_pipes)
 		return (0);
 	if (pipes_left != nb_pipes)
 	{
-		*fd_in = dup2(pipefd[nb_pipes - pipes_left - 1][0], STDIN_FILENO);
-		if (*fd_in == -1)
+		dprintf(2, "dup2 in handle_pipe\n");
+		fd_in = dup2(pipefd[nb_pipes - pipes_left - 1][0], STDIN_FILENO);
+		if (fd_in == -1)
 			return (perror("dup2"), ft_close_pipes(pipefd, nb_pipes),
 				free_pipe_array(pipefd, nb_pipes), -1);
 	}
 	if (pipes_left != 0)
 	{
+		dprintf(2, "dup2 out handle_pipe\n");
 		fd_out = dup2(pipefd[nb_pipes - pipes_left][1], STDOUT_FILENO);
 		if (fd_out == -1)
 			return (perror("dup2"), ft_close_pipes(pipefd, nb_pipes),
@@ -54,8 +57,9 @@ int	child_routine(t_tout *tout)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	//signal(SIGPIPE, SIG_IGN);
 	if (ft_handle_pipe(tout->pipefd, tout->pipes_left,
-			tout->nb_pipes, &tout->fd_in))
+			tout->nb_pipes))
 		return (ft_free_all(tout->darr, first_lst(tout->lst),
 				tout->pipefd, tout->nb_pipes), exit(1), 1);
 	if (ft_handle_redirections(tout, 0))
@@ -83,6 +87,7 @@ int	launch_child(t_tout *tout)
 		}
 		else
 		{
+			dprintf(2, "FORK\n");
 			tout->list[tout->i] = fork();
 			if (tout->list[tout->i] == 0)
 				child_routine(tout);

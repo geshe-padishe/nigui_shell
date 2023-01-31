@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/30 16:29:15 by hkhater          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:30:58 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
 	signal(SIGQUIT, &ft_child_sig);
 	signal(SIGINT, &ft_child_sig);
 	if (!tmp)
-		return (line);
+		return (exit(0), line);
 	while (tmp)
 	{
 		tmp = has_heredoc(tmp);
@@ -133,6 +133,7 @@ char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
 			free(tmp);
 		--i;
 	}
+	exit (0);
 	return (last);
 }
 
@@ -141,6 +142,7 @@ char	*ft_exec_heredoc(char *line, int ext, t_dynarray *darr)
 	int		pid;
 	char	*done;
 
+	printf("FORK HEREDOC\n");
 	pid = fork();
 	done = NULL;
 	if (pid == 0)
@@ -148,5 +150,7 @@ char	*ft_exec_heredoc(char *line, int ext, t_dynarray *darr)
 	waitpid(pid, &g_vrac.status, 0);
 	if (WIFEXITED(g_vrac.status))
 		g_vrac.status = WEXITSTATUS(g_vrac.status);
+	if (done == NULL)
+		return (line);
 	return (done);
 }

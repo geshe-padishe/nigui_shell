@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:46:47 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/29 04:36:08 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 04:45:19 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int		nk_strcmp(char const *str, char const *str2);
 int		ft_check_env(t_dynarray *darr);
 int		ft_open_create(char *filename, bool apnd_or_not, int token);
 t_lst	*ft_next_pipe(t_lst *lst);
-int		ft_handle_pipe(int **pipefd, int pipes_left, int nb_pipes, int *fd_in);
 void	ft_print_pipes(int **pipefd, int nb_pipes);
 void	ft_print_token(t_lst token);
 void	ft_print_list(t_lst *token);

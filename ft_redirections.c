@@ -20,6 +20,7 @@ int	ft_save_fds(t_tout *tout, t_lst *lst, int alone)
 	{
 		if (tout->out_ch)
 			return (0);
+		dprintf(2, "dup out save_fds\n");
 		tout->std_out = dup(STDOUT_FILENO);
 		if (tout->std_out == -1)
 			return (perror("dup"), -1);
@@ -29,6 +30,7 @@ int	ft_save_fds(t_tout *tout, t_lst *lst, int alone)
 	{
 		if (tout->in_ch)
 			return (0);
+		dprintf(2, "dup in save_fds\n");
 		tout->std_in = dup(STDIN_FILENO);
 		if (tout->std_in == -1)
 			return (perror("dup"), -1);
@@ -74,6 +76,7 @@ int	ft_open_dup(t_lst *lst, int token, bool apnd_or_not)
 		return (close(fd), perror("dup2"), -1);
 	if (token % 2 == 1 && dup2(fd, STDIN_FILENO) == -1)
 		return (close(fd), perror("dup2"), -1);
+	dprintf(2, "open_dup token = %d\n", token);
 	close(fd);
 	return (0);
 }
@@ -82,6 +85,7 @@ int	ft_rewind_fds(t_tout *tout)
 {
 	if (tout->in_ch)
 	{
+		dprintf(2, "dup2 IN rewind fds\n");
 		if (dup2(tout->std_in, STDIN_FILENO) == -1)
 			return (close(tout->std_in), perror("dup2"), -1);
 		if (tout->std_in != 0)
@@ -89,6 +93,7 @@ int	ft_rewind_fds(t_tout *tout)
 	}
 	if (tout->out_ch)
 	{
+		dprintf(2, "dup2 OUT rewind fds\n");
 		if (dup2(tout->std_out, STDOUT_FILENO) == -1)
 			return (close(tout->std_out), perror("dup2"), -1);
 		if (tout->std_out != 1)

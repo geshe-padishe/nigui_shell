@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/29 15:45:57 by nvasilev         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:33:07 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,16 @@ static void	rm_quote(t_lst *lst)
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*expanded;
-	char	*hd;
+	char	*hd = 0;
 	t_lst	*lst;
 
 	if (!line)
 		return (0);
 	if (!quote_check(line))
 		return (0);
-	hd = ft_exec_heredoc(line, ext, darr);
+	if (has_heredoc(line))
+		hd = ft_exec_heredoc(line, ext, darr);
+	hd = line;
 	interpret(hd, 0);
 	if (!syntax_check(hd))
 		return (0);

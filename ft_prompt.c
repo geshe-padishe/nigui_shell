@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 23:45:17 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/29 04:59:26 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:25:32 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	ft_readline(t_dynarray *darr)
 		{
 			add_history(line);
 			lst = parse(line, g_vrac.status, darr);
+			dprintf(2, "lst = %p\n", lst);
 			if (lst)
 			{
 				ft_memset(&tout, 0, sizeof(t_tout));

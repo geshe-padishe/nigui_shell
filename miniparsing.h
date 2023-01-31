@@ -30,10 +30,13 @@ char	*heredoc(char *line, int ext, t_dynarray *darr);
 char	*find_limiter(char *s);
 char	*namefile(void);
 void	here_sig(int sig);
+void	ft_child_sig(int sig);
 char	*has_heredoc(char *line);
 int		act_has_quote(char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_exec_heredoc(char *line, int ext, t_dynarray *darr);
+char	*new_limiter(char *line, char *limiter);
+void	neg_quotes(char *s);
 
 // Syntax.c
 int		syntax_check(char *line);

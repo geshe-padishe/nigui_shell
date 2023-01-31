@@ -68,16 +68,16 @@ static void	rm_quote(t_lst *lst)
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*expanded;
-	char	*hd = 0;
+	char	*hd;
 	t_lst	*lst;
 
 	if (!line)
 		return (0);
 	if (!quote_check(line))
 		return (0);
+	hd = line;
 	if (has_heredoc(line))
 		hd = ft_exec_heredoc(line, ext, darr);
-	hd = line;
 	interpret(hd, 0);
 	if (!syntax_check(hd))
 		return (0);

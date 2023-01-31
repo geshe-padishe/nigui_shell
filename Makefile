@@ -43,6 +43,7 @@ SRCS	=	dynarray2.c \
 			ft_str.c \
 			heredoc.c\
 			hd_utils.c\
+			hd_utils2.c\
 			is.c \
 			is_token.c \
 			libft.c \

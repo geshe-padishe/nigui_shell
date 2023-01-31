@@ -13,25 +13,6 @@
 #include "miniparsing.h"
 #include "minishell.h"
 
-static int	quote_check(char *s)
-{
-	char	curr_quote;
-
-	curr_quote = '\0';
-	while (*s)
-	{
-		if (*s == curr_quote)
-			curr_quote = '\0';
-		else if (is_quote(*s) && curr_quote == '\0')
-			curr_quote = *s;
-		s++;
-	}
-	if (curr_quote == '\0')
-		return (1);
-	write(2, "Quote error\n", 12);
-	return (0);
-}
-
 static void	interpret(char *str, int rev)
 {
 	if (!str)
@@ -49,10 +30,31 @@ static void	interpret(char *str, int rev)
 	}
 }
 
+static int	quote_check(char *s)
+{
+	char	curr_quote;
+
+	curr_quote = '\0';
+	while (*s)
+	{
+		if (*s == curr_quote)
+			curr_quote = '\0';
+		else if (is_quote(*s) && curr_quote == '\0')
+			curr_quote = *s;
+		s++;
+	}
+	if (curr_quote == '\0')
+		return (interpret(s, 0), 1);
+	write(2, "Quote error\n", 12);
+	return (0);
+}
+
 static void	rm_quote(t_lst *lst)
 {
 	char	*old;
 
+	if (!lst)
+		return ;
 	while (lst && lst->str)
 	{
 		if (lst->token == 0)
@@ -93,7 +95,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		hd = mult_heredoc(line);
 		upd = 2;
 	}
-	interpret(x(line, hd, NULL, upd), 0);
 	if (!syntax_check(x(line, hd, NULL, upd)))
 		return (safe_free(line, hd), NULL);
 	if (find_dollar(x(line, hd, NULL, upd)))
@@ -104,7 +105,5 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	}
 	interpret(x(line, hd, exp, upd), 1);
 	lst = tokenize(x(line, hd, exp, upd));
-	if (lst)
-		return (safe_free(line, x(line, hd, exp, upd)), rm_quote(lst), lst);
-	return (safe_free(line, x(line, hd, exp, upd)), NULL);
+	return (safe_free(line, x(line, hd, exp, upd)), rm_quote(lst), lst);
 }

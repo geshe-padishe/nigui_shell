@@ -70,7 +70,7 @@ char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
 	char	*last;
 	char	*tmp;
 	int		nb;
-
+	int		i = 0;	
 	tmp = has_heredoc(line);
 	last = line;
 	nb = 0;
@@ -81,10 +81,14 @@ char	*mult_heredoc(char *line, int ext, t_dynarray *darr)
 		tmp = has_heredoc(tmp);
 		nb++;
 	}
+	tmp = NULL;
 	while (nb--)
 	{
+		tmp = last;
 		last = heredoc(last, ext, darr);
-		printf("last is %s\n", last);
+		if (tmp != last && i)
+			free(tmp);
+		--i;
 	}
 	return (last);
 }
@@ -100,7 +104,7 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 	if (!quote_check(line))
 		return (0);
 	hd = mult_heredoc(line, ext, darr);
-	interpret(line, 0);
+	interpret(hd, 0);
 	if (!syntax_check(hd))
 		return (0);
 	expanded = my_expand(hd, ext, darr);
@@ -108,9 +112,6 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr)
 		return (0);
 	interpret(expanded, 1);
 	lst = tokenize(expanded);
-	interpret(line, 0);
-	if (!strcmp(line, expanded))
-		free(expanded);
 	if (lst)
 		return (rm_quote(lst), lst);
 	return (NULL);

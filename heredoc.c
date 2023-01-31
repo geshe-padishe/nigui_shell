@@ -80,6 +80,20 @@ char	*hd_exp(char *limiter, int exp, int ext, t_dynarray *darr)
 	return (ft_free(line, 0, 0, 0), close(fd), file);
 }
 
+char	*new_limiter(char *line, char *limiter)
+{
+	char	*new_lim;
+	char	*cropped;
+	char	*pos;
+
+	pos = ft_strnstr(line, limiter, ft_strlen(line));
+	cropped = has_heredoc(pos + ft_strlen(limiter));
+	new_lim = find_limiter(cropped);
+	while (!ft_strncmp(new_lim, "/tmp/file", 9))
+		new_lim = new_limiter(line, new_lim);
+	return (free(limiter), new_lim);
+}
+
 char	*heredoc(char *line, int ext, t_dynarray *darr)
 {
 	char	*here;
@@ -91,6 +105,8 @@ char	*heredoc(char *line, int ext, t_dynarray *darr)
 	if (!here)
 		return (line);
 	limiter = find_limiter(here);
+	if (!ft_strncmp(limiter, "/tmp/file", 9))
+		limiter = new_limiter(line, limiter);
 	if (!limiter)
 		return (line);
 	if (!act_has_quote(limiter))

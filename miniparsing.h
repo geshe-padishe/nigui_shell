@@ -30,6 +30,7 @@ char	*heredoc(char *line, int ext, t_dynarray *darr);
 char	*find_limiter(char *s);
 char	*has_heredoc(char *line);
 int		act_has_quote(char *s);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // Syntax.c
 int		syntax_check(char *line);

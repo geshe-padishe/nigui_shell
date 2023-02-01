@@ -79,7 +79,12 @@ t_lst	*new_lst(void);
 void	push_first_lst(t_lst *neww, t_lst *lst);
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-
 char	*ft_strcp(char *s, unsigned int start, size_t len);
+
+int		init_my_expand(int *i_len, char **expanded, int ext, char **exit);
+int		init_parse(char **exp, char **hd, int *upd);
+int		open_heredoc_file(int *fd, char *file, char **limiter, int *qu);
+int		manage_expand_in_heredoc(char **line, int ext, t_dynarray *darr);
+int		write_user_input(int fd, char *line);
 
 #endif

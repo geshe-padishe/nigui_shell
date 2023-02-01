@@ -78,14 +78,6 @@ char	*x(char *line, char *hd, char *exp, int nb)
 	return (line);
 }
 
-int	init_parse(char **exp, char **hd, int *upd)
-{
-	*upd = 1;
-	(*hd) = NULL;
-	(*exp) = NULL;
-	return (1);
-}
-
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*exp;

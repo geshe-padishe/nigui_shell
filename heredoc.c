@@ -31,34 +31,6 @@ static char	*limitertofile(char *line, char *limiter, char *filename)
 	return (repl);
 }
 
-int	open_heredoc_file(int *fd, char *file, char **limiter, int *qu)
-{
-	*fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	*qu = act_has_quote(*limiter);
-	if (qu)
-	{
-		neg_quotes(*limiter);
-		*limiter = dup_quote(*limiter);
-	}
-	return (1);
-}
-
-int	manage_expand_in_heredoc(char **line, int ext, t_dynarray *darr)
-{
-	(*line) = my_expand(*line, ext, darr);
-	if ((*line)[0] == '$')
-		(*line) = my_expand(*line, ext, darr);
-	return (1);
-}
-
-int	write_user_input(int fd, char *line)
-{
-	write(fd, line, ft_strlen(line));
-	write(fd, "\n", 1);
-	free(line);
-	return (1);
-}
-
 static void	hd_exp(char *limiter, char *file, int ext, t_dynarray *darr)
 {
 	char		*line;

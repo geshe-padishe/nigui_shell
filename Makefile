@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+         #
+#    By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/11/26 00:55:12 by hkhater           #+#    #+#              #
-#    Updated: 2023/01/31 21:09:23 by ngenadie         ###   ########.fr        #
+#    Created: 2023/02/01 06:25:24 by hkhater           #+#    #+#              #
+#    Updated: 2023/02/01 06:26:14 by hkhater          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -g3
+CFLAGS	=	-Wall -Wextra -Werror
 
 RM 		=	rm -rf
 
@@ -57,7 +57,8 @@ SRCS	=	dynarray2.c \
 			niki_utils.c \
 			ft_print_errors.c \
 			niki_utils2.c \
-			ft_splitargs.c
+			ft_splitargs.c \
+			extra.c \
 
 OBJS 	=	${SRCS:.c=.o}
 

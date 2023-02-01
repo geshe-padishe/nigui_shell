@@ -67,14 +67,6 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	return (new);
 }
 
-int	init_my_expand(int *i_len, char **expanded, int ext, char **exit)
-{
-	i_len[0] = -1;
-	(*expanded) = NULL;
-	(*exit) = ft_itoa(ext);
-	return (1);
-}
-
 int	mult_expand(char **tmp, char **expanded, int ext, t_dynarray *darr)
 {
 	(*tmp) = (*expanded);

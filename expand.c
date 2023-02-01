@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 02:12:18 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 02:23:54 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,24 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	return (new);
 }
 
+void	my_exp_exp(char *expanded, int ext, t_dynarray *darr)
+{
+	char	*tmp;
+
+	while (find_dollar(expanded))
+	{
+		tmp = expanded;
+		expanded = my_expand(expanded, ext, darr);
+		if (find_dollar(tmp))
+			free (tmp);
+	}
+}
+
 char	*my_expand(char *str, int ext, t_dynarray *darr)
 {
 	int		i_len[2];
 	char	*expanded;
 	char	*exit;
-	char	*tmp;
 
 	i_len[0] = -1;
 	expanded = NULL;
@@ -85,13 +97,7 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 		{
 			i_len[1] = var_name_len(&str[i_len[0]] + 1);
 			expanded = trio_split(str, i_len, exit, darr);
-			while (find_dollar(expanded))
-			{
-				tmp = expanded;
-				expanded = my_expand(expanded, ext, darr);
-				if (find_dollar(tmp))
-					free (tmp);
-			}
+			my_exp_exp(expanded, ext, darr);
 			break ;
 		}
 	}

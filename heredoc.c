@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngenadie <ngenadie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 03:22:56 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:21:37 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// 	*singleton()
-// {
-// 	static
-// }
 
 static char	*limitertofile(char *line, char *limiter, char *filename)
 {
@@ -36,33 +31,55 @@ static char	*limitertofile(char *line, char *limiter, char *filename)
 	return (repl);
 }
 
+int	open_heredoc_file(int *fd, char *file, char **limiter, int *qu)
+{
+	*fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	*qu = act_has_quote(*limiter);
+	if (qu)
+	{
+		neg_quotes(*limiter);
+		*limiter = dup_quote(*limiter);
+	}
+	return (1);
+}
+
+int	manage_expand_in_heredoc(char **line, int ext, t_dynarray *darr)
+{
+	(*line) = my_expand(*line, ext, darr);
+	if ((*line)[0] == '$')
+		(*line) = my_expand(*line, ext, darr);
+	return (1);
+}
+
+int	write_user_input(int fd, char *line)
+{
+	write(fd, line, ft_strlen(line));
+	write(fd, "\n", 1);
+	free(line);
+	return (1);
+}
+
 static void	hd_exp(char *limiter, char *file, int ext, t_dynarray *darr)
 {
 	char		*line;
 	int			fd;
-	int			diff;
+	int			qu;
 
-	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	open_heredoc_file(&fd, file, &limiter, &qu);
 	if (fd == -1)
-		return (free(file), perror("open"));
+		return (free(file), perror("open"), exit(1));
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, &here_sig);
 		line = readline("heredoc>");
 		if (!line)
+			put_err("minishell: warning: end-of-file (wanted `eof')\n");
+		if (!line || !ft_strcmp(line, limiter))
 			break ;
-		diff = ft_strcmp(line, limiter);
-		if (diff == 0)
-			break ;
-		if (!act_has_quote(limiter))
-		{
-			printf("yes");
-			line = my_expand(line, ext, darr);
-		}
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
+		if (!qu)
+			manage_expand_in_heredoc(&line, ext, darr);
+		write_user_input(fd, line);
 	}
 	ft_free_env(g_vrac.darr);
 	ft_free(line, file, limiter, 0);
@@ -70,7 +87,8 @@ static void	hd_exp(char *limiter, char *file, int ext, t_dynarray *darr)
 	exit(0);
 }
 
-static void	ft_exec_heredoc(char *limiter, char *file, int ext, t_dynarray *darr)
+static void	ft_exec_heredoc(char *limiter, char *file,
+	int ext, t_dynarray *darr)
 {
 	int		pid;
 

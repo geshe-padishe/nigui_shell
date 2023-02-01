@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngenadie <ngenadie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 03:24:41 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 20:02:07 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,24 @@ static int	quote_check(char *s)
 	return (0);
 }
 
+static void	rm_quote(t_lst *lst)
+{
+	char	*old;
+
+	if (!lst)
+		return ;
+	while (lst && lst->str)
+	{
+		if (lst->token == 0)
+		{
+			old = lst->str;
+			if (has_quote(old))
+				lst->str = dup_quote(old);
+		}
+		lst = lst->next;
+	}
+}
+
 char	*x(char *line, char *hd, char *exp, int nb)
 {
 	if (nb == 1)
@@ -60,41 +78,38 @@ char	*x(char *line, char *hd, char *exp, int nb)
 	return (line);
 }
 
-int	init_parse(int *upd, char **exp_hd)
+int	init_parse(char **exp, char **hd, int *upd)
 {
 	*upd = 1;
-	exp_hd[0] = NULL;
-	exp_hd[1] = NULL;
-	ft_memset(&exp_hd, 0, sizeof(char **));
+	(*hd) = NULL;
+	(*exp) = NULL;
 	return (1);
 }
 
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
-	char	*exp_hd[2];
+	char	*exp;
+	char	*hd;
 	t_lst	*lst;
 	int		upd;
 
-	init_parse(&upd, exp_hd);
+	init_parse(&exp, &hd, &upd);
 	if (!line || !quote_check(line))
 		return (0);
 	if (has_heredoc(line))
 	{
-		exp_hd[1] = mult_heredoc(line, ext, darr);
+		hd = mult_heredoc(line, ext, darr);
 		upd = 2;
 	}
-	if (!syntax_check(x(line, exp_hd[1], NULL, upd)))
-		return (safe_free(line, exp_hd[1]), NULL);
-	if (find_dollar(x(line, exp_hd[1], NULL, upd)))
+	if (!syntax_check(x(line, hd, NULL, upd)))
+		return (safe_free(line, hd), NULL);
+	if (find_dollar(x(line, hd, NULL, upd)))
 	{
-		dprintf(2, "line = %s\n", line);
-		dprintf(2, "exp_hd = %s\n", exp_hd[1]);
-		exp_hd[0] = my_expand(x(line, exp_hd[1], NULL, upd), ext, darr);
-			safe_free(line, exp_hd[1]);
+		exp = my_expand(x(line, hd, NULL, upd), ext, darr);
+		safe_free(line, hd);
 		upd = 3;
 	}
-	interpret(x(line, exp_hd[1], exp_hd[0], upd), 1);
-	lst = tokenize(x(line, exp_hd[1], exp_hd[0], upd));
-	return (safe_free(line, x(line, exp_hd[1], exp_hd[0], upd)),
-		rm_quote(lst), lst);
+	interpret(x(line, hd, exp, upd), 1);
+	lst = tokenize(x(line, hd, exp, upd));
+	return (safe_free(line, x(line, hd, exp, upd)), rm_quote(lst), lst);
 }

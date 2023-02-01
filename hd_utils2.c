@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 05:37:00 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 02:58:30 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:31:19 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	here_sig(int sig)
 {
-	free_dynarray(g_vrac.darr);
+	ft_free_env(g_vrac.darr);
 	if (sig == SIGINT)
 		exit (1);
 }

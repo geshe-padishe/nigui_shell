@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 01:23:14 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/02/01 02:51:32 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:23:15 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,6 @@ int	init_dyn_env(char **envp, t_dynarray *darr)
 	return (0);
 }
 
-int	ft_envcmp(char *str, char *str2)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str2[i] && str[i] != '=' && str2[i] != '=')
-	{
-		//dprintf(2, "str2[i] = %d\n", str2[i]);
-		if (str[i] != str2[i])
-			return (-1);
-		i++;
-	}
-	if (str[i] == '=' && str2[i] == '=')
-		return (-2);
-	else if (str2[i] == '\0' && str[i] == '=')
-		return (0);
-	return (-1);
-}
-
 int	ft_getenv_index(char **envp, uint64_t len, char *str, bool un_exp)
 {
 	uint64_t	i;
@@ -82,6 +63,24 @@ int	ft_getenv_index(char **envp, uint64_t len, char *str, bool un_exp)
 	return (-1);
 }
 
+int	ft_envcmp(char *str, char *str2)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str2[i] && str[i] != '=' && str2[i] != '=')
+	{
+		if (str[i] != str2[i])
+			return (-1);
+		i++;
+	}
+	if (str[i] == '=' && str2[i] == '=')
+		return (-2);
+	else if (str2[i] == '\0' && str[i] == '=')
+		return (0);
+	return (-1);
+}
+
 char	*ft_getenvval(char *str, t_dynarray *darr,
 		bool val_or_all, bool un_or_exp)
 {
@@ -90,8 +89,6 @@ char	*ft_getenvval(char *str, t_dynarray *darr,
 	char	**envp;
 
 	i = 0;
-	if (!str)
-		return (dprintf(2, "GETENVAL STR NULL\n"), NULL);
 	envp = darr->list;
 	index = ft_getenv_index(envp, darr->nb_cells, str, un_or_exp);
 	if (index == -1)

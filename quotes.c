@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngenadie <ngenadie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:44:23 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 03:25:47 by ngenadie         ###   ########.fr       */
+/*   Updated: 2022/12/25 23:45:11 by hkhater          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,4 @@ char	*dup_quote(char *s)
 	dup[j] = '\0';
 	free(s);
 	return (dup);
-}
-
-void	rm_quote(t_lst *lst)
-{
-	char	*old;
-
-	if (!lst)
-		return ;
-	while (lst && lst->str)
-	{
-		if (lst->token == 0)
-		{
-			old = lst->str;
-			if (has_quote(old))
-				lst->str = dup_quote(old);
-		}
-		lst = lst->next;
-	}
 }

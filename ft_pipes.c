@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:38 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/02/01 02:12:05 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/31 21:05:30 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	ft_builtins(t_tout *tout)
 	lst = find_bin_lst(tout->lst);
 	if (!lst)
 		return (0);
-	args = ft_splitargs(find_bin_lst(lst));
+	args = ft_splitargs(lst);
 	if (!args)
 		return (perror("malloc"), 1);
 	if (!nk_strcmp(lst->str, "echo"))

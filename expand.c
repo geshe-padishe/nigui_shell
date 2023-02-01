@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 02:53:35 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:25:35 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	char	*value;
 	char	*new;
 
-	if (len[1] == 1 && !is_quote(str[len[0] + 1]))
+	if (len[1] == 1)
 	{
 		str[len[0]] *= -1;
 		return (str);
@@ -54,9 +54,7 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	before = ft_substr(str, 0, len[0]);
 	name = ft_substr(str, len[0], len[1]);
 	after = ft_substr(str, len[0] + len[1], ft_strlen(str) - (len[0] + len[1]));
-	//dprintf(2, "name + 1 = %s\n", name + 1);
 	value = ft_getenvval(name + 1, darr, 0, 0);
-	//dprintf(2, "VALUE = %s\n", value);
 	if (!value)
 		value = "";
 	if (!ft_strcmp(name, "$?"))
@@ -69,17 +67,21 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	return (new);
 }
 
-void	my_exp_exp(char *expanded, int ext, t_dynarray *darr)
+int	init_my_expand(int *i_len, char **expanded, int ext, char **exit)
 {
-	char	*tmp;
+	i_len[0] = -1;
+	(*expanded) = NULL;
+	(*exit) = ft_itoa(ext);
+	return (1);
+}
 
-	while (find_dollar(expanded))
-	{
-		tmp = expanded;
-		expanded = my_expand(expanded, ext, darr);
-		if (find_dollar(tmp))
-			free (tmp);
-	}
+int	mult_expand(char **tmp, char **expanded, int ext, t_dynarray *darr)
+{
+	(*tmp) = (*expanded);
+	(*expanded) = my_expand(*expanded, ext, darr);
+	if (find_dollar(*tmp))
+		free ((*tmp));
+	return (1);
 }
 
 char	*my_expand(char *str, int ext, t_dynarray *darr)
@@ -87,19 +89,20 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 	int		i_len[2];
 	char	*expanded;
 	char	*exit;
+	char	*tmp;
 
-	i_len[0] = -1;
-	expanded = NULL;
-	exit = ft_itoa(ext);
+	init_my_expand(i_len, &expanded, ext, &exit);
 	if (!str || !exit)
 		return (free(exit), str);
 	while (str[++i_len[0]])
 	{
 		if (str[i_len[0]] == '$')
 		{
-			i_len[1] = var_name_len(&str[i_len[0]]) + 1;
+			i_len[1] = var_name_len(&str[i_len[0]]);
+			i_len[1]++;
 			expanded = trio_split(str, i_len, exit, darr);
-			my_exp_exp(expanded, ext, darr);
+			while (find_dollar(expanded))
+				mult_expand(&tmp, &expanded, ext, darr);
 			break ;
 		}
 	}

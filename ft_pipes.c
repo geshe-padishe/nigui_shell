@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:00:38 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 21:05:30 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 02:12:05 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,25 +94,27 @@ int	ft_wait_procs(int ac, pid_t *list)
 int	ft_builtins(t_tout *tout)
 {
 	char	**args;
+	t_lst	*lst;
 
-	if (!find_bin_lst(tout->lst))
+	lst = find_bin_lst(tout->lst);
+	if (!lst)
 		return (0);
-	args = ft_splitargs(find_bin_lst(tout->lst));
+	args = ft_splitargs(find_bin_lst(lst));
 	if (!args)
 		return (perror("malloc"), 1);
-	if (!nk_strcmp(tout->lst->str, "echo"))
+	if (!nk_strcmp(lst->str, "echo"))
 		return (ft_echo(args + 1));
-	else if (!nk_strcmp(tout->lst->str, "pwd"))
+	else if (!nk_strcmp(lst->str, "pwd"))
 		return (ft_pwd(args + 1));
-	else if (!nk_strcmp(tout->lst->str, "env"))
+	else if (!nk_strcmp(lst->str, "env"))
 		return (ft_dyn_env(tout->darr, args + 1));
-	else if (!nk_strcmp(tout->lst->str, "cd"))
+	else if (!nk_strcmp(lst->str, "cd"))
 		return (ft_cd(args + 1));
-	else if (!nk_strcmp(tout->lst->str, "export"))
+	else if (!nk_strcmp(lst->str, "export"))
 		return (ft_export(tout->darr, args + 1, (char **)tout->darr->list));
-	else if (!nk_strcmp(tout->lst->str, "unset"))
+	else if (!nk_strcmp(lst->str, "unset"))
 		return (ft_unset(tout->darr, args + 1));
-	else if (!nk_strcmp(tout->lst->str, "exit"))
+	else if (!nk_strcmp(lst->str, "exit"))
 		return (ft_exit(tout, args + 1));
 	return (free(args), -3);
 }

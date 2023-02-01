@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 01:25:00 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 02:12:18 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 		return (NULL);
 	return (new);
 }
-
 
 char	*my_expand(char *str, int ext, t_dynarray *darr)
 {

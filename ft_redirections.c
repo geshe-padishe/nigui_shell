@@ -6,7 +6,7 @@
 /*   By: ngenadie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 00:01:57 by ngenadie          #+#    #+#             */
-/*   Updated: 2023/01/31 23:32:26 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 02:12:45 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_rewind_fds(t_tout *tout)
 {
 	if (tout->in_ch)
 	{
-		dprintf(2, "dup2 IN rewind fds\n");
+		//dprintf(2, "dup2 IN rewind fds\n");
 		if (dup2(tout->std_in, STDIN_FILENO) == -1)
 			return (close(tout->std_in), perror("dup2"), -1);
 		if (tout->std_in != 0)
@@ -90,7 +90,7 @@ int	ft_rewind_fds(t_tout *tout)
 	}
 	if (tout->out_ch)
 	{
-		dprintf(2, "dup2 OUT rewind fds\n");
+		//dprintf(2, "dup2 OUT rewind fds\n");
 		if (dup2(tout->std_out, STDOUT_FILENO) == -1)
 			return (close(tout->std_out), perror("dup2"), -1);
 		if (tout->std_out != 1)

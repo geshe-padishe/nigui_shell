@@ -32,7 +32,7 @@ char	*limitertofile(char *line, char *limiter, char *filename)
 		free (line);
 	after = ft_strnstr(point, limiter, ft_strlen(point)) + ft_strlen(limiter);
 	repl = trio_merge(before, filename, after);
-	ft_free(before, limiter, NULL, NULL);
+	ft_free(before, 0, NULL, NULL);
 	return (repl);
 }
 
@@ -100,7 +100,7 @@ char	*heredoc(char *line)
 		limiter = dup_quote(limiter);
 	ft_exec_heredoc(limiter, file);
 	repl = limitertofile(line, limiter, file);
-	return (ft_free(file, 0, 0, 0), repl);
+	return (ft_free(file, limiter, 0, 0), repl);
 }
 
 char	*mult_heredoc(char *line)

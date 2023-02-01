@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniparsing.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ngenadie <ngenadie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:55 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 19:46:45 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 03:24:07 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ t_lst	*parse(char *line, int ext, t_dynarray *darr);
 int		var_name_len(char *str);
 char	*protect_content(char *str, int rev);
 char	*dup_quote(char *s);
+void	rm_quote(t_lst *lst);
 
 // Heredoc.c + hd_utils.c
-char	*heredoc(char *line);
 char	*find_limiter(char *s);
 char	*namefile(void);
 void	here_sig(int sig);
@@ -34,9 +34,8 @@ void	ft_child_sig(int sig);
 char	*has_heredoc(char *line);
 int		act_has_quote(char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	ft_exec_heredoc(char *line, char *file);
-char	*mult_heredoc(char *line);
-void	neg_quotes(char *s);
+char	*mult_heredoc(char *line, int ext, t_dynarray *darr);
+//void	neg_quotes(char *s);
 
 // Syntax.c
 int		syntax_check(char *line);

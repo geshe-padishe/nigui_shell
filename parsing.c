@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ngenadie <ngenadie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 01:46:05 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 03:24:41 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,6 @@ static int	quote_check(char *s)
 	return (0);
 }
 
-static void	rm_quote(t_lst *lst)
-{
-	char	*old;
-
-	if (!lst)
-		return ;
-	while (lst && lst->str)
-	{
-		if (lst->token == 0)
-		{
-			old = lst->str;
-			if (has_quote(old))
-				lst->str = dup_quote(old);
-		}
-		lst = lst->next;
-	}
-}
-
 char	*x(char *line, char *hd, char *exp, int nb)
 {
 	if (nb == 1)
@@ -78,27 +60,37 @@ char	*x(char *line, char *hd, char *exp, int nb)
 	return (line);
 }
 
+int	init_parse(int *upd, char **exp_hd)
+{
+	*upd = 1;
+	exp_hd[0] = NULL;
+	exp_hd[1] = NULL;
+	ft_memset(&exp_hd, 0, sizeof(char **));
+	return (1);
+}
+
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
 	char	*exp_hd[2];
 	t_lst	*lst;
 	int		upd;
 
-	upd = 1;
-	ft_memset(&exp_hd, 0, sizeof(char **));
+	init_parse(&upd, exp_hd);
 	if (!line || !quote_check(line))
 		return (0);
 	if (has_heredoc(line))
 	{
-		exp_hd[1] = mult_heredoc(line);
+		exp_hd[1] = mult_heredoc(line, ext, darr);
 		upd = 2;
 	}
 	if (!syntax_check(x(line, exp_hd[1], NULL, upd)))
 		return (safe_free(line, exp_hd[1]), NULL);
 	if (find_dollar(x(line, exp_hd[1], NULL, upd)))
 	{
+		dprintf(2, "line = %s\n", line);
+		dprintf(2, "exp_hd = %s\n", exp_hd[1]);
 		exp_hd[0] = my_expand(x(line, exp_hd[1], NULL, upd), ext, darr);
-		safe_free(line, exp_hd[1]);
+			safe_free(line, exp_hd[1]);
 		upd = 3;
 	}
 	interpret(x(line, exp_hd[1], exp_hd[0], upd), 1);

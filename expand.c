@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/02/01 02:23:54 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 02:53:35 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ static char	*trio_split(char *str, int len[2], char *exit, t_dynarray *darr)
 	before = ft_substr(str, 0, len[0]);
 	name = ft_substr(str, len[0], len[1]);
 	after = ft_substr(str, len[0] + len[1], ft_strlen(str) - (len[0] + len[1]));
+	//dprintf(2, "name + 1 = %s\n", name + 1);
 	value = ft_getenvval(name + 1, darr, 0, 0);
+	//dprintf(2, "VALUE = %s\n", value);
 	if (!value)
 		value = "";
 	if (!ft_strcmp(name, "$?"))
@@ -95,7 +97,7 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 	{
 		if (str[i_len[0]] == '$')
 		{
-			i_len[1] = var_name_len(&str[i_len[0]] + 1);
+			i_len[1] = var_name_len(&str[i_len[0]]) + 1;
 			expanded = trio_split(str, i_len, exit, darr);
 			my_exp_exp(expanded, ext, darr);
 			break ;

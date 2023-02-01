@@ -6,7 +6,7 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 06:42:27 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/14 19:25:35 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 01:25:00 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ char	*my_expand(char *str, int ext, t_dynarray *darr)
 	{
 		if (str[i_len[0]] == '$')
 		{
-			i_len[1] = var_name_len(&str[i_len[0]]);
-			i_len[1]++;
+			i_len[1] = var_name_len(&str[i_len[0]] + 1);
 			expanded = trio_split(str, i_len, exit, darr);
 			while (find_dollar(expanded))
 			{

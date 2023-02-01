@@ -6,7 +6,7 @@
 /*   By: nvasilev <nvasilev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 00:55:33 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 20:02:07 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 01:46:05 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,29 @@ char	*x(char *line, char *hd, char *exp, int nb)
 
 t_lst	*parse(char *line, int ext, t_dynarray *darr)
 {
-	char	*exp;
-	char	*hd;
+	char	*exp_hd[2];
 	t_lst	*lst;
 	int		upd;
 
 	upd = 1;
-	hd = NULL;
-	exp = NULL;
+	ft_memset(&exp_hd, 0, sizeof(char **));
 	if (!line || !quote_check(line))
 		return (0);
 	if (has_heredoc(line))
 	{
-		hd = mult_heredoc(line);
+		exp_hd[1] = mult_heredoc(line);
 		upd = 2;
 	}
-	if (!syntax_check(x(line, hd, NULL, upd)))
-		return (safe_free(line, hd), NULL);
-	if (find_dollar(x(line, hd, NULL, upd)))
+	if (!syntax_check(x(line, exp_hd[1], NULL, upd)))
+		return (safe_free(line, exp_hd[1]), NULL);
+	if (find_dollar(x(line, exp_hd[1], NULL, upd)))
 	{
-		exp = my_expand(x(line, hd, NULL, upd), ext, darr);
-		safe_free(line, hd);
+		exp_hd[0] = my_expand(x(line, exp_hd[1], NULL, upd), ext, darr);
+		safe_free(line, exp_hd[1]);
 		upd = 3;
 	}
-	interpret(x(line, hd, exp, upd), 1);
-	lst = tokenize(x(line, hd, exp, upd));
-	return (safe_free(line, x(line, hd, exp, upd)), rm_quote(lst), lst);
+	interpret(x(line, exp_hd[1], exp_hd[0], upd), 1);
+	lst = tokenize(x(line, exp_hd[1], exp_hd[0], upd));
+	return (safe_free(line, x(line, exp_hd[1], exp_hd[0], upd)),
+		rm_quote(lst), lst);
 }

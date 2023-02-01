@@ -6,11 +6,11 @@
 /*   By: hkhater <hkhater@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 16:26:57 by hkhater           #+#    #+#             */
-/*   Updated: 2023/01/31 21:21:37 by ngenadie         ###   ########.fr       */
+/*   Updated: 2023/02/01 01:41:33 by ngenadie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniparsing.h"
+#include "minishell.h"
 
 // 	*singleton()
 // {
@@ -59,7 +59,8 @@ void	hd_exp(char *limiter, char *file)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	ft_free(line, file, 0, 0);
+	ft_free_env(g_vrac.darr);
+	ft_free(line, file, limiter, 0);
 	close(fd);
 	exit(0);
 }
